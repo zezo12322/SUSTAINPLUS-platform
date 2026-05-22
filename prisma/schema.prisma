@@ -1,0 +1,283 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== ENUMS ====================
+
+enum UserRole {
+  USER
+  EXPERT
+  ADMIN
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  TRIALING
+}
+
+enum KBCategory {
+  COMPLIANCE
+  WASTE
+  EMISSIONS
+  WATER
+  EIA
+  INDUSTRIAL_REQUIREMENTS
+  SUSTAINABILITY_REPORTING
+  EGYPTIAN_REGULATIONS
+  FAQS
+  SUSTAIN_PLUS_GUIDANCE
+}
+
+enum KBStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ExpertCaseStatus {
+  PENDING
+  IN_REVIEW
+  ASSIGNED
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum PaymentType {
+  SUBSCRIPTION
+  PAYG_CONSULTATION
+  CONSULTATION_PACK
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+  SYSTEM
+}
+
+// ==================== MODELS ====================
+
+model User {
+  id              String         @id @default(cuid())
+  email           String         @unique
+  nameAr          String?
+  nameEn          String?
+  phone           String?
+  passwordHash    String
+  role            UserRole       @default(USER)
+  isActive        Boolean        @default(true)
+  privacyConsent  Boolean        @default(false)
+  termsAccepted   Boolean        @default(false)
+  emailVerified   Boolean        @default(false)
+  lastLoginAt     DateTime?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  subscription    Subscription?
+  chatSessions    ChatSession[]
+  payments        Payment[]
+  expertCases     ExpertCase[]
+  usageRecords    UsageRecord[]
+  auditLogs       AuditLog[]
+  notifications   Notification[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model Plan {
+  id                    String         @id @default(cuid())
+  slug                  String         @unique // "free", "payg", "standard", "premium", "business"
+  nameAr                String
+  nameEn                String
+  pricePiasters         Int            // price in EGP piastres. 0=free, -1=PAYG (per-use billing)
+  consultationsPerMonth Int            // -1 = PAYG (billed per use)
+  maxUsers              Int            @default(1)
+  featuresAr            String[]
+  featuresEn            String[]
+  isActive              Boolean        @default(true)
+  sortOrder             Int            @default(0)
+  createdAt             DateTime       @default(now())
+
+  subscriptions         Subscription[]
+}
+
+model Subscription {
+  id                   String             @id @default(cuid())
+  userId               String             @unique
+  planId               String
+  status               SubscriptionStatus @default(ACTIVE)
+  currentPeriodStart   DateTime
+  currentPeriodEnd     DateTime
+  paymobSubscriptionId String?
+  paymobOrderId        String?
+  cancelAtPeriodEnd    Boolean            @default(false)
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  user                 User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan                 Plan               @relation(fields: [planId], references: [id])
+
+  @@index([userId])
+  @@index([status])
+}
+
+model UsageRecord {
+  id                 String   @id @default(cuid())
+  userId             String
+  monthYear          String   // "2026-05" format
+  consultationsUsed  Int      @default(0)
+  paygCredits        Int      @default(0) // prepaid PAYG consultations remaining
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, monthYear])
+  @@index([userId])
+}
+
+model ChatSession {
+  id          String      @id @default(cuid())
+  userId      String
+  titleAr     String?
+  titleEn     String?
+  isActive    Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages    Message[]
+  expertCase  ExpertCase?
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model Message {
+  id             String      @id @default(cuid())
+  sessionId      String
+  role           MessageRole
+  content        String      @db.Text
+  modelUsed      String?
+  isComplex      Boolean     @default(false)
+  inputTokens    Int?
+  outputTokens   Int?
+  kbEntriesUsed  String[]    // IDs of knowledge base entries referenced
+  createdAt      DateTime    @default(now())
+
+  session        ChatSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@index([createdAt])
+}
+
+model KnowledgeEntry {
+  id           String     @id @default(cuid())
+  titleAr      String
+  titleEn      String?
+  contentAr    String     @db.Text
+  contentEn    String?    @db.Text
+  category     KBCategory
+  status       KBStatus   @default(DRAFT)
+  reviewer     String?
+  reviewedAt   DateTime?
+  tags         String[]
+  sourceNotes  String?    @db.Text
+  createdBy    String
+  viewCount    Int        @default(0)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([category])
+  @@index([status])
+  @@index([tags])
+}
+
+model ExpertCase {
+  id              String           @id @default(cuid())
+  userId          String
+  sessionId       String?          @unique
+  descriptionAr   String           @db.Text
+  descriptionEn   String?          @db.Text
+  category        String?
+  status          ExpertCaseStatus @default(PENDING)
+  priority        String           @default("normal")
+  assignedExpert  String?
+  adminNotes      String?          @db.Text
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  resolvedAt      DateTime?
+
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  session         ChatSession?     @relation(fields: [sessionId], references: [id])
+
+  @@index([userId])
+  @@index([status])
+}
+
+model Payment {
+  id             String        @id @default(cuid())
+  userId         String
+  amountPiasters Int           // EGP piastres (35 EGP = 3500)
+  type           PaymentType
+  status         PaymentStatus @default(PENDING)
+  paymobOrderId  String?       @unique
+  paymobTrxId    String?
+  description    String?
+  metadata       Json?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@index([paymobOrderId])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String
+  details   Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  titleAr   String
+  bodyAr    String
+  isRead    Boolean  @default(false)
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+}
