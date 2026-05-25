@@ -173,9 +173,11 @@ export const MIN_PAYG_PRICE_PIASTERS = 3500 // 35 EGP — NEVER go below this
 // AI MODEL ROUTING
 // ==========================================
 
+// 3-tier hybrid routing: Gemini Flash (cheap) → Claude Haiku (medium) → Claude Sonnet (complex)
 export const AI_MODELS = {
-  simple: process.env.ANTHROPIC_SIMPLE_MODEL || 'claude-haiku-4-5-20251001',
-  complex: process.env.ANTHROPIC_COMPLEX_MODEL || 'claude-sonnet-4-6',
+  simple:   process.env.GEMINI_SIMPLE_MODEL    || 'gemini-1.5-flash',
+  moderate: process.env.ANTHROPIC_MODERATE_MODEL || 'claude-haiku-4-5-20251001',
+  complex:  process.env.ANTHROPIC_COMPLEX_MODEL  || 'claude-sonnet-4-6',
 } as const
 
 export const COMPLEX_QUERY_KEYWORDS = [

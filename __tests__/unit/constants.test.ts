@@ -64,16 +64,21 @@ describe('PLANS', () => {
 })
 
 describe('AI_MODELS', () => {
-  it('has simple and complex keys', () => {
+  it('has simple, moderate, and complex keys', () => {
     expect(AI_MODELS).toHaveProperty('simple')
+    expect(AI_MODELS).toHaveProperty('moderate')
     expect(AI_MODELS).toHaveProperty('complex')
   })
 
-  it('simple model is a haiku variant', () => {
-    expect(AI_MODELS.simple.toLowerCase()).toContain('haiku')
+  it('simple model is Gemini Flash (Tier 1 — cheapest)', () => {
+    expect(AI_MODELS.simple.toLowerCase()).toContain('gemini')
   })
 
-  it('complex model is a sonnet variant', () => {
+  it('moderate model is Claude Haiku (Tier 2)', () => {
+    expect(AI_MODELS.moderate.toLowerCase()).toContain('haiku')
+  })
+
+  it('complex model is Claude Sonnet (Tier 3 — highest quality)', () => {
     expect(AI_MODELS.complex.toLowerCase()).toContain('sonnet')
   })
 })
