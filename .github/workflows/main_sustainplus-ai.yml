@@ -77,12 +77,10 @@ jobs:
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_8DA9C8C14EA64431A7B4BA255A8F16C7 }}
 
       - name: Disable Oryx build on Azure
-        run: |
-          RG=$(az webapp show --name sustainplus-ai --query resourceGroup -o tsv)
-          az webapp config appsettings set \
-            --name sustainplus-ai \
-            --resource-group $RG \
-            --settings SCM_DO_BUILD_DURING_DEPLOYMENT=false
+        uses: azure/appservice-settings@v1
+        with:
+          app-name: sustainplus-ai
+          app-settings-json: '[{"name":"SCM_DO_BUILD_DURING_DEPLOYMENT","value":"false","slotSetting":false}]'
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
