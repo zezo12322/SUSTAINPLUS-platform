@@ -27,7 +27,6 @@ jobs:
       - name: Build (prisma generate + next build)
         run: npm run build
         env:
-          # Prisma generate only needs the schema — a dummy URL is fine at build time
           DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgresql://build:build@localhost:5432/build' }}
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'build-secret-placeholder' }}
           NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL || 'https://sustainplus-ai-crh0bqhffyewhxa5.westeurope-01.azurewebsites.net' }}
@@ -36,13 +35,9 @@ jobs:
 
       - name: Prepare standalone package
         run: |
-          # Copy public assets and static files into the standalone output
           cp -r public .next/standalone/public
           cp -r .next/static .next/standalone/.next/static
-
-          # Rewrite package.json to ONLY have a start script.
-          # The original package.json has "build": "prisma generate && next build"
-          # which Azure Oryx would re-run during deployment and fail (no schema.prisma).
+          # Strip build script so Oryx doesn't re-run it if it ever runs again
           node -e "
             const fs = require('fs');
             const pkg = JSON.parse(fs.readFileSync('.next/standalone/package.json', 'utf8'));
@@ -76,11 +71,12 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_15F3F85CE5DD4E12A40C34C92652F4FD }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_8DA9C8C14EA64431A7B4BA255A8F16C7 }}
 
-      - name: Disable Oryx build on Azure
+      - name: Configure Azure App Service
         uses: azure/appservice-settings@v1
         with:
           app-name: sustainplus-ai
-          app-settings-json: '[{"name":"SCM_DO_BUILD_DURING_DEPLOYMENT","value":"false","slotSetting":false}]'
+          app-settings-json: '[{"name":"SCM_DO_BUILD_DURING_DEPLOYMENT","value":"false","slotSetting":false},{"name":"WEBSITE_NODE_DEFAULT_VERSION","value":"~20","slotSetting":false}]'
+          general-settings-json: '{"appCommandLine":"node server.js"}'
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -89,4 +85,3 @@ jobs:
           app-name: 'sustainplus-ai'
           slot-name: 'Production'
           package: .
-          startup-command: 'node server.js'
