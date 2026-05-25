@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { MAIN_SITE_URL } from '@/lib/constants'
 
 export function PlatformFooter() {
@@ -8,13 +9,9 @@ export function PlatformFooter() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-9 h-9 bg-primary-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">S+</span>
-              </div>
-              <div>
-                <p className="font-bold text-white text-lg leading-tight">سستين بلس</p>
-                <p className="text-xs text-[#cce5d5] opacity-70 leading-tight">منصة الاستشارات البيئية</p>
+            <div className="mb-4">
+              <div className="inline-block bg-white rounded-xl px-3 py-2">
+                <Image src="/logo.png" alt="Sustain Plus" height={32} width={110} className="object-contain" />
               </div>
             </div>
             <p className="text-sm text-[#cce5d5] opacity-80 max-w-sm leading-relaxed">

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { cn } from '@/lib/utils'
@@ -33,14 +34,8 @@ export function DashboardSidebar({ onClose }: DashboardSidebarProps) {
     <aside className="w-64 flex-shrink-0 bg-white border-l border-gray-100 flex flex-col h-full">
       {/* Logo */}
       <div className="p-5 border-b border-gray-100">
-        <Link href="/" className="flex items-center gap-2" onClick={onClose}>
-          <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">S+</span>
-          </div>
-          <div>
-            <p className="text-sm font-bold text-primary-700 leading-tight">سستين بلس</p>
-            <p className="text-[10px] text-gray-400 leading-tight">منصة الاستشارات</p>
-          </div>
+        <Link href="/" className="flex items-center" onClick={onClose}>
+          <Image src="/logo.png" alt="Sustain Plus" height={36} width={120} className="object-contain" priority />
         </Link>
       </div>
 

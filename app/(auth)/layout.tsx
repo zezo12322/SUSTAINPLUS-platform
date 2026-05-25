@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { MAIN_SITE_URL } from '@/lib/constants'
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
@@ -6,11 +7,10 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
     <div className="min-h-screen bg-gradient-to-br from-primary-900 via-primary-700 to-primary-500 flex flex-col">
       {/* Header */}
       <header className="p-5">
-        <Link href="/" className="inline-flex items-center gap-2">
-          <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">S+</span>
+        <Link href="/" className="inline-flex items-center">
+          <div className="bg-white rounded-xl px-3 py-1.5">
+            <Image src="/logo.png" alt="Sustain Plus" height={30} width={105} className="object-contain" priority />
           </div>
-          <span className="text-white font-bold">سستين بلس</span>
         </Link>
       </header>
 

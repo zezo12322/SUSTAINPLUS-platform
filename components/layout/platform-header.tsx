@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useSession, signOut } from 'next-auth/react'
 import { MAIN_SITE_URL } from '@/lib/constants'
 
@@ -14,14 +15,8 @@ export function PlatformHeader() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-            <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">S+</span>
-            </div>
-            <div className="hidden sm:block">
-              <p className="text-sm font-bold text-primary-700 leading-tight">سستين بلس</p>
-              <p className="text-[10px] text-gray-400 leading-tight">منصة الاستشارات</p>
-            </div>
+          <Link href="/" className="flex items-center flex-shrink-0">
+            <Image src="/logo.png" alt="Sustain Plus" height={38} width={130} className="object-contain" priority />
           </Link>
 
           {/* Nav links */}
