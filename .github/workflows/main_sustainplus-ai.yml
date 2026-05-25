@@ -40,6 +40,16 @@ jobs:
           cp -r public .next/standalone/public
           cp -r .next/static .next/standalone/.next/static
 
+          # Rewrite package.json to ONLY have a start script.
+          # The original package.json has "build": "prisma generate && next build"
+          # which Azure Oryx would re-run during deployment and fail (no schema.prisma).
+          node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('.next/standalone/package.json', 'utf8'));
+            pkg.scripts = { start: 'node server.js' };
+            fs.writeFileSync('.next/standalone/package.json', JSON.stringify(pkg, null, 2));
+          "
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
