@@ -1,8 +1,17 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
+  outputFileTracingIncludes: {
+    '/**': ['./node_modules/.prisma/client/**'],
+  },
   experimental: {
-    serverActions: { allowedOrigins: ['localhost:3001'] },
+    serverActions: {
+      allowedOrigins: [
+        'localhost:3001',
+        'sustainplus-ai-crh0bqhffyewhxa5.westeurope-01.azurewebsites.net',
+      ],
+    },
   },
   async headers() {
     return [
