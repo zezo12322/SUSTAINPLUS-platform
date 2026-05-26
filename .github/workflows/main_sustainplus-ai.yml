@@ -81,7 +81,7 @@ jobs:
         with:
           app-name: sustainplus-ai
           app-settings-json: '[{"name":"SCM_DO_BUILD_DURING_DEPLOYMENT","value":"false","slotSetting":false},{"name":"WEBSITE_NODE_DEFAULT_VERSION","value":"~20","slotSetting":false}]'
-          general-settings-json: '{"appCommandLine":"node server.js"}'
+          general-settings-json: '{"appCommandLine":"node startup.js"}'
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
