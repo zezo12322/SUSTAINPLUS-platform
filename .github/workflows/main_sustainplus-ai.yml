@@ -37,6 +37,11 @@ jobs:
         run: |
           cp -r public .next/standalone/public
           cp -r .next/static .next/standalone/.next/static
+          # Explicitly copy Prisma engine binaries (file tracing alone is unreliable for native .node files)
+          mkdir -p .next/standalone/node_modules/.prisma/client
+          cp -r node_modules/.prisma/client/. .next/standalone/node_modules/.prisma/client/
+          mkdir -p .next/standalone/node_modules/@prisma/client
+          cp -r node_modules/@prisma/client/. .next/standalone/node_modules/@prisma/client/
           # Strip build script so Oryx doesn't re-run it if it ever runs again
           node -e "
             const fs = require('fs');

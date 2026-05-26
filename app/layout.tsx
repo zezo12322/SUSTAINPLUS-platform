@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import '@/app/globals.css'
 import { SessionProvider } from 'next-auth/react'
-import { auth } from '@/lib/auth'
 
 export const metadata: Metadata = {
   title: {
@@ -18,13 +17,11 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const session = await auth()
-
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning>
       <head>
@@ -45,7 +42,7 @@ export default async function RootLayout({
         <link rel="icon" type="image/png" href="/logo.png" />
       </head>
       <body className="font-cairo antialiased">
-        <SessionProvider session={session}>
+        <SessionProvider>
           {children}
         </SessionProvider>
       </body>
