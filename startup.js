@@ -1,11 +1,10 @@
-// Startup wrapper — catches fatal errors and logs them before crashing
 process.on('uncaughtException', (err) => {
   console.error('[STARTUP] uncaughtException:', err.message, err.stack)
-  process.exit(1)
+  // Don't exit — Next.js throws non-fatal errors internally
 })
 process.on('unhandledRejection', (reason) => {
   console.error('[STARTUP] unhandledRejection:', reason)
-  process.exit(1)
+  // Don't exit — Next.js has internal unhandled rejections for route modules
 })
 
 console.log('[STARTUP] node version:', process.version)
