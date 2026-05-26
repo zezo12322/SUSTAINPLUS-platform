@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
+          node-version: '22.x'
           cache: 'npm'
 
       - name: Install dependencies
@@ -50,6 +50,39 @@ jobs:
           ls -la .next/standalone/node_modules/@prisma/client/default* 2>/dev/null || echo "WARNING: @prisma/client/default.js not found!"
           ls -la .next/standalone/node_modules/.prisma/client/*.node 2>/dev/null | head -3
 
+          echo "=== Next.js external runtime files check ==="
+          for f in \
+            "next/dist/server/app-render/work-async-storage.external.js" \
+            "next/dist/server/app-render/work-unit-async-storage.external.js" \
+            "next/dist/server/app-render/action-async-storage.external.js" \
+            "next/dist/server/load-manifest.external.js" \
+            "next/dist/compiled/jsonwebtoken/index.js"; do
+            if [ -f ".next/standalone/node_modules/$f" ]; then
+              echo "  OK: $f"
+            else
+              echo "  MISSING: $f"
+            fi
+          done
+
+      - name: Test standalone server startup
+        run: |
+          cd .next/standalone
+          PORT=3333 NODE_ENV=production \
+            AUTH_SECRET="ci-test-secret-placeholder-min-32-chars" \
+            NEXTAUTH_SECRET="ci-test-secret-placeholder-min-32-chars" \
+            DATABASE_URL="postgresql://build:build@localhost:5432/build" \
+            NEXTAUTH_URL="http://localhost:3333" \
+            node server.js > /tmp/server-stdout.txt 2>&1 &
+          SERVER_PID=$!
+          echo "Server PID: $SERVER_PID"
+          sleep 6
+          echo "=== Server stdout/stderr ==="
+          cat /tmp/server-stdout.txt || true
+          echo "=== Testing /api/ping ==="
+          curl -sv http://localhost:3333/api/ping 2>&1 || true
+          echo "=== Killing server ==="
+          kill $SERVER_PID 2>/dev/null || true
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
@@ -80,7 +113,7 @@ jobs:
         uses: azure/appservice-settings@v1
         with:
           app-name: sustainplus-ai
-          app-settings-json: '[{"name":"SCM_DO_BUILD_DURING_DEPLOYMENT","value":"false","slotSetting":false},{"name":"WEBSITE_NODE_DEFAULT_VERSION","value":"~20","slotSetting":false}]'
+          app-settings-json: '[{"name":"SCM_DO_BUILD_DURING_DEPLOYMENT","value":"false","slotSetting":false},{"name":"WEBSITE_NODE_DEFAULT_VERSION","value":"~22","slotSetting":false}]'
           general-settings-json: '{"appCommandLine":"node server.js"}'
 
       - name: Deploy to Azure Web App
