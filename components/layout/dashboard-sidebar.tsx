@@ -63,7 +63,7 @@ export function DashboardSidebar({ onClose }: DashboardSidebarProps) {
                 'sidebar-nav-item',
                 (item.href === '/dashboard'
                   ? pathname === '/dashboard'
-                  : pathname.startsWith(item.href))
+                  : pathname?.startsWith(item.href))
                   ? 'active'
                   : ''
               )}
@@ -88,7 +88,7 @@ export function DashboardSidebar({ onClose }: DashboardSidebarProps) {
                   onClick={onClose}
                   className={cn(
                     'sidebar-nav-item',
-                    pathname.startsWith(item.href) ? 'active' : ''
+                    pathname?.startsWith(item.href) ? 'active' : ''
                   )}
                 >
                   <i className={`fa-solid ${item.icon} w-4 text-primary-600`} />
