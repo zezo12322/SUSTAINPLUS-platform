@@ -37,6 +37,7 @@ jobs:
         run: |
           cp -r public .next/standalone/public
           cp -r .next/static .next/standalone/.next/static
+          cp startup.js .next/standalone/startup.js
 
           # Copy FULL Prisma generated output — both .prisma/client (binary) and @prisma/client (JS)
           # .prisma/client contains: index.js, edge.js, default.js, native binary
