@@ -90,3 +90,19 @@ jobs:
           app-name: 'sustainplus-ai'
           slot-name: 'Production'
           package: .
+
+      - name: Capture startup logs
+        run: |
+          echo "Waiting 20s for app to boot..."
+          sleep 20
+          RG=$(az webapp list --query "[?name=='sustainplus-ai'].resourceGroup | [0]" --output tsv)
+          echo "Resource group: $RG"
+          az webapp log config \
+            --name sustainplus-ai \
+            --resource-group "$RG" \
+            --application-logging filesystem \
+            --level verbose
+          echo "=== STARTUP LOGS (30 seconds) ==="
+          timeout 30 az webapp log tail \
+            --name sustainplus-ai \
+            --resource-group "$RG" || true
