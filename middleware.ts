@@ -1,6 +1,8 @@
-import { auth } from '@/lib/auth'
+import NextAuth from 'next-auth'
+import { authConfig } from './auth.config'
 import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+
+const { auth } = NextAuth(authConfig)
 
 const PROTECTED_PREFIXES = ['/dashboard', '/admin']
 const AUTH_PAGES = ['/login', '/register']
@@ -41,6 +43,6 @@ export default auth(async (req) => {
 
 export const config = {
   matcher: [
-    '/((?!api/auth|_next/static|_next/image|favicon.ico|images).*)',
+    '/((?!api/auth|_next/static|_next/image|favicon.ico|logo.png|images).*)',
   ],
 }
