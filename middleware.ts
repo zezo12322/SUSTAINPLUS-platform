@@ -7,16 +7,23 @@ const AUTH_PAGES = ['/login', '/register']
 const ADMIN_ONLY = ['/admin']
 
 export async function middleware(req: NextRequest) {
-  const token = await getToken({
-    req,
-    secret: process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET,
-  })
-  const isLoggedIn = !!token
   const path = req.nextUrl.pathname
+
+  let token: any = null
+  try {
+    token = await getToken({
+      req,
+      secret: process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET || 'fallback',
+    })
+  } catch {
+    // getToken failed — treat as unauthenticated
+  }
+
+  const isLoggedIn = !!token
 
   if (ADMIN_ONLY.some((prefix) => path.startsWith(prefix))) {
     if (!isLoggedIn) return NextResponse.redirect(new URL('/login?redirect=' + path, req.url))
-    if ((token as any)?.role !== 'ADMIN') return NextResponse.redirect(new URL('/dashboard', req.url))
+    if (token?.role !== 'ADMIN') return NextResponse.redirect(new URL('/dashboard', req.url))
     return NextResponse.next()
   }
 
