@@ -67,6 +67,27 @@ jobs:
       - name: Test standalone server startup
         run: |
           cd .next/standalone
+
+          # Patch server.js to log every failed module resolution
+          node -e "
+          const fs = require('fs');
+          const orig = fs.readFileSync('server.js', 'utf8');
+          const patch = \`
+          const Module = require('module');
+          const _rf = Module._resolveFilename;
+          Module._resolveFilename = function(req, parent, isMain, opts) {
+            try { return _rf.call(this, req, parent, isMain, opts); }
+            catch(e) {
+              if (e.code === 'MODULE_NOT_FOUND') {
+                console.error('[MISSING_MODULE]', JSON.stringify(req), 'from', parent && parent.id);
+              }
+              throw e;
+            }
+          };
+          \`;
+          fs.writeFileSync('server.js', patch + orig);
+          "
+
           PORT=3333 NODE_ENV=production \
             AUTH_SECRET="ci-test-secret-placeholder-min-32-chars" \
             NEXTAUTH_SECRET="ci-test-secret-placeholder-min-32-chars" \
@@ -74,14 +95,30 @@ jobs:
             NEXTAUTH_URL="http://localhost:3333" \
             node server.js > /tmp/server-stdout.txt 2>&1 &
           SERVER_PID=$!
-          echo "Server PID: $SERVER_PID"
-          sleep 6
-          echo "=== Server stdout/stderr ==="
+          sleep 8
+
+          echo "=== Server stdout/stderr (MISSING_MODULE lines) ==="
+          grep "\[MISSING_MODULE\]" /tmp/server-stdout.txt || echo "(none)"
+          echo "=== Full server output ==="
           cat /tmp/server-stdout.txt || true
+
           echo "=== Testing /api/ping ==="
-          curl -sv http://localhost:3333/api/ping 2>&1 || true
-          echo "=== Killing server ==="
+          HTTP_CODE=$(curl -s -o /tmp/ping-body.txt -w "%{http_code}" http://localhost:3333/api/ping || echo "000")
+          echo "HTTP status: $HTTP_CODE"
+          cat /tmp/ping-body.txt || true
+
+          echo "=== Testing /api/env (Pages Router) ==="
+          HTTP_CODE2=$(curl -s -o /tmp/env-body.txt -w "%{http_code}" http://localhost:3333/api/env || echo "000")
+          echo "HTTP status: $HTTP_CODE2"
+          cat /tmp/env-body.txt || true
+
           kill $SERVER_PID 2>/dev/null || true
+
+          if [ "$HTTP_CODE" != "200" ]; then
+            echo "❌ /api/ping returned $HTTP_CODE on CI — build fails"
+            exit 1
+          fi
+          echo "✅ /api/ping OK"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
