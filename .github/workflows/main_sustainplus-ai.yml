@@ -113,7 +113,7 @@ jobs:
         uses: azure/appservice-settings@v1
         with:
           app-name: sustainplus-ai
-          app-settings-json: '[{"name":"SCM_DO_BUILD_DURING_DEPLOYMENT","value":"false","slotSetting":false},{"name":"WEBSITE_NODE_DEFAULT_VERSION","value":"~22","slotSetting":false}]'
+          app-settings-json: '[{"name":"SCM_DO_BUILD_DURING_DEPLOYMENT","value":"false","slotSetting":false},{"name":"WEBSITE_NODE_DEFAULT_VERSION","value":"~20","slotSetting":false}]'
           general-settings-json: '{"appCommandLine":"node server.js"}'
 
       - name: Deploy to Azure Web App
