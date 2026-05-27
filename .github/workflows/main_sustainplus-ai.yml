@@ -31,7 +31,22 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgresql://build:build@localhost:5432/build' }}
 
-      - name: Build (prisma generate + next build)
+      - name: Verify Prisma client after generate
+        run: |
+          echo "=== Verify local Prisma generated client ==="
+          test -f node_modules/.prisma/client/default.js
+          test -f node_modules/@prisma/client/default.js
+
+          echo "=== @prisma/client/default.js ==="
+          cat node_modules/@prisma/client/default.js
+
+          echo "=== Verify @prisma/client uses standard .prisma path ==="
+          grep -F ".prisma/client" node_modules/@prisma/client/default.js
+
+          echo "=== Verify @prisma/client/default.js is standard ==="
+          grep -F ".prisma/client" node_modules/@prisma/client/default.js
+
+      - name: Build Next.js app
         run: npm run build
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgresql://build:build@localhost:5432/build' }}
@@ -42,38 +57,44 @@ jobs:
 
       - name: Prepare standalone package
         run: |
-          cp -r public .next/standalone/public
-          cp -r .next/static .next/standalone/.next/static
+          echo "=== Prepare Next standalone package ==="
 
-          # Copy @prisma/client (JS generated files — not traced by Next.js by default)
-          mkdir -p .next/standalone/node_modules/@prisma/client
-          cp -r node_modules/@prisma/client/. .next/standalone/node_modules/@prisma/client/
+          mkdir -p .next/standalone/.next
 
-          # Copy .prisma/client (standard hidden path — works in CI but Azure OneDeploy
-          # strips top-level dotfile directories from the zip, so we also copy to a
-          # non-hidden path and patch @prisma/client references to use it)
-          mkdir -p .next/standalone/node_modules/.prisma/client
-          cp -r node_modules/.prisma/client/. .next/standalone/node_modules/.prisma/client/
+          if [ -d public ]; then
+            cp -a public .next/standalone/public
+          fi
 
-          # Non-hidden copy — survives Azure zip deployment
-          mkdir -p .next/standalone/node_modules/prisma_generated_client
-          cp -r node_modules/.prisma/client/. .next/standalone/node_modules/prisma_generated_client/
+          cp -a .next/static .next/standalone/.next/static
 
-          # Patch all @prisma/client JS files to require from prisma_generated_client
-          # instead of .prisma/client (which Azure strips from the zip)
-          find .next/standalone/node_modules/@prisma/client -name "*.js" -print0 | \
-            xargs -0 sed -i \
-              "s|require('.prisma/client/|require('prisma_generated_client/|g;
-               s|require(\".prisma/client/|require(\"prisma_generated_client/|g" \
-            2>/dev/null || true
+          echo "=== Copy standard Prisma client into standalone node_modules ==="
+          mkdir -p .next/standalone/node_modules
 
-          echo "=== Prisma files check ==="
-          ls -la .next/standalone/node_modules/@prisma/client/default* 2>/dev/null || echo "WARNING: @prisma/client/default.js not found!"
-          ls -la .next/standalone/node_modules/prisma_generated_client/*.node 2>/dev/null | head -3
-          echo "=== Verify prisma_generated_client ==="
-          test -f .next/standalone/node_modules/prisma_generated_client/default.js && echo "OK: prisma_generated_client/default.js found" || echo "ERROR: prisma_generated_client/default.js MISSING"
-          echo "=== Verify patch applied ==="
-          grep -c "prisma_generated_client" .next/standalone/node_modules/@prisma/client/default.js 2>/dev/null && echo "OK: patch applied" || echo "WARNING: patch may not have applied"
+          rm -rf .next/standalone/node_modules/@prisma
+          rm -rf .next/standalone/node_modules/.prisma
+
+          cp -a node_modules/@prisma .next/standalone/node_modules/@prisma
+          cp -a node_modules/.prisma .next/standalone/node_modules/.prisma
+
+          echo "=== Verify standard Prisma client in standalone ==="
+          test -f .next/standalone/node_modules/@prisma/client/default.js
+          test -f .next/standalone/node_modules/.prisma/client/default.js
+
+          echo "=== @prisma/client/default.js in standalone ==="
+          cat .next/standalone/node_modules/@prisma/client/default.js
+
+          echo "=== Verify @prisma/client points to .prisma/client ==="
+          grep -F ".prisma/client" .next/standalone/node_modules/@prisma/client/default.js
+
+
+          echo "=== Verify standalone @prisma/client/default.js is standard ==="
+          grep -F ".prisma/client" .next/standalone/node_modules/@prisma/client/default.js
+
+          echo "=== Native Prisma binaries in standalone ==="
+          ls -la .next/standalone/node_modules/.prisma/client/*.node 2>/dev/null || {
+            echo "ERROR: Prisma native binaries missing"
+            exit 1
+          }
 
           echo "=== Next.js external runtime files check ==="
           for f in \
@@ -89,42 +110,31 @@ jobs:
             fi
           done
 
-          # Create a tiny placeholder node_modules.tar.gz.
-          # Oryx's startup script checks for this file; if present it extracts it to
-          # /node_modules, then moves ./node_modules to _del_node_modules and symlinks
-          # ./node_modules -> /node_modules. Our start.sh reverses that immediately,
-          # restoring our prepared (patched) node_modules before node starts.
-          echo "=== Creating placeholder node_modules.tar.gz for Oryx ==="
-          mkdir -p /tmp/oryx_ph
-          printf 'placeholder' > /tmp/oryx_ph/placeholder
-          (cd /tmp/oryx_ph && tar czf - placeholder) > .next/standalone/node_modules.tar.gz
-          echo "OK: $(du -sh .next/standalone/node_modules.tar.gz | cut -f1) — placeholder tar.gz ready"
+          echo "=== Create start.sh ==="
+          cat > .next/standalone/start.sh <<'EOF'
+          #!/bin/sh
+          exec node server.js
+          EOF
 
-          # Create start.sh — run as appCommandLine. After Oryx extracts the placeholder
-          # and moves our node_modules to _del_node_modules, this script restores it.
-          echo "=== Creating start.sh ==="
-          node -e "
-          const fs = require('fs');
-          const s = [
-            '#!/bin/sh',
-            '# Oryx moves our node_modules to _del_node_modules after tar.gz extraction.',
-            '# Restore it so we use our prepared (patched) node_modules.',
-            'if [ -d _del_node_modules ] && [ -L node_modules ]; then',
-            '  rm -f node_modules',
-            '  mv _del_node_modules node_modules',
-            'fi',
-            'exec node server.js'
-          ].join('\n') + '\n';
-          fs.writeFileSync('.next/standalone/start.sh', s);
-          "
           chmod +x .next/standalone/start.sh
           echo "OK: start.sh created"
+
+      - name: Verify standalone Prisma package
+        run: |
+          echo "=== Verify files before artifact upload ==="
+          test -f .next/standalone/node_modules/.prisma/client/default.js
+          test -f .next/standalone/node_modules/@prisma/client/default.js
+
+          echo "=== Verify tar simulation preserves .prisma ==="
+          tar -czf /tmp/node_modules-test.tar.gz -C .next/standalone node_modules
+          tar -tzf /tmp/node_modules-test.tar.gz | grep "node_modules/.prisma/client/default.js"
+          tar -tzf /tmp/node_modules-test.tar.gz | grep "node_modules/@prisma/client/default.js"
+
 
       - name: Test standalone server startup
         run: |
           cd .next/standalone
 
-          # Patch server.js to log every failed module resolution
           node -e "
           const fs = require('fs');
           const orig = fs.readFileSync('server.js', 'utf8');
@@ -149,12 +159,16 @@ jobs:
             NEXTAUTH_SECRET="ci-test-secret-placeholder-min-32-chars" \
             DATABASE_URL="postgresql://build:build@localhost:5432/build" \
             NEXTAUTH_URL="http://localhost:3333" \
+            NEXT_PUBLIC_PLATFORM_URL="http://localhost:3333" \
+            NEXT_PUBLIC_MAIN_SITE_URL="https://sustainplus-eg.com" \
             node server.js > /tmp/server-stdout.txt 2>&1 &
+
           SERVER_PID=$!
           sleep 8
 
-          echo "=== Server stdout/stderr (MISSING_MODULE lines) ==="
+          echo "=== Server stdout/stderr MISSING_MODULE lines ==="
           grep "\[MISSING_MODULE\]" /tmp/server-stdout.txt || echo "(none)"
+
           echo "=== Full server output ==="
           cat /tmp/server-stdout.txt || true
 
@@ -163,7 +177,7 @@ jobs:
           echo "HTTP status: $HTTP_CODE"
           cat /tmp/ping-body.txt || true
 
-          echo "=== Testing /api/env (Pages Router) ==="
+          echo "=== Testing /api/env ==="
           HTTP_CODE2=$(curl -s -o /tmp/env-body.txt -w "%{http_code}" http://localhost:3333/api/env || echo "000")
           echo "HTTP status: $HTTP_CODE2"
           cat /tmp/env-body.txt || true
@@ -174,24 +188,15 @@ jobs:
             echo "❌ /api/ping returned $HTTP_CODE on CI — build fails"
             exit 1
           fi
-          echo "✅ /api/ping OK"
 
-      - name: Verify .prisma/client in standalone
-        run: |
-          echo "=== prisma_generated_client files (non-hidden, survives Azure zip) ==="
-          ls -la .next/standalone/node_modules/prisma_generated_client/ | head -20
-          echo "=== Verify default.js exists ==="
-          test -f .next/standalone/node_modules/prisma_generated_client/default.js && echo "OK: default.js found" || { echo "ERROR: default.js MISSING"; exit 1; }
-          echo "=== Native binaries ==="
-          ls -la .next/standalone/node_modules/prisma_generated_client/*.node 2>/dev/null || echo "WARNING: no .node binaries found"
-          echo "=== Verify @prisma/client patch ==="
-          grep "prisma_generated_client" .next/standalone/node_modules/@prisma/client/default.js && echo "OK: patch active" || { echo "ERROR: patch NOT applied to @prisma/client/default.js"; exit 1; }
+          echo "✅ /api/ping OK"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: node-app
           path: .next/standalone/
+          include-hidden-files: true
 
   deploy:
     runs-on: ubuntu-latest
@@ -213,7 +218,17 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_15F3F85CE5DD4E12A40C34C92652F4FD }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_8DA9C8C14EA64431A7B4BA255A8F16C7 }}
 
-      - name: Configure Azure App Service (general)
+      - name: Debug Azure account
+        run: |
+          echo "=== Azure account ==="
+          az account show --query "{name:name,id:id,tenantId:tenantId}" -o table
+
+          echo "=== PostgreSQL servers visible to this identity ==="
+          az postgres flexible-server list \
+            --query "[].{name:name,resourceGroup:resourceGroup,fqdn:fullyQualifiedDomainName}" \
+            -o table || true
+
+      - name: Configure Azure App Service
         uses: azure/appservice-settings@v1
         with:
           app-name: sustainplus-ai
@@ -232,7 +247,6 @@ jobs:
           SITE_URL="https://sustainplus-ai-crh0bqhffyewhxa5.westeurope-01.azurewebsites.net"
           FINAL_URL="${NEXTAUTH_URL_VAL:-$SITE_URL}"
 
-          # Base settings — always overwrite
           SETTINGS=(
             "NODE_ENV=production"
             "AUTH_TRUST_HOST=true"
@@ -242,7 +256,6 @@ jobs:
             "NEXT_PUBLIC_MAIN_SITE_URL=https://sustainplus-eg.com"
           )
 
-          # Secret settings — only set when the GitHub secret is non-empty
           [ -n "$DB_URL" ]          && SETTINGS+=("DATABASE_URL=$DB_URL")
           [ -n "$AUTH_SECRET_VAL" ] && SETTINGS+=("NEXTAUTH_SECRET=$AUTH_SECRET_VAL" "AUTH_SECRET=$AUTH_SECRET_VAL")
           [ -n "$GEMINI_KEY" ]      && SETTINGS+=("GEMINI_API_KEY=$GEMINI_KEY")
@@ -253,6 +266,7 @@ jobs:
             --name sustainplus-ai \
             --resource-group "$RG" \
             --settings "${SETTINGS[@]}"
+
           echo "App settings updated."
 
       - name: Open PostgreSQL firewall for Azure services
@@ -260,8 +274,10 @@ jobs:
           PG_RG=$(az postgres flexible-server list \
             --query "[?name=='sustainplus-db'].resourceGroup | [0]" \
             --output tsv 2>/dev/null || echo "")
+
           if [ -n "$PG_RG" ]; then
             echo "Found PostgreSQL server in resource group: $PG_RG"
+
             az postgres flexible-server firewall-rule create \
               --name sustainplus-db \
               --resource-group "$PG_RG" \
@@ -279,14 +295,15 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'sustainplus-ai'
-          slot-name: 'Production'
+          app-name: sustainplus-ai
+          slot-name: Production
           package: .
 
       - name: Verify deployment health
         run: |
           echo "Waiting 30s for app to boot..."
           sleep 30
+
           RG=$(az webapp list --query "[?name=='sustainplus-ai'].resourceGroup | [0]" --output tsv)
 
           az webapp log config \
