@@ -89,12 +89,36 @@ jobs:
             fi
           done
 
-          # Create node_modules.tar.gz so Azure Oryx uses OUR prepared modules on startup.
-          # Without this, Oryx finds a stale tar.gz from a previous build and overwrites
-          # our patched @prisma/client and prisma_generated_client directories.
-          echo "=== Creating node_modules.tar.gz for Azure Oryx ==="
-          (cd .next/standalone/node_modules && tar czf ../node_modules.tar.gz .)
-          echo "OK: $(du -sh .next/standalone/node_modules.tar.gz | cut -f1) — node_modules.tar.gz ready"
+          # Create a tiny placeholder node_modules.tar.gz.
+          # Oryx's startup script checks for this file; if present it extracts it to
+          # /node_modules, then moves ./node_modules to _del_node_modules and symlinks
+          # ./node_modules -> /node_modules. Our start.sh reverses that immediately,
+          # restoring our prepared (patched) node_modules before node starts.
+          echo "=== Creating placeholder node_modules.tar.gz for Oryx ==="
+          mkdir -p /tmp/oryx_ph
+          printf 'placeholder' > /tmp/oryx_ph/placeholder
+          (cd /tmp/oryx_ph && tar czf - placeholder) > .next/standalone/node_modules.tar.gz
+          echo "OK: $(du -sh .next/standalone/node_modules.tar.gz | cut -f1) — placeholder tar.gz ready"
+
+          # Create start.sh — run as appCommandLine. After Oryx extracts the placeholder
+          # and moves our node_modules to _del_node_modules, this script restores it.
+          echo "=== Creating start.sh ==="
+          node -e "
+          const fs = require('fs');
+          const s = [
+            '#!/bin/sh',
+            '# Oryx moves our node_modules to _del_node_modules after tar.gz extraction.',
+            '# Restore it so we use our prepared (patched) node_modules.',
+            'if [ -d _del_node_modules ] && [ -L node_modules ]; then',
+            '  rm -f node_modules',
+            '  mv _del_node_modules node_modules',
+            'fi',
+            'exec node server.js'
+          ].join('\n') + '\n';
+          fs.writeFileSync('.next/standalone/start.sh', s);
+          "
+          chmod +x .next/standalone/start.sh
+          echo "OK: start.sh created"
 
       - name: Test standalone server startup
         run: |
@@ -193,8 +217,8 @@ jobs:
         uses: azure/appservice-settings@v1
         with:
           app-name: sustainplus-ai
-          app-settings-json: '[{"name":"SCM_DO_BUILD_DURING_DEPLOYMENT","value":"false","slotSetting":false},{"name":"WEBSITE_NODE_DEFAULT_VERSION","value":"~20","slotSetting":false}]'
-          general-settings-json: '{"appCommandLine":"node server.js"}'
+          app-settings-json: '[{"name":"SCM_DO_BUILD_DURING_DEPLOYMENT","value":"false","slotSetting":false}]'
+          general-settings-json: '{"appCommandLine":"/bin/sh start.sh","linuxFxVersion":"NODE|22-lts"}'
 
       - name: Set all environment variables in Azure App Service
         env:
