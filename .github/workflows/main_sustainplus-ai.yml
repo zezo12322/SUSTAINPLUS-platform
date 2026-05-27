@@ -127,6 +127,27 @@ jobs:
           fi
           echo "✅ /api/ping OK"
 
+      - name: Package node_modules for Azure deployment
+        run: |
+          cd .next/standalone
+
+          # Pre-create node_modules.tar.gz ourselves so Azure's zipdeploy does NOT recreate it.
+          # Azure's recreated tar excludes hidden dirs (like .prisma/) — ours includes them.
+          tar -czf node_modules.tar.gz -C node_modules .
+
+          echo "=== node_modules.tar.gz size ==="
+          du -sh node_modules.tar.gz
+
+          echo "=== Verifying .prisma/client is in tar ==="
+          tar -tzf node_modules.tar.gz | grep '\.prisma' | head -10 || echo "WARNING: .prisma not found in tar!"
+
+          echo "=== Verifying @prisma/client/default is in tar ==="
+          tar -tzf node_modules.tar.gz | grep '@prisma/client/default' | head -5 || echo "WARNING: @prisma/client/default not found in tar!"
+
+          # Remove node_modules/ so Azure zipdeploy finds no directory to recreate the tar from
+          rm -rf node_modules/
+          echo "Removed node_modules/ — Azure will use our pre-built tar.gz with .prisma/client included."
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
