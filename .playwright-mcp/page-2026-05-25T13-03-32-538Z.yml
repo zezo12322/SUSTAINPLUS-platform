@@ -1,0 +1,37 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - link "S+ سستين بلس" [ref=e4] [cursor=pointer]:
+      - /url: /
+      - generic [ref=e6]: S+
+      - generic [ref=e7]: سستين بلس
+  - generic [ref=e10]:
+    - generic [ref=e11]:
+      - heading "تسجيل الدخول" [level=1] [ref=e12]
+      - paragraph [ref=e13]: أهلاً بعودتك إلى منصة الاستشارات البيئية
+    - generic [ref=e14]:
+      - generic [ref=e15]:
+        - generic [ref=e16]: البريد الإلكتروني
+        - generic [ref=e17]:
+          - generic [ref=e19]: 
+          - textbox "البريد الإلكتروني" [ref=e20]:
+            - /placeholder: example@company.com
+      - generic [ref=e21]:
+        - generic [ref=e22]: كلمة المرور
+        - generic [ref=e23]:
+          - textbox "كلمة المرور" [ref=e24]:
+            - /placeholder: ••••••••
+          - button "" [ref=e25] [cursor=pointer]:
+            - generic [ref=e26]: 
+      - button "تسجيل الدخول" [ref=e27] [cursor=pointer]
+    - generic [ref=e28]:
+      - text: ليس لديك حساب؟
+      - link "إنشاء حساب مجاني" [ref=e29] [cursor=pointer]:
+        - /url: /register
+    - link "سياسة الخصوصية والشروط" [ref=e31] [cursor=pointer]:
+      - /url: /trust
+  - contentinfo [ref=e32]:
+    - link "العودة للموقع الرئيسي" [ref=e33] [cursor=pointer]:
+      - /url: https://sustainplus-eg.com
+    - text: ·
+    - link "سياسة الخصوصية" [ref=e34] [cursor=pointer]:
+      - /url: /trust

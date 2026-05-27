@@ -153,12 +153,67 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_15F3F85CE5DD4E12A40C34C92652F4FD }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_8DA9C8C14EA64431A7B4BA255A8F16C7 }}
 
-      - name: Configure Azure App Service
+      - name: Configure Azure App Service (general)
         uses: azure/appservice-settings@v1
         with:
           app-name: sustainplus-ai
           app-settings-json: '[{"name":"SCM_DO_BUILD_DURING_DEPLOYMENT","value":"false","slotSetting":false},{"name":"WEBSITE_NODE_DEFAULT_VERSION","value":"~20","slotSetting":false}]'
           general-settings-json: '{"appCommandLine":"node server.js"}'
+
+      - name: Set all environment variables in Azure App Service
+        env:
+          DB_URL: ${{ secrets.DATABASE_URL }}
+          AUTH_SECRET_VAL: ${{ secrets.NEXTAUTH_SECRET }}
+          NEXTAUTH_URL_VAL: ${{ secrets.NEXTAUTH_URL }}
+          GEMINI_KEY: ${{ secrets.GEMINI_API_KEY }}
+          ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          RG=$(az webapp list --query "[?name=='sustainplus-ai'].resourceGroup | [0]" --output tsv)
+          SITE_URL="https://sustainplus-ai-crh0bqhffyewhxa5.westeurope-01.azurewebsites.net"
+          FINAL_URL="${NEXTAUTH_URL_VAL:-$SITE_URL}"
+
+          # Base settings — always overwrite
+          SETTINGS=(
+            "NODE_ENV=production"
+            "AUTH_TRUST_HOST=true"
+            "NEXTAUTH_URL=$FINAL_URL"
+            "AUTH_URL=$FINAL_URL"
+            "NEXT_PUBLIC_PLATFORM_URL=$SITE_URL"
+            "NEXT_PUBLIC_MAIN_SITE_URL=https://sustainplus-eg.com"
+          )
+
+          # Secret settings — only set when the GitHub secret is non-empty
+          [ -n "$DB_URL" ]          && SETTINGS+=("DATABASE_URL=$DB_URL")
+          [ -n "$AUTH_SECRET_VAL" ] && SETTINGS+=("NEXTAUTH_SECRET=$AUTH_SECRET_VAL" "AUTH_SECRET=$AUTH_SECRET_VAL")
+          [ -n "$GEMINI_KEY" ]      && SETTINGS+=("GEMINI_API_KEY=$GEMINI_KEY")
+          [ -n "$ANTHROPIC_KEY" ]   && SETTINGS+=("ANTHROPIC_API_KEY=$ANTHROPIC_KEY")
+
+          echo "Applying ${#SETTINGS[@]} app settings to $RG/sustainplus-ai ..."
+          az webapp config appsettings set \
+            --name sustainplus-ai \
+            --resource-group "$RG" \
+            --settings "${SETTINGS[@]}"
+          echo "App settings updated."
+
+      - name: Open PostgreSQL firewall for Azure services
+        run: |
+          PG_RG=$(az postgres flexible-server list \
+            --query "[?name=='sustainplus-db'].resourceGroup | [0]" \
+            --output tsv 2>/dev/null || echo "")
+          if [ -n "$PG_RG" ]; then
+            echo "Found PostgreSQL server in resource group: $PG_RG"
+            az postgres flexible-server firewall-rule create \
+              --name sustainplus-db \
+              --resource-group "$PG_RG" \
+              --rule-name AllowAllAzureServices \
+              --start-ip-address 0.0.0.0 \
+              --end-ip-address 0.0.0.0 2>/dev/null \
+              && echo "Firewall rule created/updated." \
+              || echo "Rule may already exist — skipping."
+          else
+            echo "WARNING: Could not find PostgreSQL server 'sustainplus-db' in this subscription."
+            echo "Manually enable 'Allow Azure services' in the Azure Portal > PostgreSQL > Networking."
+          fi
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -168,18 +223,40 @@ jobs:
           slot-name: 'Production'
           package: .
 
-      - name: Capture startup logs
+      - name: Verify deployment health
         run: |
-          echo "Waiting 20s for app to boot..."
-          sleep 20
+          echo "Waiting 30s for app to boot..."
+          sleep 30
           RG=$(az webapp list --query "[?name=='sustainplus-ai'].resourceGroup | [0]" --output tsv)
-          echo "Resource group: $RG"
+
           az webapp log config \
             --name sustainplus-ai \
             --resource-group "$RG" \
             --application-logging filesystem \
             --level verbose
+
+          SITE_URL="https://sustainplus-ai-crh0bqhffyewhxa5.westeurope-01.azurewebsites.net"
+
+          echo "=== Testing /api/ping ==="
+          PING=$(curl -sf "$SITE_URL/api/ping" 2>/dev/null || echo "FAILED")
+          echo "$PING"
+
+          echo "=== Testing /api/health ==="
+          HEALTH=$(curl -sf "$SITE_URL/api/health" 2>/dev/null || echo "FAILED")
+          echo "$HEALTH"
+
           echo "=== STARTUP LOGS (30 seconds) ==="
           timeout 30 az webapp log tail \
             --name sustainplus-ai \
             --resource-group "$RG" || true
+
+          if echo "$HEALTH" | grep -q '"prisma":{"status":"ok"'; then
+            echo "✅ Database connection OK"
+          elif echo "$HEALTH" | grep -q '"prisma":{"status":"error"'; then
+            DB_ERR=$(echo "$HEALTH" | grep -o '"message":"[^"]*"' | head -1)
+            echo "❌ Database error: $DB_ERR"
+            echo "Check: Azure PostgreSQL firewall rules and DATABASE_URL in App Service settings."
+            exit 1
+          else
+            echo "⚠️ Health endpoint did not return expected format. Check logs above."
+          fi

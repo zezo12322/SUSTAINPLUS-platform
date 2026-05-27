@@ -1,0 +1,667 @@
+
+> sustainplus-platform@1.0.0 dev
+> next dev --port 3001
+
+   ▲ Next.js 15.5.18
+   - Local:        http://localhost:3001
+   - Network:      http://10.226.163.166:3001
+   - Environments: .env.local, .env
+   - Experiments (use with caution):
+     · serverActions
+
+ ✓ Starting...
+ ✓ Ready in 4.7s
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 620ms (253 modules)
+ ○ Compiling / ...
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (128kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ✓ Compiled / in 4.9s (770 modules)
+ ✓ Compiled in 1313ms (245 modules)
+ GET / 200 in 176ms
+ GET / 200 in 364ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 2s (1898 modules)
+ GET /login 200 in 3054ms
+ ○ Compiling /register ...
+ ✓ Compiled /register in 856ms (1905 modules)
+ GET /register 200 in 1126ms
+ GET /login 200 in 57ms
+ ○ Compiling /api/auth/[...nextauth] ...
+ ✓ Compiled /api/auth/[...nextauth] in 646ms (1913 modules)
+ GET /api/auth/providers 200 in 2121ms
+ GET /api/auth/csrf 200 in 31ms
+prisma:error 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Can't reach database server at `sustainplus-db.postgres.database.azure.com:5432`
+
+Please make sure your database server is running at `sustainplus-db.postgres.database.azure.com:5432`.
+[31m[auth][error][0m CallbackRouteError: Read more at https://errors.authjs.dev#callbackrouteerror
+[31m[auth][cause][0m: PrismaClientInitializationError: 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Can't reach database server at `sustainplus-db.postgres.database.azure.com:5432`
+
+Please make sure your database server is running at `sustainplus-db.postgres.database.azure.com:5432`.
+    at $n.handleRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:7615)
+    at $n.handleAndLogRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async Object.authorize (webpack-internal:///(rsc)/./lib/auth.ts:55:30)
+    at async Module.callback (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/actions/callback/index.js:241:39)
+    at async AuthInternal (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/index.js:70:24)
+    at async Auth (webpack-internal:///(rsc)/./node_modules/@auth/core/index.js:130:34)
+    at async AppRouteRouteModule.do (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:45978)
+    at async responseGenerator (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:203:38)
+    at async AppRouteRouteModule.handleResponse (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:1:195304)
+    at async handleResponse (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:265:32)
+    at async handler (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:317:13)
+    at async DevServer.renderToResponseWithComponentsImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1430:9)
+    at async DevServer.renderPageComponent (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1482:24)
+    at async DevServer.renderToResponseImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1522:32)
+    at async DevServer.pipeImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1026:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\next-server.js:394:17)
+    at async DevServer.handleRequestImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:917:17)
+    at async D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:400:20
+    at async Span.traceAsyncFn (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:396:24)
+    at async invokeRender (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\start-server.js:226:13)
+[31m[auth][details][0m: {
+  "provider": "credentials"
+}
+ POST /api/auth/callback/credentials? 200 in 5472ms
+ GET /api/auth/session 200 in 35ms
+ GET /api/auth/providers 200 in 36ms
+ GET /api/auth/csrf 200 in 25ms
+prisma:error 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Can't reach database server at `sustainplus-db.postgres.database.azure.com:5432`
+
+Please make sure your database server is running at `sustainplus-db.postgres.database.azure.com:5432`.
+[31m[auth][error][0m CallbackRouteError: Read more at https://errors.authjs.dev#callbackrouteerror
+[31m[auth][cause][0m: PrismaClientInitializationError: 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Can't reach database server at `sustainplus-db.postgres.database.azure.com:5432`
+
+Please make sure your database server is running at `sustainplus-db.postgres.database.azure.com:5432`.
+    at $n.handleRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:7615)
+    at $n.handleAndLogRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async Object.authorize (webpack-internal:///(rsc)/./lib/auth.ts:55:30)
+    at async Module.callback (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/actions/callback/index.js:241:39)
+    at async AuthInternal (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/index.js:70:24)
+    at async Auth (webpack-internal:///(rsc)/./node_modules/@auth/core/index.js:130:34)
+    at async AppRouteRouteModule.do (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:45978)
+    at async responseGenerator (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:203:38)
+    at async AppRouteRouteModule.handleResponse (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:1:195304)
+    at async handleResponse (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:265:32)
+    at async handler (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:317:13)
+    at async DevServer.renderToResponseWithComponentsImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1430:9)
+    at async DevServer.renderPageComponent (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1482:24)
+    at async DevServer.renderToResponseImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1522:32)
+    at async DevServer.pipeImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1026:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\next-server.js:394:17)
+    at async DevServer.handleRequestImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:917:17)
+    at async D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:400:20
+    at async Span.traceAsyncFn (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:396:24)
+    at async invokeRender (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\start-server.js:226:13)
+[31m[auth][details][0m: {
+  "provider": "credentials"
+}
+ POST /api/auth/callback/credentials? 200 in 5106ms
+ GET /api/auth/session 200 in 30ms
+ GET /api/auth/providers 200 in 36ms
+ GET /api/auth/csrf 200 in 30ms
+prisma:error 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Can't reach database server at `sustainplus-db.postgres.database.azure.com:5432`
+
+Please make sure your database server is running at `sustainplus-db.postgres.database.azure.com:5432`.
+[31m[auth][error][0m CallbackRouteError: Read more at https://errors.authjs.dev#callbackrouteerror
+[31m[auth][cause][0m: PrismaClientInitializationError: 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Can't reach database server at `sustainplus-db.postgres.database.azure.com:5432`
+
+Please make sure your database server is running at `sustainplus-db.postgres.database.azure.com:5432`.
+    at $n.handleRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:7615)
+    at $n.handleAndLogRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async Object.authorize (webpack-internal:///(rsc)/./lib/auth.ts:55:30)
+    at async Module.callback (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/actions/callback/index.js:241:39)
+    at async AuthInternal (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/index.js:70:24)
+    at async Auth (webpack-internal:///(rsc)/./node_modules/@auth/core/index.js:130:34)
+    at async AppRouteRouteModule.do (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:45978)
+    at async responseGenerator (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:203:38)
+    at async AppRouteRouteModule.handleResponse (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:1:195304)
+    at async handleResponse (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:265:32)
+    at async handler (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:317:13)
+    at async DevServer.renderToResponseWithComponentsImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1430:9)
+    at async DevServer.renderPageComponent (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1482:24)
+    at async DevServer.renderToResponseImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1522:32)
+    at async DevServer.pipeImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1026:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\next-server.js:394:17)
+    at async DevServer.handleRequestImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:917:17)
+    at async D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:400:20
+    at async Span.traceAsyncFn (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:396:24)
+    at async invokeRender (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\start-server.js:226:13)
+[31m[auth][details][0m: {
+  "provider": "credentials"
+}
+ POST /api/auth/callback/credentials? 200 in 5047ms
+ GET /api/auth/session 200 in 49ms
+ GET /api/auth/providers 200 in 54ms
+ GET /api/auth/csrf 200 in 30ms
+prisma:error 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Can't reach database server at `sustainplus-db.postgres.database.azure.com:5432`
+
+Please make sure your database server is running at `sustainplus-db.postgres.database.azure.com:5432`.
+[31m[auth][error][0m CallbackRouteError: Read more at https://errors.authjs.dev#callbackrouteerror
+[31m[auth][cause][0m: PrismaClientInitializationError: 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Can't reach database server at `sustainplus-db.postgres.database.azure.com:5432`
+
+Please make sure your database server is running at `sustainplus-db.postgres.database.azure.com:5432`.
+    at $n.handleRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:7615)
+    at $n.handleAndLogRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async Object.authorize (webpack-internal:///(rsc)/./lib/auth.ts:55:30)
+    at async Module.callback (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/actions/callback/index.js:241:39)
+    at async AuthInternal (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/index.js:70:24)
+    at async Auth (webpack-internal:///(rsc)/./node_modules/@auth/core/index.js:130:34)
+    at async AppRouteRouteModule.do (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:45978)
+    at async responseGenerator (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:203:38)
+    at async AppRouteRouteModule.handleResponse (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:1:195304)
+    at async handleResponse (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:265:32)
+    at async handler (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:317:13)
+    at async DevServer.renderToResponseWithComponentsImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1430:9)
+    at async DevServer.renderPageComponent (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1482:24)
+    at async DevServer.renderToResponseImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1522:32)
+    at async DevServer.pipeImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1026:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\next-server.js:394:17)
+    at async DevServer.handleRequestImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:917:17)
+    at async D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:400:20
+    at async Span.traceAsyncFn (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:396:24)
+    at async invokeRender (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\start-server.js:226:13)
+[31m[auth][details][0m: {
+  "provider": "credentials"
+}
+ POST /api/auth/callback/credentials? 200 in 5065ms
+ GET /api/auth/session 200 in 33ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 916ms (1914 modules)
+ GET /prices 404 in 1785ms
+ GET / 200 in 125ms
+ ○ Compiling /pricing ...
+ ✓ Compiled /pricing in 731ms (1916 modules)
+ GET /pricing 200 in 1137ms
+ GET /pricing 200 in 97ms
+ GET /pricing 200 in 754ms
+ GET /register 200 in 83ms
+ GET /login 200 in 317ms
+ GET /api/auth/providers 200 in 53ms
+ GET /api/auth/csrf 200 in 24ms
+prisma:error 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Can't reach database server at `sustainplus-db.postgres.database.azure.com:5432`
+
+Please make sure your database server is running at `sustainplus-db.postgres.database.azure.com:5432`.
+[31m[auth][error][0m CallbackRouteError: Read more at https://errors.authjs.dev#callbackrouteerror
+[31m[auth][cause][0m: PrismaClientInitializationError: 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Can't reach database server at `sustainplus-db.postgres.database.azure.com:5432`
+
+Please make sure your database server is running at `sustainplus-db.postgres.database.azure.com:5432`.
+    at $n.handleRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:7615)
+    at $n.handleAndLogRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async Object.authorize (webpack-internal:///(rsc)/./lib/auth.ts:55:30)
+    at async Module.callback (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/actions/callback/index.js:241:39)
+    at async AuthInternal (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/index.js:70:24)
+    at async Auth (webpack-internal:///(rsc)/./node_modules/@auth/core/index.js:130:34)
+    at async AppRouteRouteModule.do (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:45978)
+    at async responseGenerator (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:203:38)
+    at async AppRouteRouteModule.handleResponse (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:1:195304)
+    at async handleResponse (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:265:32)
+    at async handler (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:317:13)
+    at async DevServer.renderToResponseWithComponentsImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1430:9)
+    at async DevServer.renderPageComponent (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1482:24)
+    at async DevServer.renderToResponseImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1522:32)
+    at async DevServer.pipeImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1026:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\next-server.js:394:17)
+    at async DevServer.handleRequestImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:917:17)
+    at async D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:400:20
+    at async Span.traceAsyncFn (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:396:24)
+    at async invokeRender (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\start-server.js:226:13)
+[31m[auth][details][0m: {
+  "provider": "credentials"
+}
+ POST /api/auth/callback/credentials? 200 in 5039ms
+ GET /api/auth/session 200 in 32ms
+ GET / 200 in 121ms
+ GET /pricing 200 in 325ms
+ GET / 200 in 348ms
+ GET /pricing 200 in 233ms
+ GET /login?redirect=%2Fdashboard%2Fexpert 200 in 63ms
+   Reload env: .env.local
+ ✓ Compiled in 3.3s (2175 modules)
+ ✓ Compiled in 436ms (2161 modules)
+   Reload env: .env.local
+ ✓ Compiled in 791ms (2161 modules)
+ ✓ Compiled in 10.2s (1922 modules)
+ ✓ Compiled in 3.9s (1955 modules)
+ ✓ Compiled in 1092ms (1970 modules)
+ ✓ Compiled in 786ms (1970 modules)
+ ✓ Compiled in 1455ms (1970 modules)
+ GET / 200 in 4236ms
+ GET /login 200 in 475ms
+ GET /pricing 200 in 711ms
+ ⚠ Found a change in next.config.ts. Restarting the server to apply the changes...
+   ▲ Next.js 15.5.18
+   - Local:        http://localhost:3001
+   - Network:      http://192.168.1.6:3001
+   - Environments: .env.local, .env
+   - Experiments (use with caution):
+     · serverActions
+
+ ✓ Starting...
+ ✓ Ready in 28.2s
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 5s (232 modules)
+ ○ Compiling / ...
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (128kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ✓ Compiled / in 18.3s (668 modules)
+ ✓ Compiled in 2000ms (261 modules)
+ GET / 200 in 20525ms
+ ○ Compiling /api/auth/[...nextauth] ...
+ ✓ Compiled /api/auth/[...nextauth] in 1590ms (810 modules)
+ GET /api/auth/session 200 in 4729ms
+ GET /api/auth/session 200 in 31ms
+ ✓ Compiled in 461ms (262 modules)
+ ✓ Compiled in 239ms (262 modules)
+ ✓ Compiled in 598ms (901 modules)
+ GET / 200 in 965ms
+ ○ Compiling /api/auth/[...nextauth] ...
+ ✓ Compiled /api/auth/[...nextauth] in 558ms (562 modules)
+ GET /api/auth/session 200 in 983ms
+ GET /api/auth/session 200 in 31ms
+ ✓ Compiled in 188ms (176 modules)
+ ✓ Compiled in 297ms (176 modules)
+ ✓ Compiled in 173ms (115 modules)
+ GET / 200 in 765ms
+ GET /api/auth/session 200 in 84ms
+ GET /api/auth/session 200 in 42ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 2.7s (1969 modules)
+ GET /login 200 in 3158ms
+ GET /login 200 in 105ms
+ GET /login 200 in 81ms
+ GET /login 200 in 57ms
+ GET /api/auth/providers 200 in 171ms
+ GET /api/auth/csrf 200 in 23ms
+prisma:error 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Authentication failed against database server at `sustainplus-db.postgres.database.azure.com`, the provided database credentials for `sustainplus` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `sustainplus-db.postgres.database.azure.com`.
+[31m[auth][error][0m CallbackRouteError: Read more at https://errors.authjs.dev#callbackrouteerror
+[31m[auth][cause][0m: PrismaClientInitializationError: 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Authentication failed against database server at `sustainplus-db.postgres.database.azure.com`, the provided database credentials for `sustainplus` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `sustainplus-db.postgres.database.azure.com`.
+    at $n.handleRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:7615)
+    at $n.handleAndLogRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async Object.authorize (webpack-internal:///(rsc)/./lib/auth.ts:51:30)
+    at async Module.callback (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/actions/callback/index.js:241:39)
+    at async AuthInternal (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/index.js:70:24)
+    at async Auth (webpack-internal:///(rsc)/./node_modules/@auth/core/index.js:130:34)
+    at async AppRouteRouteModule.do (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:45978)
+    at async responseGenerator (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=standalone&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:203:38)
+    at async AppRouteRouteModule.handleResponse (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:1:195304)
+    at async handleResponse (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=standalone&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:265:32)
+    at async handler (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=standalone&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:317:13)
+    at async DevServer.renderToResponseWithComponentsImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1430:9)
+    at async DevServer.renderPageComponent (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1482:24)
+    at async DevServer.renderToResponseImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1522:32)
+    at async DevServer.pipeImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1026:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\next-server.js:394:17)
+    at async DevServer.handleRequestImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:917:17)
+    at async D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:400:20
+    at async Span.traceAsyncFn (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:396:24)
+    at async invokeRender (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\start-server.js:226:13)
+[31m[auth][details][0m: {
+  "provider": "credentials"
+}
+ POST /api/auth/callback/credentials? 200 in 3305ms
+ GET /api/auth/session 200 in 32ms
+ ✓ Compiled in 2s (2084 modules)
+ GET /api/auth/providers 200 in 362ms
+ GET /login 200 in 1723ms
+ GET /api/auth/csrf 200 in 41ms
+ GET /login 200 in 197ms
+prisma:error 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Authentication failed against database server at `sustainplus-db.postgres.database.azure.com`, the provided database credentials for `sustainplus` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `sustainplus-db.postgres.database.azure.com`.
+[31m[auth][error][0m CallbackRouteError: Read more at https://errors.authjs.dev#callbackrouteerror
+[31m[auth][cause][0m: PrismaClientInitializationError: 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Authentication failed against database server at `sustainplus-db.postgres.database.azure.com`, the provided database credentials for `sustainplus` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `sustainplus-db.postgres.database.azure.com`.
+    at $n.handleRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:7615)
+    at $n.handleAndLogRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async Object.authorize (webpack-internal:///(rsc)/./lib/auth.ts:51:30)
+    at async Module.callback (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/actions/callback/index.js:241:39)
+    at async AuthInternal (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/index.js:70:24)
+    at async Auth (webpack-internal:///(rsc)/./node_modules/@auth/core/index.js:130:34)
+    at async AppRouteRouteModule.do (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:45978)
+    at async responseGenerator (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=standalone&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:203:38)
+    at async AppRouteRouteModule.handleResponse (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:1:195304)
+    at async handleResponse (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=standalone&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:265:32)
+    at async handler (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=standalone&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:317:13)
+    at async DevServer.renderToResponseWithComponentsImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1430:9)
+    at async DevServer.renderPageComponent (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1482:24)
+    at async DevServer.renderToResponseImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1522:32)
+    at async DevServer.pipeImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1026:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\next-server.js:394:17)
+    at async DevServer.handleRequestImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:917:17)
+    at async D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:400:20
+    at async Span.traceAsyncFn (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:396:24)
+    at async invokeRender (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\start-server.js:226:13)
+[31m[auth][details][0m: {
+  "provider": "credentials"
+}
+ POST /api/auth/callback/credentials? 200 in 3274ms
+ GET /api/auth/session 200 in 31ms
+ ✓ Compiled in 1707ms (2084 modules)
+ GET /login 200 in 1167ms
+ GET /login 200 in 90ms
+ GET /api/auth/providers 200 in 93ms
+ GET /api/auth/csrf 200 in 25ms
+prisma:error 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Authentication failed against database server at `sustainplus-db.postgres.database.azure.com`, the provided database credentials for `sustainplus` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `sustainplus-db.postgres.database.azure.com`.
+[31m[auth][error][0m CallbackRouteError: Read more at https://errors.authjs.dev#callbackrouteerror
+[31m[auth][cause][0m: PrismaClientInitializationError: 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Authentication failed against database server at `sustainplus-db.postgres.database.azure.com`, the provided database credentials for `sustainplus` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `sustainplus-db.postgres.database.azure.com`.
+    at $n.handleRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:7615)
+    at $n.handleAndLogRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async Object.authorize (webpack-internal:///(rsc)/./lib/auth.ts:51:30)
+    at async Module.callback (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/actions/callback/index.js:241:39)
+    at async AuthInternal (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/index.js:70:24)
+    at async Auth (webpack-internal:///(rsc)/./node_modules/@auth/core/index.js:130:34)
+    at async AppRouteRouteModule.do (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:45978)
+    at async responseGenerator (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=standalone&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:203:38)
+    at async AppRouteRouteModule.handleResponse (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:1:195304)
+    at async handleResponse (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=standalone&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:265:32)
+    at async handler (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=standalone&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:317:13)
+    at async DevServer.renderToResponseWithComponentsImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1430:9)
+    at async DevServer.renderPageComponent (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1482:24)
+    at async DevServer.renderToResponseImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1522:32)
+    at async DevServer.pipeImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1026:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\next-server.js:394:17)
+    at async DevServer.handleRequestImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:917:17)
+    at async D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:400:20
+    at async Span.traceAsyncFn (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:396:24)
+    at async invokeRender (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\start-server.js:226:13)
+[31m[auth][details][0m: {
+  "provider": "credentials"
+}
+ POST /api/auth/callback/credentials? 200 in 2619ms
+ GET /api/auth/session 200 in 31ms
+ GET /api/auth/providers 200 in 38ms
+ GET /api/auth/csrf 200 in 24ms
+prisma:error 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Authentication failed against database server at `sustainplus-db.postgres.database.azure.com`, the provided database credentials for `sustainplus` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `sustainplus-db.postgres.database.azure.com`.
+[31m[auth][error][0m CallbackRouteError: Read more at https://errors.authjs.dev#callbackrouteerror
+[31m[auth][cause][0m: PrismaClientInitializationError: 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Authentication failed against database server at `sustainplus-db.postgres.database.azure.com`, the provided database credentials for `sustainplus` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `sustainplus-db.postgres.database.azure.com`.
+    at $n.handleRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:7615)
+    at $n.handleAndLogRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async Object.authorize (webpack-internal:///(rsc)/./lib/auth.ts:51:30)
+    at async Module.callback (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/actions/callback/index.js:241:39)
+    at async AuthInternal (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/index.js:70:24)
+    at async Auth (webpack-internal:///(rsc)/./node_modules/@auth/core/index.js:130:34)
+    at async AppRouteRouteModule.do (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:45978)
+    at async responseGenerator (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=standalone&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:203:38)
+    at async AppRouteRouteModule.handleResponse (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:1:195304)
+    at async handleResponse (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=standalone&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:265:32)
+    at async handler (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=standalone&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:317:13)
+    at async DevServer.renderToResponseWithComponentsImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1430:9)
+    at async DevServer.renderPageComponent (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1482:24)
+    at async DevServer.renderToResponseImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1522:32)
+    at async DevServer.pipeImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1026:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\next-server.js:394:17)
+    at async DevServer.handleRequestImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:917:17)
+    at async D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:400:20
+    at async Span.traceAsyncFn (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:396:24)
+    at async invokeRender (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\start-server.js:226:13)
+[31m[auth][details][0m: {
+  "provider": "credentials"
+}
+ POST /api/auth/callback/credentials? 200 in 2677ms
+ GET /api/auth/session 200 in 34ms
+ GET /api/auth/providers 200 in 32ms
+ GET /api/auth/csrf 200 in 28ms
+prisma:error 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Authentication failed against database server at `sustainplus-db.postgres.database.azure.com`, the provided database credentials for `sustainplus` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `sustainplus-db.postgres.database.azure.com`.
+[31m[auth][error][0m CallbackRouteError: Read more at https://errors.authjs.dev#callbackrouteerror
+[31m[auth][cause][0m: PrismaClientInitializationError: 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Authentication failed against database server at `sustainplus-db.postgres.database.azure.com`, the provided database credentials for `sustainplus` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `sustainplus-db.postgres.database.azure.com`.
+    at $n.handleRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:7615)
+    at $n.handleAndLogRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async Object.authorize (webpack-internal:///(rsc)/./lib/auth.ts:51:30)
+    at async Module.callback (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/actions/callback/index.js:241:39)
+    at async AuthInternal (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/index.js:70:24)
+    at async Auth (webpack-internal:///(rsc)/./node_modules/@auth/core/index.js:130:34)
+    at async AppRouteRouteModule.do (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:45978)
+    at async responseGenerator (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=standalone&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:203:38)
+    at async AppRouteRouteModule.handleResponse (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:1:195304)
+    at async handleResponse (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=standalone&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:265:32)
+    at async handler (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=standalone&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:317:13)
+    at async DevServer.renderToResponseWithComponentsImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1430:9)
+    at async DevServer.renderPageComponent (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1482:24)
+    at async DevServer.renderToResponseImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1522:32)
+    at async DevServer.pipeImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1026:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\next-server.js:394:17)
+    at async DevServer.handleRequestImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:917:17)
+    at async D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:400:20
+    at async Span.traceAsyncFn (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:396:24)
+    at async invokeRender (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\start-server.js:226:13)
+[31m[auth][details][0m: {
+  "provider": "credentials"
+}
+ POST /api/auth/callback/credentials? 200 in 2613ms
+ GET /api/auth/session 200 in 28ms
+ GET /api/auth/providers 200 in 30ms
+ GET /api/auth/csrf 200 in 24ms
+prisma:error 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Authentication failed against database server at `sustainplus-db.postgres.database.azure.com`, the provided database credentials for `sustainplus` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `sustainplus-db.postgres.database.azure.com`.
+[31m[auth][error][0m CallbackRouteError: Read more at https://errors.authjs.dev#callbackrouteerror
+[31m[auth][cause][0m: PrismaClientInitializationError: 
+Invalid `prisma.user.findUnique()` invocation:
+
+
+Authentication failed against database server at `sustainplus-db.postgres.database.azure.com`, the provided database credentials for `sustainplus` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `sustainplus-db.postgres.database.azure.com`.
+    at $n.handleRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:7615)
+    at $n.handleAndLogRequestError (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6623)
+    at $n.request (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:121:6307)
+    at async l (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\@prisma\client\runtime\library.js:130:9633)
+    at async Object.authorize (webpack-internal:///(rsc)/./lib/auth.ts:51:30)
+    at async Module.callback (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/actions/callback/index.js:241:39)
+    at async AuthInternal (webpack-internal:///(rsc)/./node_modules/@auth/core/lib/index.js:70:24)
+    at async Auth (webpack-internal:///(rsc)/./node_modules/@auth/core/index.js:130:34)
+    at async AppRouteRouteModule.do (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:5:45978)
+    at async responseGenerator (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=standalone&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:203:38)
+    at async AppRouteRouteModule.handleResponse (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\compiled\next-server\app-route.runtime.dev.js:1:195304)
+    at async handleResponse (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=standalone&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:265:32)
+    at async handler (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&page=%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fauth%2F%5B...nextauth%5D%2Froute.ts&appDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform%5Capp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=D%3A%5COptimaTech%5CSUSTAINPLUS-platform&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=standalone&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:317:13)
+    at async DevServer.renderToResponseWithComponentsImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1430:9)
+    at async DevServer.renderPageComponent (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1482:24)
+    at async DevServer.renderToResponseImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1522:32)
+    at async DevServer.pipeImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:1026:25)
+    at async NextNodeServer.handleCatchallRenderRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\next-server.js:394:17)
+    at async DevServer.handleRequestImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\base-server.js:917:17)
+    at async D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:400:20
+    at async Span.traceAsyncFn (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\dev\next-dev-server.js:396:24)
+    at async invokeRender (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (D:\OptimaTech\SUSTAINPLUS-platform\node_modules\next\dist\server\lib\start-server.js:226:13)
+[31m[auth][details][0m: {
+  "provider": "credentials"
+}
+ POST /api/auth/callback/credentials? 200 in 2697ms
+ GET /api/auth/session 200 in 28ms
+ ✓ Compiled in 2.1s (1819 modules)
+ GET /login 200 in 288ms
+ ⚠ Found a change in next.config.ts. Restarting the server to apply the changes...
+   ▲ Next.js 15.5.18
+   - Local:        http://localhost:3001
+   - Network:      http://192.168.1.6:3001
+   - Environments: .env.local, .env
+   - Experiments (use with caution):
+     · serverActions
+
+ ✓ Starting...
+ ✓ Ready in 27.9s
+ ⚠ Found a change in next.config.ts. Restarting the server to apply the changes...
+   ▲ Next.js 15.5.18
+   - Local:        http://localhost:3001
+   - Network:      http://192.168.1.6:3001
+   - Environments: .env.local, .env
+   - Experiments (use with caution):
+     · serverActions
+
+ ✓ Starting...
+ ✓ Ready in 7.7s

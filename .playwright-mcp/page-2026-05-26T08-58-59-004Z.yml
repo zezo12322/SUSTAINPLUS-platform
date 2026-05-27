@@ -1,0 +1,507 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - link "Skip to content" [ref=e4] [cursor=pointer]:
+      - /url: "#start-of-content"
+    - banner [ref=e6]:
+      - heading "Navigation Menu" [level=2] [ref=e7]
+      - generic [ref=e9]:
+        - button "Toggle navigation" [ref=e11] [cursor=pointer]
+        - link "Homepage" [ref=e17] [cursor=pointer]:
+          - /url: /
+          - img [ref=e18]
+        - generic [ref=e20]:
+          - link "Sign in" [ref=e21] [cursor=pointer]:
+            - /url: /login?return_to=https%3A%2F%2Fgithub.com%2Fzezo12322%2FSUSTAINPLUS-platform%2Factions
+          - button "Appearance settings" [disabled] [ref=e24]:
+            - img
+  - main [ref=e28]:
+    - generic [ref=e29]:
+      - generic [ref=e30]:
+        - generic [ref=e32]:
+          - img [ref=e33]
+          - link "zezo12322" [ref=e36] [cursor=pointer]:
+            - /url: /zezo12322
+          - generic [ref=e37]: /
+          - strong [ref=e38]:
+            - link "SUSTAINPLUS-platform" [ref=e39] [cursor=pointer]:
+              - /url: /zezo12322/SUSTAINPLUS-platform
+          - generic [ref=e40]: Public
+        - generic [ref=e41]:
+          - list:
+            - listitem [ref=e42]:
+              - link "You must be signed in to change notification settings" [ref=e43] [cursor=pointer]:
+                - /url: /login?return_to=%2Fzezo12322%2FSUSTAINPLUS-platform
+                - img [ref=e44]
+                - text: Notifications
+            - listitem [ref=e46]:
+              - link "Fork 0" [ref=e47] [cursor=pointer]:
+                - /url: /login?return_to=%2Fzezo12322%2FSUSTAINPLUS-platform
+                - img [ref=e48]
+                - text: Fork
+                - generic "0" [ref=e50]
+            - listitem [ref=e51]:
+              - link "You must be signed in to star a repository" [ref=e53] [cursor=pointer]:
+                - /url: /login?return_to=%2Fzezo12322%2FSUSTAINPLUS-platform
+                - img [ref=e54]
+                - text: Star
+                - generic "0 users starred this repository" [ref=e56]: "0"
+      - navigation "Repository" [ref=e57]:
+        - list [ref=e58]:
+          - listitem [ref=e59]:
+            - link "Code" [ref=e60] [cursor=pointer]:
+              - /url: /zezo12322/SUSTAINPLUS-platform
+              - img [ref=e61]
+              - generic [ref=e63]: Code
+          - listitem [ref=e64]:
+            - link "Issues" [ref=e65] [cursor=pointer]:
+              - /url: /zezo12322/SUSTAINPLUS-platform/issues
+              - img [ref=e66]
+              - generic [ref=e69]: Issues
+          - listitem [ref=e70]:
+            - link "Pull requests" [ref=e71] [cursor=pointer]:
+              - /url: /zezo12322/SUSTAINPLUS-platform/pulls
+              - img [ref=e72]
+              - generic [ref=e74]: Pull requests
+          - listitem [ref=e75]:
+            - link "Actions" [ref=e76] [cursor=pointer]:
+              - /url: /zezo12322/SUSTAINPLUS-platform/actions
+              - img [ref=e77]
+              - generic [ref=e79]: Actions
+          - listitem [ref=e80]:
+            - link "Projects" [ref=e81] [cursor=pointer]:
+              - /url: /zezo12322/SUSTAINPLUS-platform/projects
+              - img [ref=e82]
+              - generic [ref=e84]: Projects
+          - listitem [ref=e85]:
+            - link "Security and quality" [ref=e86] [cursor=pointer]:
+              - /url: /zezo12322/SUSTAINPLUS-platform/security
+              - img [ref=e87]
+              - generic [ref=e89]: Security and quality
+          - listitem [ref=e90]:
+            - link "Insights" [ref=e91] [cursor=pointer]:
+              - /url: /zezo12322/SUSTAINPLUS-platform/pulse
+              - img [ref=e92]
+              - generic [ref=e94]: Insights
+    - generic [ref=e96]:
+      - 'heading "Actions: zezo12322/SUSTAINPLUS-platform" [level=1] [ref=e97]'
+      - generic [ref=e100]:
+        - generic [ref=e101]:
+          - heading "Actions" [level=2] [ref=e103]
+          - navigation "Actions Workflows" [ref=e107]:
+            - list [ref=e109]:
+              - listitem [ref=e110]:
+                - link "All workflows" [ref=e111] [cursor=pointer]:
+                  - /url: /zezo12322/SUSTAINPLUS-platform/actions
+                  - generic [ref=e112]: All workflows
+              - listitem [ref=e113]
+              - listitem [ref=e114]:
+                - list "Workflows" [ref=e118]:
+                  - listitem [ref=e119]:
+                    - link "Build and deploy Node.js app to Azure Web App - sustainplus-ai" [ref=e120] [cursor=pointer]:
+                      - /url: /zezo12322/SUSTAINPLUS-platform/actions/workflows/main_sustainplus-ai.yml
+                      - generic [ref=e121]: Build and deploy Node.js app to Azure Web App - sustainplus-ai
+              - listitem [ref=e122]
+              - listitem [ref=e123]:
+                - generic [ref=e126]:
+                  - heading "Management" [level=3] [ref=e128]
+                  - list "Management" [ref=e129]:
+                    - listitem [ref=e130]:
+                      - link "Caches" [ref=e131] [cursor=pointer]:
+                        - /url: /zezo12322/SUSTAINPLUS-platform/actions/caches
+                        - generic:
+                          - img
+                        - generic [ref=e132]: Caches
+        - generic [ref=e135]:
+          - generic [ref=e136]:
+            - generic [ref=e137]:
+              - heading "All workflows" [level=2] [ref=e139]:
+                - generic [ref=e141]: All workflows
+              - search [ref=e145]:
+                - combobox "Filter workflow runs" [ref=e146]
+                - img
+            - generic [ref=e147]: Showing runs from all workflows
+          - strong [ref=e150]: 13 workflow runs
+          - generic [ref=e151]:
+            - generic [ref=e153]:
+              - button "Workflow" [ref=e157] [cursor=pointer]:
+                - generic [ref=e159]: Workflow
+                - generic:
+                  - img
+              - button "Event" [ref=e163] [cursor=pointer]:
+                - generic [ref=e165]: Event
+                - generic:
+                  - img
+              - button "Status" [ref=e169] [cursor=pointer]:
+                - generic [ref=e171]: Status
+                - generic:
+                  - img
+              - button "Branch" [ref=e175] [cursor=pointer]:
+                - generic [ref=e177]: Branch
+                - generic:
+                  - img
+              - button "Actor" [ref=e181] [cursor=pointer]:
+                - generic [ref=e183]: Actor
+                - generic:
+                  - img
+            - generic [ref=e184]:
+              - generic [ref=e186]:
+                - generic [ref=e187]:
+                  - 'link "currently running: Run 13 of Build and deploy Node.js app to Azure Web App - sustainplus-ai. Add /api/health diagnostic endpoint to debug Azure 500" [ref=e188] [cursor=pointer]':
+                    - /url: /zezo12322/SUSTAINPLUS-platform/actions/runs/26442647105
+                    - img "currently running:" [ref=e191]
+                    - generic [ref=e195]: Add /api/health diagnostic endpoint to debug Azure 500
+                  - generic [ref=e196]:
+                    - text: "Build and deploy Node.js app to Azure Web App - sustainplus-ai #13:"
+                    - generic [ref=e197]:
+                      - text: Commit
+                      - link "81d8096" [ref=e198] [cursor=pointer]:
+                        - /url: /zezo12322/SUSTAINPLUS-platform/commit/81d80968adca62330561c4cec67eedc1706e302a
+                      - text: pushed by
+                      - link "zezo12322" [ref=e199] [cursor=pointer]:
+                        - /url: /zezo12322
+                - link "main" [ref=e201] [cursor=pointer]:
+                  - /url: /zezo12322/SUSTAINPLUS-platform/tree/refs/heads/main
+                - generic [ref=e203]:
+                  - generic [ref=e204]:
+                    - generic [ref=e205]:
+                      - img [ref=e207]
+                      - generic "May 26, 2026, 11:58 AM GMT+3" [ref=e209]: now
+                    - generic [ref=e210]:
+                      - img [ref=e211]
+                      - text: In progress
+                  - group [ref=e214]:
+                    - generic "Show options" [ref=e215] [cursor=pointer]:
+                      - img "Show options" [ref=e216]
+              - generic [ref=e219]:
+                - generic [ref=e220]:
+                  - 'link "completed successfully: Run 12 of Build and deploy Node.js app to Azure Web App - sustainplus-ai. Fix 500: remove auth() from root layout + bundle Prisma binary explic…" [ref=e221] [cursor=pointer]':
+                    - /url: /zezo12322/SUSTAINPLUS-platform/actions/runs/26442304868
+                    - img "completed successfully:" [ref=e223]
+                    - generic [ref=e225]: "Fix 500: remove auth() from root layout + bundle Prisma binary explic…"
+                  - generic [ref=e226]:
+                    - text: "Build and deploy Node.js app to Azure Web App - sustainplus-ai #12:"
+                    - generic [ref=e227]:
+                      - text: Commit
+                      - link "2773503" [ref=e228] [cursor=pointer]:
+                        - /url: /zezo12322/SUSTAINPLUS-platform/commit/2773503a77bff0122326df6f912d18ee6506e4f1
+                      - text: pushed by
+                      - link "zezo12322" [ref=e229] [cursor=pointer]:
+                        - /url: /zezo12322
+                - link "main" [ref=e231] [cursor=pointer]:
+                  - /url: /zezo12322/SUSTAINPLUS-platform/tree/refs/heads/main
+                - generic [ref=e233]:
+                  - generic [ref=e234]:
+                    - generic [ref=e235]:
+                      - img [ref=e237]
+                      - generic "May 26, 2026, 11:50 AM GMT+3" [ref=e239]: 8 minutes ago
+                    - generic [ref=e240]:
+                      - img "Run duration" [ref=e241]
+                      - text: 2m 51s
+                  - group [ref=e244]:
+                    - generic "Show options" [ref=e245] [cursor=pointer]:
+                      - img "Show options" [ref=e246]
+              - generic [ref=e249]:
+                - generic [ref=e250]:
+                  - 'link "completed successfully: Run 11 of Build and deploy Node.js app to Azure Web App - sustainplus-ai. Fix 500: split auth config for Edge Runtime middleware compatibility" [ref=e251] [cursor=pointer]':
+                    - /url: /zezo12322/SUSTAINPLUS-platform/actions/runs/26441311083
+                    - img "completed successfully:" [ref=e253]
+                    - generic [ref=e255]: "Fix 500: split auth config for Edge Runtime middleware compatibility"
+                  - generic [ref=e256]:
+                    - text: "Build and deploy Node.js app to Azure Web App - sustainplus-ai #11:"
+                    - generic [ref=e257]:
+                      - text: Commit
+                      - link "255b46a" [ref=e258] [cursor=pointer]:
+                        - /url: /zezo12322/SUSTAINPLUS-platform/commit/255b46aa2e1bfbc92dc04a331f237b362cd4e2bf
+                      - text: pushed by
+                      - link "zezo12322" [ref=e259] [cursor=pointer]:
+                        - /url: /zezo12322
+                - link "main" [ref=e261] [cursor=pointer]:
+                  - /url: /zezo12322/SUSTAINPLUS-platform/tree/refs/heads/main
+                - generic [ref=e263]:
+                  - generic [ref=e264]:
+                    - generic [ref=e265]:
+                      - img [ref=e267]
+                      - generic "May 26, 2026, 11:29 AM GMT+3" [ref=e269]: 29 minutes ago
+                    - generic [ref=e270]:
+                      - img "Run duration" [ref=e271]
+                      - text: 2m 36s
+                  - group [ref=e274]:
+                    - generic "Show options" [ref=e275] [cursor=pointer]:
+                      - img "Show options" [ref=e276]
+              - generic [ref=e279]:
+                - generic [ref=e280]:
+                  - 'link "completed successfully: Run 10 of Build and deploy Node.js app to Azure Web App - sustainplus-ai. Fix deploy: set startup command via appservice-settings, remove from …" [ref=e281] [cursor=pointer]':
+                    - /url: /zezo12322/SUSTAINPLUS-platform/actions/runs/26421571266
+                    - img "completed successfully:" [ref=e283]
+                    - generic [ref=e285]: "Fix deploy: set startup command via appservice-settings, remove from …"
+                  - generic [ref=e286]:
+                    - text: "Build and deploy Node.js app to Azure Web App - sustainplus-ai #10:"
+                    - generic [ref=e287]:
+                      - text: Commit
+                      - link "db0ace9" [ref=e288] [cursor=pointer]:
+                        - /url: /zezo12322/SUSTAINPLUS-platform/commit/db0ace9046e27a5af690998212a52142ef3e69f0
+                      - text: pushed by
+                      - link "zezo12322" [ref=e289] [cursor=pointer]:
+                        - /url: /zezo12322
+                - link "main" [ref=e291] [cursor=pointer]:
+                  - /url: /zezo12322/SUSTAINPLUS-platform/tree/refs/heads/main
+                - generic [ref=e293]:
+                  - generic [ref=e294]:
+                    - generic [ref=e295]:
+                      - img [ref=e297]
+                      - generic "May 26, 2026, 1:04 AM GMT+3" [ref=e299]: May 26, 1:04 AM GMT+3
+                    - generic [ref=e300]:
+                      - img "Run duration" [ref=e301]
+                      - text: 3m 32s
+                  - group [ref=e304]:
+                    - generic "Show options" [ref=e305] [cursor=pointer]:
+                      - img "Show options" [ref=e306]
+              - generic [ref=e309]:
+                - generic [ref=e310]:
+                  - 'link "failed: Run 9 of Build and deploy Node.js app to Azure Web App - sustainplus-ai. Fix Oryx disable step: use appservice-settings action instead of CLI" [ref=e311] [cursor=pointer]':
+                    - /url: /zezo12322/SUSTAINPLUS-platform/actions/runs/26421030789
+                    - img "failed:" [ref=e313]
+                    - generic [ref=e315]: "Fix Oryx disable step: use appservice-settings action instead of CLI"
+                  - generic [ref=e316]:
+                    - text: "Build and deploy Node.js app to Azure Web App - sustainplus-ai #9:"
+                    - generic [ref=e317]:
+                      - text: Commit
+                      - link "9de8bb8" [ref=e318] [cursor=pointer]:
+                        - /url: /zezo12322/SUSTAINPLUS-platform/commit/9de8bb8dc6c07d67de841bdae3028e88ce1deca1
+                      - text: pushed by
+                      - link "zezo12322" [ref=e319] [cursor=pointer]:
+                        - /url: /zezo12322
+                - link "main" [ref=e321] [cursor=pointer]:
+                  - /url: /zezo12322/SUSTAINPLUS-platform/tree/refs/heads/main
+                - generic [ref=e323]:
+                  - generic [ref=e324]:
+                    - generic [ref=e325]:
+                      - img [ref=e327]
+                      - generic "May 26, 2026, 12:46 AM GMT+3" [ref=e329]: May 26, 12:46 AM GMT+3
+                    - generic [ref=e330]:
+                      - img "Run duration" [ref=e331]
+                      - text: 13m 39s
+                  - group [ref=e334]:
+                    - generic "Show options" [ref=e335] [cursor=pointer]:
+                      - img "Show options" [ref=e336]
+              - generic [ref=e339]:
+                - generic [ref=e340]:
+                  - 'link "failed: Run 8 of Build and deploy Node.js app to Azure Web App - sustainplus-ai. Disable Azure Oryx build to fix logo 404 and static file serving" [ref=e341] [cursor=pointer]':
+                    - /url: /zezo12322/SUSTAINPLUS-platform/actions/runs/26419997382
+                    - img "failed:" [ref=e343]
+                    - generic [ref=e345]: Disable Azure Oryx build to fix logo 404 and static file serving
+                  - generic [ref=e346]:
+                    - text: "Build and deploy Node.js app to Azure Web App - sustainplus-ai #8:"
+                    - generic [ref=e347]:
+                      - text: Commit
+                      - link "73cadb9" [ref=e348] [cursor=pointer]:
+                        - /url: /zezo12322/SUSTAINPLUS-platform/commit/73cadb98b57fc26bce7edc0c328a4382ce763074
+                      - text: pushed by
+                      - link "zezo12322" [ref=e349] [cursor=pointer]:
+                        - /url: /zezo12322
+                - link "main" [ref=e351] [cursor=pointer]:
+                  - /url: /zezo12322/SUSTAINPLUS-platform/tree/refs/heads/main
+                - generic [ref=e353]:
+                  - generic [ref=e354]:
+                    - generic [ref=e355]:
+                      - img [ref=e357]
+                      - generic "May 26, 2026, 12:13 AM GMT+3" [ref=e359]: May 26, 12:13 AM GMT+3
+                    - generic [ref=e360]:
+                      - img "Run duration" [ref=e361]
+                      - text: 1m 44s
+                  - group [ref=e364]:
+                    - generic "Show options" [ref=e365] [cursor=pointer]:
+                      - img "Show options" [ref=e366]
+              - generic [ref=e369]:
+                - generic [ref=e370]:
+                  - 'link "completed successfully: Run 7 of Build and deploy Node.js app to Azure Web App - sustainplus-ai. Fix Oryx rebuild: strip build script from standalone package.json" [ref=e371] [cursor=pointer]':
+                    - /url: /zezo12322/SUSTAINPLUS-platform/actions/runs/26419558973
+                    - img "completed successfully:" [ref=e373]
+                    - generic [ref=e375]: "Fix Oryx rebuild: strip build script from standalone package.json"
+                  - generic [ref=e376]:
+                    - text: "Build and deploy Node.js app to Azure Web App - sustainplus-ai #7:"
+                    - generic [ref=e377]:
+                      - text: Commit
+                      - link "fd6e94d" [ref=e378] [cursor=pointer]:
+                        - /url: /zezo12322/SUSTAINPLUS-platform/commit/fd6e94d2fd4300e87aae09795058a0a34d7bf87c
+                      - text: pushed by
+                      - link "zezo12322" [ref=e379] [cursor=pointer]:
+                        - /url: /zezo12322
+                - link "main" [ref=e381] [cursor=pointer]:
+                  - /url: /zezo12322/SUSTAINPLUS-platform/tree/refs/heads/main
+                - generic [ref=e383]:
+                  - generic [ref=e384]:
+                    - generic [ref=e385]:
+                      - img [ref=e387]
+                      - generic "May 25, 2026, 11:59 PM GMT+3" [ref=e389]: May 25, 11:59 PM GMT+3
+                    - generic [ref=e390]:
+                      - img "Run duration" [ref=e391]
+                      - text: 11m 14s
+                  - group [ref=e394]:
+                    - generic "Show options" [ref=e395] [cursor=pointer]:
+                      - img "Show options" [ref=e396]
+              - generic [ref=e399]:
+                - generic [ref=e400]:
+                  - 'link "failed: Run 6 of Build and deploy Node.js app to Azure Web App - sustainplus-ai. Fix Azure deployment: add proper build pipeline and standalone output" [ref=e401] [cursor=pointer]':
+                    - /url: /zezo12322/SUSTAINPLUS-platform/actions/runs/26419213266
+                    - img "failed:" [ref=e403]
+                    - generic [ref=e405]: "Fix Azure deployment: add proper build pipeline and standalone output"
+                  - generic [ref=e406]:
+                    - text: "Build and deploy Node.js app to Azure Web App - sustainplus-ai #6:"
+                    - generic [ref=e407]:
+                      - text: Commit
+                      - link "5b5ef09" [ref=e408] [cursor=pointer]:
+                        - /url: /zezo12322/SUSTAINPLUS-platform/commit/5b5ef0966d034c0793cfbd4ec2f09a598c26030b
+                      - text: pushed by
+                      - link "zezo12322" [ref=e409] [cursor=pointer]:
+                        - /url: /zezo12322
+                - link "main" [ref=e411] [cursor=pointer]:
+                  - /url: /zezo12322/SUSTAINPLUS-platform/tree/refs/heads/main
+                - generic [ref=e413]:
+                  - generic [ref=e414]:
+                    - generic [ref=e415]:
+                      - img [ref=e417]
+                      - generic "May 25, 2026, 11:48 PM GMT+3" [ref=e419]: May 25, 11:48 PM GMT+3
+                    - generic [ref=e420]:
+                      - img "Run duration" [ref=e421]
+                      - text: 8m 0s
+                  - group [ref=e424]:
+                    - generic "Show options" [ref=e425] [cursor=pointer]:
+                      - img "Show options" [ref=e426]
+              - generic [ref=e429]:
+                - generic [ref=e430]:
+                  - 'link "failed: Run 5 of Build and deploy Node.js app to Azure Web App - sustainplus-ai. Apply official Sustain Plus brand identity across platform" [ref=e431] [cursor=pointer]':
+                    - /url: /zezo12322/SUSTAINPLUS-platform/actions/runs/26418103261
+                    - img "failed:" [ref=e433]
+                    - generic [ref=e435]: Apply official Sustain Plus brand identity across platform
+                  - generic [ref=e436]:
+                    - text: "Build and deploy Node.js app to Azure Web App - sustainplus-ai #5:"
+                    - generic [ref=e437]:
+                      - text: Commit
+                      - link "1a338ca" [ref=e438] [cursor=pointer]:
+                        - /url: /zezo12322/SUSTAINPLUS-platform/commit/1a338ca8a0a81a58aa84ce1391b07f9119fd2dff
+                      - text: pushed by
+                      - link "zezo12322" [ref=e439] [cursor=pointer]:
+                        - /url: /zezo12322
+                - link "main" [ref=e441] [cursor=pointer]:
+                  - /url: /zezo12322/SUSTAINPLUS-platform/tree/refs/heads/main
+                - generic [ref=e443]:
+                  - generic [ref=e444]:
+                    - generic [ref=e445]:
+                      - img [ref=e447]
+                      - generic "May 25, 2026, 11:15 PM GMT+3" [ref=e449]: May 25, 11:15 PM GMT+3
+                    - generic [ref=e450]:
+                      - img "Run duration" [ref=e451]
+                      - text: 12m 50s
+                  - group [ref=e454]:
+                    - generic "Show options" [ref=e455] [cursor=pointer]:
+                      - img "Show options" [ref=e456]
+              - generic [ref=e459]:
+                - generic [ref=e460]:
+                  - 'link "completed successfully: Run 4 of Build and deploy Node.js app to Azure Web App - sustainplus-ai. Move build dependencies for Azure deployment" [ref=e461] [cursor=pointer]':
+                    - /url: /zezo12322/SUSTAINPLUS-platform/actions/runs/26305197308
+                    - img "completed successfully:" [ref=e463]
+                    - generic [ref=e465]: Move build dependencies for Azure deployment
+                  - generic [ref=e466]:
+                    - text: "Build and deploy Node.js app to Azure Web App - sustainplus-ai #4:"
+                    - generic [ref=e467]:
+                      - text: Commit
+                      - link "4d93b45" [ref=e468] [cursor=pointer]:
+                        - /url: /zezo12322/SUSTAINPLUS-platform/commit/4d93b4567c1bda1649ce0b9f97fc77f879bcb64c
+                      - text: pushed by
+                      - link "zezo12322" [ref=e469] [cursor=pointer]:
+                        - /url: /zezo12322
+                - link "main" [ref=e471] [cursor=pointer]:
+                  - /url: /zezo12322/SUSTAINPLUS-platform/tree/refs/heads/main
+                - generic [ref=e473]:
+                  - generic [ref=e474]:
+                    - generic [ref=e475]:
+                      - img [ref=e477]
+                      - generic "May 22, 2026, 9:31 PM GMT+3" [ref=e479]: May 22, 9:31 PM GMT+3
+                    - generic [ref=e480]:
+                      - img "Run duration" [ref=e481]
+                      - text: 13m 32s
+                  - group [ref=e484]:
+                    - generic "Show options" [ref=e485] [cursor=pointer]:
+                      - img "Show options" [ref=e486]
+              - generic [ref=e489]:
+                - generic [ref=e490]:
+                  - 'link "failed: Run 3 of Build and deploy Node.js app to Azure Web App - sustainplus-ai. Fix Azure App Service build dependencies" [ref=e491] [cursor=pointer]':
+                    - /url: /zezo12322/SUSTAINPLUS-platform/actions/runs/26304733940
+                    - img "failed:" [ref=e493]
+                    - generic [ref=e495]: Fix Azure App Service build dependencies
+                  - generic [ref=e496]:
+                    - text: "Build and deploy Node.js app to Azure Web App - sustainplus-ai #3:"
+                    - generic [ref=e497]:
+                      - text: Commit
+                      - link "32ac26e" [ref=e498] [cursor=pointer]:
+                        - /url: /zezo12322/SUSTAINPLUS-platform/commit/32ac26e76e91939dd948711e1baf525522eae6ff
+                      - text: pushed by
+                      - link "zezo12322" [ref=e499] [cursor=pointer]:
+                        - /url: /zezo12322
+                - link "main" [ref=e501] [cursor=pointer]:
+                  - /url: /zezo12322/SUSTAINPLUS-platform/tree/refs/heads/main
+                - generic [ref=e503]:
+                  - generic [ref=e504]:
+                    - generic [ref=e505]:
+                      - img [ref=e507]
+                      - generic "May 22, 2026, 9:20 PM GMT+3" [ref=e509]: May 22, 9:20 PM GMT+3
+                    - generic [ref=e510]:
+                      - img "Run duration" [ref=e511]
+                      - text: 4m 18s
+                  - group [ref=e514]:
+                    - generic "Show options" [ref=e515] [cursor=pointer]:
+                      - img "Show options" [ref=e516]
+              - generic [ref=e519]:
+                - generic [ref=e520]:
+                  - 'link "failed: Run 2 of Build and deploy Node.js app to Azure Web App - sustainplus-ai." [ref=e521] [cursor=pointer]':
+                    - /url: /zezo12322/SUSTAINPLUS-platform/actions/runs/26303486436
+                    - img "failed:" [ref=e523]
+                    - generic [ref=e525]: Build and deploy Node.js app to Azure Web App - sustainplus-ai
+                  - generic [ref=e526]:
+                    - text: "Build and deploy Node.js app to Azure Web App - sustainplus-ai #2:"
+                    - generic [ref=e527]:
+                      - text: Manually run by
+                      - link "zezo12322" [ref=e528] [cursor=pointer]:
+                        - /url: /zezo12322
+                - link "main" [ref=e530] [cursor=pointer]:
+                  - /url: /zezo12322/SUSTAINPLUS-platform/tree/refs/heads/main
+                - generic [ref=e532]:
+                  - generic [ref=e533]:
+                    - generic [ref=e534]:
+                      - img [ref=e536]
+                      - generic "May 22, 2026, 8:53 PM GMT+3" [ref=e538]: May 22, 8:53 PM GMT+3
+                    - generic [ref=e539]:
+                      - img "Run duration" [ref=e540]
+                      - text: 5m 2s
+                  - group [ref=e543]:
+                    - generic "Show options" [ref=e544] [cursor=pointer]:
+                      - img "Show options" [ref=e545]
+              - generic [ref=e548]:
+                - generic [ref=e549]:
+                  - 'link "failed: Run 1 of Build and deploy Node.js app to Azure Web App - sustainplus-ai. Add or update the Azure App Service build and deployment workflow config" [ref=e550] [cursor=pointer]':
+                    - /url: /zezo12322/SUSTAINPLUS-platform/actions/runs/26299915863
+                    - img "failed:" [ref=e552]
+                    - generic [ref=e554]: Add or update the Azure App Service build and deployment workflow config
+                  - generic [ref=e555]:
+                    - text: "Build and deploy Node.js app to Azure Web App - sustainplus-ai #1:"
+                    - generic [ref=e556]:
+                      - text: Commit
+                      - link "8272520" [ref=e557] [cursor=pointer]:
+                        - /url: /zezo12322/SUSTAINPLUS-platform/commit/82725200ae431b6e442122882b87abb7aac29055
+                      - text: pushed by
+                      - link "zezo12322" [ref=e558] [cursor=pointer]:
+                        - /url: /zezo12322
+                - link "main" [ref=e560] [cursor=pointer]:
+                  - /url: /zezo12322/SUSTAINPLUS-platform/tree/refs/heads/main
+                - generic [ref=e562]:
+                  - generic [ref=e563]:
+                    - generic [ref=e564]:
+                      - img [ref=e566]
+                      - generic "May 22, 2026, 7:34 PM GMT+3" [ref=e568]: May 22, 7:34 PM GMT+3
+                    - generic [ref=e569]:
+                      - img "Run duration" [ref=e570]
+                      - text: 31s
+                  - group [ref=e573]:
+                    - generic "Show options" [ref=e574] [cursor=pointer]:
+                      - img "Show options" [ref=e575]

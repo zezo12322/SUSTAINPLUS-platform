@@ -1,0 +1,36 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - link "Sustain Plus" [ref=e4] [cursor=pointer]:
+      - /url: /
+      - img "Sustain Plus" [ref=e6]
+  - generic [ref=e9]:
+    - generic [ref=e10]:
+      - heading "تسجيل الدخول" [level=1] [ref=e11]
+      - paragraph [ref=e12]: أهلاً بعودتك إلى منصة الاستشارات البيئية
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - generic [ref=e15]: البريد الإلكتروني
+        - generic [ref=e16]:
+          - generic [ref=e18]: 
+          - textbox "البريد الإلكتروني" [ref=e19]:
+            - /placeholder: example@company.com
+      - generic [ref=e20]:
+        - generic [ref=e21]: كلمة المرور
+        - generic [ref=e22]:
+          - textbox "كلمة المرور" [ref=e23]:
+            - /placeholder: ••••••••
+          - button "" [ref=e24] [cursor=pointer]:
+            - generic [ref=e25]: 
+      - button "تسجيل الدخول" [ref=e26] [cursor=pointer]
+    - generic [ref=e27]:
+      - text: ليس لديك حساب؟
+      - link "إنشاء حساب مجاني" [ref=e28] [cursor=pointer]:
+        - /url: /register
+    - link "سياسة الخصوصية والشروط" [ref=e30] [cursor=pointer]:
+      - /url: /trust
+  - contentinfo [ref=e31]:
+    - link "العودة للموقع الرئيسي" [ref=e32] [cursor=pointer]:
+      - /url: https://sustainplus-eg.com
+    - text: ·
+    - link "سياسة الخصوصية" [ref=e33] [cursor=pointer]:
+      - /url: /trust

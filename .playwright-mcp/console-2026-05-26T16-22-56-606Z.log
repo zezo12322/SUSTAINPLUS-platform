@@ -1,0 +1,2 @@
+[     568ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ https://sustainplus-ai-crh0bqhffyewhxa5.westeurope-01.azurewebsites.net/api/ping:0
+[     764ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ https://sustainplus-ai-crh0bqhffyewhxa5.westeurope-01.azurewebsites.net/favicon.ico:0
