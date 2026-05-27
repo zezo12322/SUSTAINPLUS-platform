@@ -49,13 +49,31 @@ jobs:
           mkdir -p .next/standalone/node_modules/@prisma/client
           cp -r node_modules/@prisma/client/. .next/standalone/node_modules/@prisma/client/
 
-          # Copy .prisma/client (native binary — also in outputFileTracingIncludes but copy to be safe)
+          # Copy .prisma/client (standard hidden path — works in CI but Azure OneDeploy
+          # strips top-level dotfile directories from the zip, so we also copy to a
+          # non-hidden path and patch @prisma/client references to use it)
           mkdir -p .next/standalone/node_modules/.prisma/client
           cp -r node_modules/.prisma/client/. .next/standalone/node_modules/.prisma/client/
 
+          # Non-hidden copy — survives Azure zip deployment
+          mkdir -p .next/standalone/node_modules/prisma_generated_client
+          cp -r node_modules/.prisma/client/. .next/standalone/node_modules/prisma_generated_client/
+
+          # Patch all @prisma/client JS files to require from prisma_generated_client
+          # instead of .prisma/client (which Azure strips from the zip)
+          find .next/standalone/node_modules/@prisma/client -name "*.js" -print0 | \
+            xargs -0 sed -i \
+              "s|require('.prisma/client/|require('prisma_generated_client/|g;
+               s|require(\".prisma/client/|require(\"prisma_generated_client/|g" \
+            2>/dev/null || true
+
           echo "=== Prisma files check ==="
           ls -la .next/standalone/node_modules/@prisma/client/default* 2>/dev/null || echo "WARNING: @prisma/client/default.js not found!"
-          ls -la .next/standalone/node_modules/.prisma/client/*.node 2>/dev/null | head -3
+          ls -la .next/standalone/node_modules/prisma_generated_client/*.node 2>/dev/null | head -3
+          echo "=== Verify prisma_generated_client ==="
+          test -f .next/standalone/node_modules/prisma_generated_client/default.js && echo "OK: prisma_generated_client/default.js found" || echo "ERROR: prisma_generated_client/default.js MISSING"
+          echo "=== Verify patch applied ==="
+          grep -c "prisma_generated_client" .next/standalone/node_modules/@prisma/client/default.js 2>/dev/null && echo "OK: patch applied" || echo "WARNING: patch may not have applied"
 
           echo "=== Next.js external runtime files check ==="
           for f in \
@@ -129,12 +147,14 @@ jobs:
 
       - name: Verify .prisma/client in standalone
         run: |
-          echo "=== .prisma/client files ==="
-          ls -la .next/standalone/node_modules/.prisma/client/ | head -20
+          echo "=== prisma_generated_client files (non-hidden, survives Azure zip) ==="
+          ls -la .next/standalone/node_modules/prisma_generated_client/ | head -20
           echo "=== Verify default.js exists ==="
-          test -f .next/standalone/node_modules/.prisma/client/default.js && echo "OK: default.js found" || echo "ERROR: default.js MISSING"
+          test -f .next/standalone/node_modules/prisma_generated_client/default.js && echo "OK: default.js found" || { echo "ERROR: default.js MISSING"; exit 1; }
           echo "=== Native binaries ==="
-          ls -la .next/standalone/node_modules/.prisma/client/*.node 2>/dev/null || echo "WARNING: no .node binaries found"
+          ls -la .next/standalone/node_modules/prisma_generated_client/*.node 2>/dev/null || echo "WARNING: no .node binaries found"
+          echo "=== Verify @prisma/client patch ==="
+          grep "prisma_generated_client" .next/standalone/node_modules/@prisma/client/default.js && echo "OK: patch active" || { echo "ERROR: patch NOT applied to @prisma/client/default.js"; exit 1; }
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
