@@ -89,6 +89,13 @@ jobs:
             fi
           done
 
+          # Create node_modules.tar.gz so Azure Oryx uses OUR prepared modules on startup.
+          # Without this, Oryx finds a stale tar.gz from a previous build and overwrites
+          # our patched @prisma/client and prisma_generated_client directories.
+          echo "=== Creating node_modules.tar.gz for Azure Oryx ==="
+          (cd .next/standalone/node_modules && tar czf ../node_modules.tar.gz .)
+          echo "OK: $(du -sh .next/standalone/node_modules.tar.gz | cut -f1) — node_modules.tar.gz ready"
+
       - name: Test standalone server startup
         run: |
           cd .next/standalone
