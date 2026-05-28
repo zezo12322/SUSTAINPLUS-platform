@@ -1,23 +1,23 @@
-import Link from 'next/link'
+﻿import Link from 'next/link'
 import { PlatformHeader } from '@/components/layout/platform-header'
 import { PlatformFooter } from '@/components/layout/platform-footer'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'منصة الاستشارات البيئية الذكية',
-  description: 'احصل على إجابات فورية لأسئلتك البيئية من منصة سستين بلس، مدعومة بقاعدة معرفة مراجعة من خبراء بيئيين.',
+  description: 'احصل على إجابات فورية لأسئلتك البيئية من منصة ساستين بلس، مدعومة بقاعدة معرفة مراجعة من خبراء بيئيين.',
 }
 
 const features = [
   {
     icon: 'fa-brain',
     title: 'ذكاء اصطناعي بيئي متخصص',
-    desc: 'نظام استشاري ذكي مدرَّب على قاعدة معرفة سستين بلس واللوائح البيئية المصرية.',
+    desc: 'نظام استشاري ذكي مدرَّب على قاعدة معرفة ساستين بلس واللوائح البيئية المصرية.',
   },
   {
     icon: 'fa-book-open',
     title: 'قاعدة معرفة مراجعة',
-    desc: 'كل إجابة مستندة إلى محتوى مراجع ومحدَّث من متخصصي سستين بلس.',
+    desc: 'كل إجابة مستندة إلى محتوى مراجع ومحدَّث من متخصصي ساستين بلس.',
   },
   {
     icon: 'fa-user-tie',
@@ -71,7 +71,7 @@ export default function ConsultationLanding() {
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28 text-center">
             <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-6">
               <span className="w-2 h-2 bg-green-300 rounded-full animate-pulse" />
-              <span className="text-white/90 text-sm font-medium">مدعوم بخبرة سستين بلس وذكاء اصطناعي متخصص</span>
+              <span className="text-white/90 text-sm font-medium">مدعوم بخبرة ساستين بلس وذكاء اصطناعي متخصص</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-6">
@@ -81,7 +81,7 @@ export default function ConsultationLanding() {
             </h1>
 
             <p className="text-lg text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed">
-              اطرح أسئلتك البيئية وحصل على إجابات فورية مستندة إلى خبرة متخصصي سستين بلس.
+              اطرح أسئلتك البيئية وحصل على إجابات فورية مستندة إلى خبرة متخصصي ساستين بلس.
               من الامتثال البيئي إلى تقييم الأثر، نحن هنا.
             </p>
 
@@ -133,7 +133,7 @@ export default function ConsultationLanding() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-                لماذا منصة سستين بلس؟
+                لماذا منصة ساستين بلس؟
               </h2>
               <p className="text-gray-500 max-w-xl mx-auto">
                 الجمع بين الذكاء الاصطناعي وخبرة المتخصصين يمنحك أفضل استشارة بيئية.
@@ -166,7 +166,7 @@ export default function ConsultationLanding() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
                 { step: '١', title: 'اطرح سؤالك', desc: 'اكتب استفسارك البيئي بالعربية أو الإنجليزية باختصار أو تفصيل.', icon: 'fa-pen-to-square' },
-                { step: '٢', title: 'يبحث النظام', desc: 'يستعرض قاعدة معرفة سستين بلس ويولّد إجابة مخصصة لحالتك.', icon: 'fa-magnifying-glass' },
+                { step: '٢', title: 'يبحث النظام', desc: 'يستعرض قاعدة معرفة ساستين بلس ويولّد إجابة مخصصة لحالتك.', icon: 'fa-magnifying-glass' },
                 { step: '٣', title: 'إجابة متخصصة', desc: 'تصلك إجابة مفصلة. وإذا احتجت خبيراً بشرياً، زر التصعيد في متناولك.', icon: 'fa-circle-check' },
               ].map((s) => (
                 <div key={s.step} className="text-center">
@@ -191,7 +191,7 @@ export default function ConsultationLanding() {
             </div>
             <p className="text-amber-700 text-sm leading-relaxed">
               ردود المنصة إرشادية وتوعوية فقط، ولا تُعدّ شهادات رسمية أو تراخيص حكومية.
-              للحالات التي تستلزم إجراءات قانونية أو تراخيص رسمية، يُرجى التواصل مع متخصصي سستين بلس مباشرة.
+              للحالات التي تستلزم إجراءات قانونية أو تراخيص رسمية، يُرجى التواصل مع متخصصي ساستين بلس مباشرة.
             </p>
           </div>
         </section>

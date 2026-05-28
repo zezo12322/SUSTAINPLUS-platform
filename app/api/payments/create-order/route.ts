@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+﻿import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ messageAr: 'الباقة المحددة غير صالحة للدفع.' }, { status: 400 })
       }
       amountPiasters = (plan as any).pricePiasters
-      description = `اشتراك سستين بلس - ${plan.nameAr}`
+      description = `اشتراك ساستين بلس - ${plan.nameAr}`
     } else if (orderData.type === 'CONSULTATION_PACK') {
       const pack = CONSULTATION_PACKS.find((p) => p.id === orderData.packId)
       if (!pack) return NextResponse.json({ messageAr: 'الباقة غير موجودة.' }, { status: 400 })
@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
       if (amountPiasters < MIN_PAYG_PRICE_PIASTERS) {
         return NextResponse.json({ messageAr: 'المبلغ أقل من الحد الأدنى المسموح.' }, { status: 400 })
       }
-      description = `${pack.labelAr} - سستين بلس`
+      description = `${pack.labelAr} - ساستين بلس`
     } else {
       amountPiasters = MIN_PAYG_PRICE_PIASTERS
       description = 'استشارة واحدة - دفع حسب الاستخدام'

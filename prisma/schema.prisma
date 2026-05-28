@@ -70,6 +70,12 @@ enum MessageRole {
   SYSTEM
 }
 
+enum OtpCodeType {
+  EMAIL_VERIFY
+  PASSWORD_RESET
+  TWO_FACTOR
+}
+
 // ==================== MODELS ====================
 
 model User {
@@ -83,10 +89,15 @@ model User {
   isActive        Boolean        @default(true)
   privacyConsent  Boolean        @default(false)
   termsAccepted   Boolean        @default(false)
-  emailVerified   Boolean        @default(false)
-  lastLoginAt     DateTime?
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  emailVerified       Boolean        @default(false)
+  lastLoginAt         DateTime?
+  sessionVersion      Int            @default(1)
+  failedLoginAttempts Int            @default(0)
+  lockedUntil         DateTime?
+  twoFactorEnabled    Boolean        @default(false)
+  deviceFingerprint   String?
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
 
   subscription    Subscription?
   chatSessions    ChatSession[]
@@ -95,9 +106,11 @@ model User {
   usageRecords    UsageRecord[]
   auditLogs       AuditLog[]
   notifications   Notification[]
+  otpCodes        OtpCode[]
 
   @@index([email])
   @@index([role])
+  @@index([deviceFingerprint])
 }
 
 model Plan {
@@ -281,4 +294,18 @@ model Notification {
 
   @@index([userId])
   @@index([isRead])
+}
+
+model OtpCode {
+  id        String      @id @default(cuid())
+  userId    String
+  code      String
+  type      OtpCodeType
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime    @default(now())
+
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type])
 }

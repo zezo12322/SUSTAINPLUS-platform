@@ -1,10 +1,10 @@
-import { PlatformHeader } from '@/components/layout/platform-header'
+﻿import { PlatformHeader } from '@/components/layout/platform-header'
 import { PlatformFooter } from '@/components/layout/platform-footer'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'الأمان والخصوصية',
-  description: 'كيف تحمي سستين بلس بياناتك ومحادثاتك على منصة الاستشارات البيئية.',
+  description: 'كيف تحمي ساستين بلس بياناتك ومحادثاتك على منصة الاستشارات البيئية.',
 }
 
 export default function TrustPage() {
@@ -99,7 +99,7 @@ export default function TrustPage() {
               <p className="text-amber-700 text-sm leading-relaxed">
                 ردود منصة الاستشارات <strong>إرشادية وتوعوية فقط</strong>، ولا تُعدّ:
                 شهادات رسمية، تراخيص حكومية، قرارات إدارية، أو رأياً قانونياً معتمداً.
-                للحالات التي تستلزم إجراءات رسمية، يُرجى التواصل مع متخصصي سستين بلس.
+                للحالات التي تستلزم إجراءات رسمية، يُرجى التواصل مع متخصصي ساستين بلس.
               </p>
             </div>
             <ul className="space-y-3 text-gray-600 text-sm leading-relaxed">
@@ -182,12 +182,12 @@ export default function TrustPage() {
           <div id="terms" className="bg-white rounded-2xl border border-gray-100 p-8">
             <h2 className="text-xl font-bold text-gray-900 mb-5">الشروط والأحكام</h2>
             <div className="prose prose-sm max-w-none text-gray-600 space-y-4 leading-relaxed">
-              <p>بتسجيلك واستخدامك لمنصة سستين بلس للاستشارات البيئية، فإنك توافق على ما يلي:</p>
+              <p>بتسجيلك واستخدامك لمنصة ساستين بلس للاستشارات البيئية، فإنك توافق على ما يلي:</p>
               <ol className="list-decimal list-inside space-y-2 mr-4">
                 <li>الردود المقدمة إرشادية وتوعوية ولا تُغني عن الاستشارة القانونية أو الهندسية الرسمية.</li>
                 <li>حدود الاستشارات الشهرية محددة وفق الباقة المختارة ولا يمكن تجاوزها دون دفع إضافي.</li>
                 <li>يُحظر استخدام المنصة لأغراض غير مشروعة أو لنشر معلومات مضللة.</li>
-                <li>سستين بلس غير مسؤولة عن أي قرارات اتُّخذت اعتماداً حصرياً على ردود المنصة دون الرجوع لخبير متخصص.</li>
+                <li>ساستين بلس غير مسؤولة عن أي قرارات اتُّخذت اعتماداً حصرياً على ردود المنصة دون الرجوع لخبير متخصص.</li>
                 <li>نحتفظ بالحق في تعليق الحسابات التي تنتهك سياسات الاستخدام.</li>
                 <li>أسعار الباقات قابلة للتعديل مع إشعار مسبق لا يقل عن ٣٠ يوماً.</li>
               </ol>
@@ -199,7 +199,7 @@ export default function TrustPage() {
             <i className="fa-solid fa-envelope text-primary-600 text-2xl mb-3" />
             <h3 className="font-bold text-gray-900 mb-2">أسئلة حول الخصوصية والأمان؟</h3>
             <p className="text-gray-500 text-sm mb-4">
-              تواصل مع فريق سستين بلس مباشرة للاستفسار عن أي جانب من جوانب حماية بياناتك.
+              تواصل مع فريق ساستين بلس مباشرة للاستفسار عن أي جانب من جوانب حماية بياناتك.
             </p>
             <a
               href="mailto:info@sustainplus-eg.com"

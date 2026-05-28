@@ -1,19 +1,19 @@
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 import '@/app/globals.css'
 import { SessionProvider } from 'next-auth/react'
 
 export const metadata: Metadata = {
   title: {
-    default: 'منصة الاستشارات البيئية | سستين بلس',
-    template: '%s | سستين بلس',
+    default: 'منصة الاستشارات البيئية | ساستين بلس',
+    template: '%s | ساستين بلس',
   },
   description:
-    'منصة استشارات بيئية ذكية مدعومة بخبرة سستين بلس وقاعدة معرفة مراجعة من متخصصين بيئيين.',
-  keywords: ['استشارات بيئية', 'سستين بلس', 'بيئة', 'امتثال بيئي', 'مصر'],
+    'منصة استشارات بيئية ذكية مدعومة بخبرة ساستين بلس وقاعدة معرفة مراجعة من متخصصين بيئيين.',
+  keywords: ['استشارات بيئية', 'ساستين بلس', 'بيئة', 'امتثال بيئي', 'مصر'],
   openGraph: {
     type: 'website',
     locale: 'ar_EG',
-    siteName: 'سستين بلس',
+    siteName: 'ساستين بلس',
   },
 }
 

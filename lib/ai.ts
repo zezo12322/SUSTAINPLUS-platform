@@ -1,8 +1,10 @@
-import Anthropic from '@anthropic-ai/sdk'
+﻿import Anthropic from '@anthropic-ai/sdk'
+import { AzureOpenAI } from 'openai'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { prisma } from '@/lib/prisma'
 import {
   AI_MODELS,
+  AZURE_OPENAI_CONFIG,
   AI_SYSTEM_PROMPT,
   COMPLEX_QUERY_KEYWORDS,
   ESCALATION_KEYWORDS,
@@ -14,6 +16,7 @@ import {
 
 let _anthropicClient: Anthropic | null = null
 let _geminiClient: GoogleGenerativeAI | null = null
+let _azureClient: AzureOpenAI | null = null
 
 function getAnthropicClient(): Anthropic | null {
   if (!process.env.ANTHROPIC_API_KEY) return null
@@ -25,6 +28,18 @@ function getGeminiClient(): GoogleGenerativeAI | null {
   if (!process.env.GEMINI_API_KEY) return null
   if (!_geminiClient) _geminiClient = new GoogleGenerativeAI(process.env.GEMINI_API_KEY)
   return _geminiClient
+}
+
+function getAzureClient(): AzureOpenAI | null {
+  if (!AZURE_OPENAI_CONFIG.apiKey || !AZURE_OPENAI_CONFIG.endpoint) return null
+  if (!_azureClient) {
+    _azureClient = new AzureOpenAI({
+      apiKey: AZURE_OPENAI_CONFIG.apiKey,
+      endpoint: AZURE_OPENAI_CONFIG.endpoint,
+      apiVersion: AZURE_OPENAI_CONFIG.apiVersion,
+    })
+  }
+  return _azureClient
 }
 
 // ==========================================
@@ -52,7 +67,7 @@ async function getKBContext(query: string): Promise<string> {
       .map((e) => `### ${e.titleAr}\n${e.contentAr}`)
       .join('\n\n---\n\n')
 
-    return `\n\n**معلومات من قاعدة معرفة سستين بلس:**\n${context}`
+    return `\n\n**معلومات من قاعدة معرفة ساستين بلس:**\n${context}`
   } catch {
     return ''
   }
@@ -147,6 +162,36 @@ async function generateWithGemini(
 }
 
 // ==========================================
+// AZURE OPENAI GENERATION (Primary fallback)
+// ==========================================
+
+async function generateWithAzure(
+  userMessage: string,
+  history: ChatMessage[],
+  systemPrompt: string,
+  maxTokens: number
+): Promise<{ content: string; inputTokens: number; outputTokens: number }> {
+  const client = getAzureClient()
+  if (!client) throw new Error('Azure OpenAI not configured')
+
+  const response = await client.chat.completions.create({
+    model: AZURE_OPENAI_CONFIG.deployment,
+    messages: [
+      { role: 'system', content: systemPrompt },
+      ...history.map((m) => ({ role: m.role as 'user' | 'assistant', content: m.content })),
+      { role: 'user', content: userMessage },
+    ],
+    max_tokens: maxTokens,
+  })
+
+  return {
+    content: response.choices[0]?.message?.content || '',
+    inputTokens: response.usage?.prompt_tokens || 0,
+    outputTokens: response.usage?.completion_tokens || 0,
+  }
+}
+
+// ==========================================
 // ANTHROPIC GENERATION (Tier 2 & 3)
 // ==========================================
 
@@ -203,20 +248,38 @@ export async function generateAIResponse(
       try {
         result = await generateWithGemini(userMessage, history, systemPrompt)
         modelUsed = AI_MODELS.simple
-      } catch {
-        // Gemini unavailable — fall back to Claude Haiku
-        if (!getAnthropicClient()) return buildFallback(isComplex, needsEscalation)
-        result = await generateWithAnthropic(userMessage, history, systemPrompt, AI_MODELS.moderate, 1024)
-        modelUsed = AI_MODELS.moderate
+      } catch (geminiErr) {
+        console.error('Gemini failed, trying Azure fallback:', geminiErr)
+        if (getAzureClient()) {
+          result = await generateWithAzure(userMessage, history, systemPrompt, 1024)
+          modelUsed = `azure/${AZURE_OPENAI_CONFIG.deployment}`
+        } else if (getAnthropicClient()) {
+          result = await generateWithAnthropic(userMessage, history, systemPrompt, AI_MODELS.moderate, 1024)
+          modelUsed = AI_MODELS.moderate
+        } else {
+          return buildFallback(isComplex, needsEscalation)
+        }
       }
     } else if (tier === 'moderate') {
-      if (!getAnthropicClient()) return buildFallback(isComplex, needsEscalation)
-      result = await generateWithAnthropic(userMessage, history, systemPrompt, AI_MODELS.moderate, 1024)
-      modelUsed = AI_MODELS.moderate
+      if (getAzureClient()) {
+        result = await generateWithAzure(userMessage, history, systemPrompt, 1024)
+        modelUsed = `azure/${AZURE_OPENAI_CONFIG.deployment}`
+      } else if (getAnthropicClient()) {
+        result = await generateWithAnthropic(userMessage, history, systemPrompt, AI_MODELS.moderate, 1024)
+        modelUsed = AI_MODELS.moderate
+      } else {
+        return buildFallback(isComplex, needsEscalation)
+      }
     } else {
-      if (!getAnthropicClient()) return buildFallback(isComplex, needsEscalation)
-      result = await generateWithAnthropic(userMessage, history, systemPrompt, AI_MODELS.complex, 2048)
-      modelUsed = AI_MODELS.complex
+      if (getAzureClient()) {
+        result = await generateWithAzure(userMessage, history, systemPrompt, 2048)
+        modelUsed = `azure/${AZURE_OPENAI_CONFIG.deployment}`
+      } else if (getAnthropicClient()) {
+        result = await generateWithAnthropic(userMessage, history, systemPrompt, AI_MODELS.complex, 2048)
+        modelUsed = AI_MODELS.complex
+      } else {
+        return buildFallback(isComplex, needsEscalation)
+      }
     }
 
     return {
@@ -264,7 +327,7 @@ function getFallbackResponse(): string {
 نظام الاستشارات الذكي غير متاح حالياً. يُرجى:
 
 ١. **المحاولة لاحقاً** — نعمل على إعادة الخدمة في أقرب وقت.
-٢. **التواصل مع فريق سستين بلس مباشرة** عبر صفحة التواصل للحصول على استشارة من خبراء متخصصين.
+٢. **التواصل مع فريق ساستين بلس مباشرة** عبر صفحة التواصل للحصول على استشارة من خبراء متخصصين.
 
 نعتذر عن هذا الاضطراب.`
 }

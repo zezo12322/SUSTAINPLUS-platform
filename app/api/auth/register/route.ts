@@ -4,6 +4,9 @@ import { prisma } from '@/lib/prisma'
 import { hashPassword } from '@/lib/auth'
 import { getMonthYear } from '@/lib/utils'
 import { addMonths } from 'date-fns'
+import { createOtp } from '@/lib/otp'
+import { sendVerificationEmail } from '@/lib/email'
+import { isDisposableEmail } from '@/lib/disposable-emails'
 
 const schema = z.object({
   email: z.string().email(),
@@ -11,7 +14,18 @@ const schema = z.object({
   nameAr: z.string().min(2).max(100),
   privacyConsent: z.boolean(),
   termsAccepted: z.boolean(),
+  fingerprint: z.string().length(64).optional().nullable(),
 })
+
+const MAX_REGISTRATIONS_PER_IP_PER_DAY = 3
+
+function getClientIp(req: NextRequest): string {
+  return (
+    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    req.headers.get('x-real-ip') ||
+    'unknown'
+  )
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -25,7 +39,7 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const { email, password, nameAr, privacyConsent, termsAccepted } = parsed.data
+    const { email, password, nameAr, privacyConsent, termsAccepted, fingerprint } = parsed.data
 
     if (!privacyConsent || !termsAccepted) {
       return NextResponse.json(
@@ -34,7 +48,49 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Check existing user
+    // 1. Block disposable email domains
+    if (isDisposableEmail(email)) {
+      return NextResponse.json(
+        { messageAr: 'يُرجى استخدام بريد إلكتروني حقيقي. لا يُقبل البريد المؤقت.' },
+        { status: 400 }
+      )
+    }
+
+    const ip = getClientIp(req)
+
+    // 2. IP rate limit — max 3 registrations per IP per 24h
+    if (ip !== 'unknown') {
+      const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000)
+      const recentCount = await prisma.auditLog.count({
+        where: {
+          action: 'USER_REGISTER',
+          ipAddress: ip,
+          createdAt: { gte: oneDayAgo },
+        },
+      })
+      if (recentCount >= MAX_REGISTRATIONS_PER_IP_PER_DAY) {
+        return NextResponse.json(
+          { messageAr: 'تم تجاوز الحد المسموح به لإنشاء الحسابات من هذا الجهاز. يُرجى المحاولة لاحقاً.' },
+          { status: 429 }
+        )
+      }
+    }
+
+    // 3. Device fingerprint — block if this device already has an account
+    if (fingerprint) {
+      const existingDevice = await prisma.user.findFirst({
+        where: { deviceFingerprint: fingerprint },
+        select: { id: true },
+      })
+      if (existingDevice) {
+        return NextResponse.json(
+          { messageAr: 'يوجد حساب مسجّل بالفعل على هذا الجهاز. يُرجى تسجيل الدخول.' },
+          { status: 409 }
+        )
+      }
+    }
+
+    // 4. Check existing email
     const existing = await prisma.user.findUnique({
       where: { email: email.toLowerCase() },
       select: { id: true },
@@ -48,8 +104,6 @@ export async function POST(req: NextRequest) {
     }
 
     const passwordHash = await hashPassword(password)
-
-    // Create user + free subscription in one transaction
     const freePlan = await prisma.plan.findUnique({ where: { slug: 'free' } })
 
     await prisma.$transaction(async (tx) => {
@@ -61,6 +115,7 @@ export async function POST(req: NextRequest) {
           privacyConsent,
           termsAccepted,
           role: 'USER',
+          deviceFingerprint: fingerprint ?? null,
         },
       })
 
@@ -77,7 +132,6 @@ export async function POST(req: NextRequest) {
         })
       }
 
-      // Initialize usage record for current month
       await tx.usageRecord.create({
         data: {
           userId: user.id,
@@ -86,15 +140,26 @@ export async function POST(req: NextRequest) {
         },
       })
 
-      // Audit log
       await tx.auditLog.create({
         data: {
           userId: user.id,
           action: 'USER_REGISTER',
+          ipAddress: ip,
           details: { email: user.email, planSlug: 'free' },
         },
       })
     })
+
+    // Send verification email (non-blocking)
+    const createdUser = await prisma.user.findUnique({
+      where: { email: email.toLowerCase() },
+      select: { id: true },
+    })
+    if (createdUser) {
+      createOtp(createdUser.id, 'EMAIL_VERIFY')
+        .then((code) => sendVerificationEmail(email.toLowerCase(), nameAr, code))
+        .catch(console.error)
+    }
 
     return NextResponse.json({ success: true }, { status: 201 })
   } catch (error) {

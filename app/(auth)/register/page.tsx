@@ -1,14 +1,46 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
+async function computeFingerprint(): Promise<string | null> {
+  try {
+    const parts = [
+      navigator.userAgent,
+      navigator.language,
+      `${screen.width}x${screen.height}x${screen.colorDepth}`,
+      String(navigator.hardwareConcurrency || ''),
+      Intl.DateTimeFormat().resolvedOptions().timeZone,
+    ]
+    try {
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+      if (ctx) {
+        ctx.font = '14px Arial'
+        ctx.fillText('sustainplus', 2, 14)
+        parts.push(canvas.toDataURL().slice(-30))
+      }
+    } catch {}
+    const raw = parts.join('|')
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(raw))
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('')
+  } catch {
+    return null
+  }
+}
+
 export default function RegisterPage() {
   const router = useRouter()
+  const fingerprintRef = useRef<string | null>(null)
+
+  useEffect(() => {
+    computeFingerprint().then(fp => { fingerprintRef.current = fp })
+  }, [])
+
   const [form, setForm] = useState({
     nameAr: '',
     email: '',
@@ -44,6 +76,8 @@ export default function RegisterPage() {
 
     setLoading(true)
     try {
+      const fp = fingerprintRef.current ?? await computeFingerprint()
+
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -53,6 +87,7 @@ export default function RegisterPage() {
           password: form.password,
           privacyConsent: agree,
           termsAccepted: agree,
+          fingerprint: fp,
         }),
       })
 
@@ -62,14 +97,14 @@ export default function RegisterPage() {
         return
       }
 
-      // Auto sign-in after registration
+      // Auto sign-in then go to email verification
       await signIn('credentials', {
         email: form.email.trim().toLowerCase(),
         password: form.password,
         redirect: false,
       })
 
-      router.push('/dashboard')
+      router.push('/verify-email')
       router.refresh()
     } catch {
       setError('حدث خطأ في الاتصال. يُرجى المحاولة مجدداً.')

@@ -1,4 +1,4 @@
-import Link from 'next/link'
+﻿import Link from 'next/link'
 import Image from 'next/image'
 import { MAIN_SITE_URL } from '@/lib/constants'
 
@@ -15,7 +15,7 @@ export function PlatformFooter() {
               </div>
             </div>
             <p className="text-sm text-[#cce5d5] opacity-80 max-w-sm leading-relaxed">
-              منصة استشارات بيئية ذكية مدعومة بخبرة متخصصي سستين بلس وقاعدة معرفة مراجعة من خبراء معتمدين.
+              منصة استشارات بيئية ذكية مدعومة بخبرة متخصصي ساستين بلس وقاعدة معرفة مراجعة من خبراء معتمدين.
             </p>
             <p className="mt-4 text-xs text-[#cce5d5] opacity-60">
               ⚠️ الردود إرشادية وتوعوية وليست شهادات قانونية رسمية.
@@ -35,7 +35,7 @@ export function PlatformFooter() {
 
           {/* Main site links */}
           <div>
-            <h3 className="font-bold text-white mb-4 text-sm">سستين بلس</h3>
+            <h3 className="font-bold text-white mb-4 text-sm">ساستين بلس</h3>
             <ul className="space-y-2 text-sm">
               <li>
                 <a href={`${MAIN_SITE_URL}/ar/about.html`} className="hover:text-white transition-colors opacity-80">
@@ -62,7 +62,7 @@ export function PlatformFooter() {
         </div>
 
         <div className="border-t border-[#1e5c34] mt-10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-[#cce5d5] opacity-60">
-          <p>© {new Date().getFullYear()} سستين بلس. جميع الحقوق محفوظة.</p>
+          <p>© {new Date().getFullYear()} ساستين بلس. جميع الحقوق محفوظة.</p>
           <div className="flex gap-4">
             <Link href="/trust" className="hover:opacity-100">سياسة الخصوصية</Link>
             <span>•</span>

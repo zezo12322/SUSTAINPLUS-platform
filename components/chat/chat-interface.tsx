@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
@@ -197,7 +197,7 @@ export function ChatInterface({
               مرحباً بك في المستشار البيئي
             </h2>
             <p className="text-gray-400 text-sm max-w-sm mx-auto leading-relaxed">
-              اطرح سؤالك البيئي وسيستجيب لك نظام الاستشارات المدعوم بخبرة سستين بلس.
+              اطرح سؤالك البيئي وسيستجيب لك نظام الاستشارات المدعوم بخبرة ساستين بلس.
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-2">
               {[
@@ -376,7 +376,7 @@ export function ChatInterface({
           </button>
         </form>
         <p className="text-[10px] text-gray-300 text-center mt-2">
-          الردود إرشادية فقط وليست شهادات رسمية • سستين بلس © {new Date().getFullYear()}
+          الردود إرشادية فقط وليست شهادات رسمية • ساستين بلس © {new Date().getFullYear()}
         </p>
       </div>
     </div>

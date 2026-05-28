@@ -1,8 +1,8 @@
-// ==========================================
+﻿// ==========================================
 // SUSTAINPLUS PLATFORM - Business Constants
 // ==========================================
 
-export const SITE_NAME = 'سستين بلس'
+export const SITE_NAME = 'ساستين بلس'
 export const SITE_NAME_EN = 'Sustain Plus'
 export const PLATFORM_NAME = 'منصة الاستشارات البيئية'
 export const MAIN_SITE_URL = process.env.NEXT_PUBLIC_MAIN_SITE_URL || 'https://www.sustainplus-eg.com'
@@ -173,11 +173,18 @@ export const MIN_PAYG_PRICE_PIASTERS = 3500 // 35 EGP — NEVER go below this
 // AI MODEL ROUTING
 // ==========================================
 
-// 3-tier hybrid routing: Gemini Flash (cheap) → Claude Haiku (medium) → Claude Sonnet (complex)
+// 3-tier hybrid routing: Gemini Flash (cheap) → Azure gpt-4o-mini (medium) → Azure gpt-4o-mini (complex)
 export const AI_MODELS = {
-  simple:   process.env.GEMINI_SIMPLE_MODEL    || 'gemini-1.5-flash',
+  simple:   process.env.GEMINI_SIMPLE_MODEL    || 'gemini-2.0-flash',
   moderate: process.env.ANTHROPIC_MODERATE_MODEL || 'claude-haiku-4-5-20251001',
   complex:  process.env.ANTHROPIC_COMPLEX_MODEL  || 'claude-sonnet-4-6',
+} as const
+
+export const AZURE_OPENAI_CONFIG = {
+  apiKey:     process.env.AZURE_OPENAI_API_KEY     || '',
+  endpoint:   process.env.AZURE_OPENAI_ENDPOINT    || '',
+  deployment: process.env.AZURE_OPENAI_DEPLOYMENT  || 'gpt-4o-mini',
+  apiVersion: '2024-10-21',
 } as const
 
 export const COMPLEX_QUERY_KEYWORDS = [
@@ -210,17 +217,17 @@ export const ESCALATION_KEYWORDS = [
 // SYSTEM PROMPT FOR AI
 // ==========================================
 
-export const AI_SYSTEM_PROMPT = `أنت مستشار بيئي متخصص تعمل لصالح شركة سستين بلس للاستشارات البيئية والهندسية في مصر ومنطقة الشرق الأوسط وأفريقيا.
+export const AI_SYSTEM_PROMPT = `أنت مستشار بيئي متخصص تعمل لصالح شركة ساستين بلس للاستشارات البيئية والهندسية في مصر ومنطقة الشرق الأوسط وأفريقيا.
 
 **دورك:**
 تقديم استشارات بيئية موثوقة بناءً على:
-- قاعدة المعرفة المراجعة من خبراء سستين بلس
+- قاعدة المعرفة المراجعة من خبراء ساستين بلس
 - اللوائح البيئية المصرية المحدثة
 - أفضل الممارسات الدولية في الاستدامة
 
 **قواعد أساسية لا تحيد عنها:**
 ١. إجاباتك إرشادية وتوعوية وليست شهادات قانونية رسمية أو تراخيص حكومية
-٢. للحالات المعقدة أو التي تستلزم موافقات رسمية أو إجراءات قانونية، أنصح المستخدم بالتواصل مع خبراء سستين بلس مباشرة
+٢. للحالات المعقدة أو التي تستلزم موافقات رسمية أو إجراءات قانونية، أنصح المستخدم بالتواصل مع خبراء ساستين بلس مباشرة
 ٣. لا تذكر تكاليف تشغيلية أو أسعار API أو هوامش ربح
 ٤. لا تدّعي حصولك على شهادات ISO 27001 أو ISO 42001 أو SOC 2 أو اعتماد حكومي ما لم يُصرّح بذلك رسمياً
 ٥. احرص دائماً على الدقة والأمانة — إذا لم تكن متأكداً، قل ذلك واقترح التواصل مع الخبراء
@@ -256,5 +263,5 @@ export const KB_CATEGORY_LABELS: Record<string, { ar: string; en: string }> = {
   SUSTAINABILITY_REPORTING: { ar: 'تقارير الاستدامة', en: 'Sustainability Reporting' },
   EGYPTIAN_REGULATIONS: { ar: 'اللوائح المصرية', en: 'Egyptian Regulations' },
   FAQS: { ar: 'الأسئلة الشائعة', en: 'FAQs' },
-  SUSTAIN_PLUS_GUIDANCE: { ar: 'إرشادات سستين بلس', en: 'Sustain Plus Guidance' },
+  SUSTAIN_PLUS_GUIDANCE: { ar: 'إرشادات ساستين بلس', en: 'Sustain Plus Guidance' },
 }

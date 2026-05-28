@@ -1,4 +1,4 @@
-import Link from 'next/link'
+﻿import Link from 'next/link'
 import { PlatformHeader } from '@/components/layout/platform-header'
 import { PlatformFooter } from '@/components/layout/platform-footer'
 import { PLANS, CONSULTATION_PACKS } from '@/lib/constants'
@@ -188,7 +188,7 @@ export default function PricingPage() {
               },
               {
                 q: 'هل الردود دقيقة دائماً؟',
-                a: 'الردود مستندة إلى قاعدة معرفة مراجعة من خبراء سستين بلس، غير أنها إرشادية. للحالات المعقدة التي تحتاج رأياً رسمياً، نوصي بتصعيد الأمر لأحد خبرائنا.',
+                a: 'الردود مستندة إلى قاعدة معرفة مراجعة من خبراء ساستين بلس، غير أنها إرشادية. للحالات المعقدة التي تحتاج رأياً رسمياً، نوصي بتصعيد الأمر لأحد خبرائنا.',
               },
               {
                 q: 'ما طرق الدفع المتاحة؟',

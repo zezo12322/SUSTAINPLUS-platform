@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+﻿import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
@@ -122,7 +122,7 @@ async function main() {
 
 **ملاحظة:** تختلف المتطلبات حسب نوع النشاط الصناعي والحجم.`,
       status: 'PUBLISHED' as const,
-      reviewer: 'فريق سستين بلس',
+      reviewer: 'فريق ساستين بلس',
       tags: ['ترخيص', 'امتثال', 'EEAA', 'صناعة'],
       sourceNotes: 'قانون البيئة رقم ٤ لسنة ١٩٩٤ وتعديلاته - قرار وزير البيئة',
       createdBy: admin.id,
@@ -144,7 +144,7 @@ async function main() {
 **العقوبات:**
 التخلص غير القانوني من النفايات الخطرة يستوجب غرامات وعقوبات جنائية وفق المادة ٩٤ من قانون البيئة.`,
       status: 'PUBLISHED' as const,
-      reviewer: 'فريق سستين بلس',
+      reviewer: 'فريق ساستين بلس',
       tags: ['نفايات خطرة', 'إدارة النفايات', 'امتثال'],
       sourceNotes: 'قانون البيئة رقم ٤ لسنة ١٩٩٤ - الباب الخامس',
       createdBy: admin.id,
@@ -173,7 +173,7 @@ async function main() {
 **المراجعة والاعتماد:**
 تُراجع الدراسة من قِبل جهاز شؤون البيئة (EEAA) قبل منح الموافقة البيئية.`,
       status: 'PUBLISHED' as const,
-      reviewer: 'فريق سستين بلس',
+      reviewer: 'فريق ساستين بلس',
       tags: ['EIA', 'تقييم أثر بيئي', 'أسئلة شائعة'],
       sourceNotes: 'اللائحة التنفيذية لقانون البيئة - قرار وزير البيئة رقم ٣٣٨ لسنة ١٩٩٥',
       createdBy: admin.id,
@@ -195,7 +195,7 @@ async function main() {
 **الإجراءات عند تجاوز الحدود:**
 تقديم خطة تصحيحية (Action Plan) خلال ٣٠ يوماً، وإلا تُطبق الغرامات المنصوص عليها في القانون.`,
       status: 'PUBLISHED' as const,
-      reviewer: 'فريق سستين بلس',
+      reviewer: 'فريق ساستين بلس',
       tags: ['انبعاثات', 'هواء', 'حدود مسموح', 'رصد'],
       sourceNotes: 'قرار وزير البيئة رقم ٥٢١ لسنة ١٩٩٥',
       createdBy: admin.id,
@@ -220,7 +220,7 @@ async function main() {
 ٣. سجلات تفصيلية للقياسات
 ٤. تصاريح تصريف من الجهات المختصة`,
       status: 'PUBLISHED' as const,
-      reviewer: 'فريق سستين بلس',
+      reviewer: 'فريق ساستين بلس',
       tags: ['مياه', 'صرف صناعي', 'معالجة', 'BOD', 'COD'],
       sourceNotes: 'قرار وزير البيئة رقم ٤٤ لسنة ٢٠٠٠',
       createdBy: admin.id,
