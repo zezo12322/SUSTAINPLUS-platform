@@ -20,7 +20,10 @@ export default auth(function middleware(req) {
     nextUrl.pathname.startsWith('/pricing') ||
     nextUrl.pathname.startsWith('/trust') ||
     nextUrl.pathname.startsWith('/_next') ||
-    nextUrl.pathname.startsWith('/favicon')
+    nextUrl.pathname.startsWith('/favicon') ||
+    nextUrl.pathname === '/api/ping' ||
+    nextUrl.pathname === '/api/health' ||
+    nextUrl.pathname === '/api/env'
 
   if (isPublic || isApiAuth) return NextResponse.next()
 
