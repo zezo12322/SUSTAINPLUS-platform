@@ -242,6 +242,11 @@ jobs:
           NEXTAUTH_URL_VAL: ${{ secrets.NEXTAUTH_URL }}
           GEMINI_KEY: ${{ secrets.GEMINI_API_KEY }}
           ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          AZURE_OAI_KEY: ${{ secrets.AZURE_OPENAI_API_KEY }}
+          AZURE_OAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
+          AZURE_OAI_DEPLOYMENT: ${{ secrets.AZURE_OPENAI_DEPLOYMENT }}
+          RESEND_KEY: ${{ secrets.RESEND_API_KEY }}
+          EMAIL_FROM_VAL: ${{ secrets.EMAIL_FROM }}
         run: |
           RG=$(az webapp list --query "[?name=='sustainplus-ai'].resourceGroup | [0]" --output tsv)
           SITE_URL="https://sustainplus-ai-crh0bqhffyewhxa5.westeurope-01.azurewebsites.net"
@@ -256,10 +261,15 @@ jobs:
             "NEXT_PUBLIC_MAIN_SITE_URL=https://sustainplus-eg.com"
           )
 
-          [ -n "$DB_URL" ]          && SETTINGS+=("DATABASE_URL=$DB_URL")
-          [ -n "$AUTH_SECRET_VAL" ] && SETTINGS+=("NEXTAUTH_SECRET=$AUTH_SECRET_VAL" "AUTH_SECRET=$AUTH_SECRET_VAL")
-          [ -n "$GEMINI_KEY" ]      && SETTINGS+=("GEMINI_API_KEY=$GEMINI_KEY")
-          [ -n "$ANTHROPIC_KEY" ]   && SETTINGS+=("ANTHROPIC_API_KEY=$ANTHROPIC_KEY")
+          [ -n "$DB_URL" ]              && SETTINGS+=("DATABASE_URL=$DB_URL")
+          [ -n "$AUTH_SECRET_VAL" ]     && SETTINGS+=("NEXTAUTH_SECRET=$AUTH_SECRET_VAL" "AUTH_SECRET=$AUTH_SECRET_VAL")
+          [ -n "$GEMINI_KEY" ]          && SETTINGS+=("GEMINI_API_KEY=$GEMINI_KEY")
+          [ -n "$ANTHROPIC_KEY" ]       && SETTINGS+=("ANTHROPIC_API_KEY=$ANTHROPIC_KEY")
+          [ -n "$AZURE_OAI_KEY" ]       && SETTINGS+=("AZURE_OPENAI_API_KEY=$AZURE_OAI_KEY")
+          [ -n "$AZURE_OAI_ENDPOINT" ]  && SETTINGS+=("AZURE_OPENAI_ENDPOINT=$AZURE_OAI_ENDPOINT")
+          [ -n "$AZURE_OAI_DEPLOYMENT" ] && SETTINGS+=("AZURE_OPENAI_DEPLOYMENT=$AZURE_OAI_DEPLOYMENT")
+          [ -n "$RESEND_KEY" ]          && SETTINGS+=("RESEND_API_KEY=$RESEND_KEY")
+          [ -n "$EMAIL_FROM_VAL" ]      && SETTINGS+=("EMAIL_FROM=$EMAIL_FROM_VAL")
 
           echo "Applying ${#SETTINGS[@]} app settings to $RG/sustainplus-ai ..."
           az webapp config appsettings set \
