@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import { MarketingHeader } from './marketing-header'
 import { MarketingFooter } from './marketing-footer'
-import { ScrollReveal } from '@/components/animation/scroll-reveal'
 import { MARKETING, type Locale } from '@/lib/marketing'
 
 /**
@@ -23,7 +22,6 @@ export function MarketingShell({
       lang={locale}
       className={`${locale === 'ar' ? 'font-cairo' : 'font-sans'} bg-white text-gray-900 min-h-screen flex flex-col`}
     >
-      <ScrollReveal />
       <MarketingHeader dict={dict} locale={locale} />
       <main className="flex-1">{children}</main>
       <MarketingFooter dict={dict} />

@@ -16,13 +16,13 @@ export default function TrustPage() {
         {/* Hero */}
         <section className="bg-white border-b border-gray-100 py-14">
           <div className="max-w-4xl mx-auto px-4 text-center">
-            <div className="w-16 h-16 bg-primary-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <div data-reveal="zoom-in" className="animate-float w-16 h-16 bg-primary-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <i className="fa-solid fa-shield-halved text-primary-600 text-2xl" />
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            <h1 data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '100ms' }} className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
               الأمان والخصوصية
             </h1>
-            <p className="text-gray-500 text-lg max-w-xl mx-auto">
+            <p data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '200ms' }} className="text-gray-500 text-lg max-w-xl mx-auto">
               ثقتك هي أساس عملنا. نلتزم بأعلى معايير الأمان وحماية بياناتك.
             </p>
           </div>
@@ -31,7 +31,7 @@ export default function TrustPage() {
         <div className="max-w-4xl mx-auto px-4 py-14 space-y-8">
 
           {/* Data security */}
-          <div className="bg-white rounded-2xl border border-gray-100 p-8">
+          <div data-reveal="fade-up" className="bg-white rounded-2xl border border-gray-100 p-8 transition-shadow hover:shadow-md">
             <div className="flex items-center gap-3 mb-5">
               <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
                 <i className="fa-solid fa-lock text-blue-600" />
@@ -59,7 +59,7 @@ export default function TrustPage() {
           </div>
 
           {/* Privacy */}
-          <div className="bg-white rounded-2xl border border-gray-100 p-8">
+          <div data-reveal="fade-up" className="bg-white rounded-2xl border border-gray-100 p-8 transition-shadow hover:shadow-md">
             <div className="flex items-center gap-3 mb-5">
               <div className="w-10 h-10 bg-primary-50 rounded-xl flex items-center justify-center">
                 <i className="fa-solid fa-eye-slash text-primary-600" />
@@ -87,7 +87,7 @@ export default function TrustPage() {
           </div>
 
           {/* AI Transparency */}
-          <div className="bg-white rounded-2xl border border-gray-100 p-8">
+          <div data-reveal="fade-up" className="bg-white rounded-2xl border border-gray-100 p-8 transition-shadow hover:shadow-md">
             <div className="flex items-center gap-3 mb-5">
               <div className="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center">
                 <i className="fa-solid fa-circle-info text-amber-600" />
@@ -123,7 +123,7 @@ export default function TrustPage() {
           </div>
 
           {/* Access control */}
-          <div className="bg-white rounded-2xl border border-gray-100 p-8">
+          <div data-reveal="fade-up" className="bg-white rounded-2xl border border-gray-100 p-8 transition-shadow hover:shadow-md">
             <div className="flex items-center gap-3 mb-5">
               <div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center">
                 <i className="fa-solid fa-users-gear text-purple-600" />
@@ -151,7 +151,7 @@ export default function TrustPage() {
           </div>
 
           {/* Payment security */}
-          <div className="bg-white rounded-2xl border border-gray-100 p-8">
+          <div data-reveal="fade-up" className="bg-white rounded-2xl border border-gray-100 p-8 transition-shadow hover:shadow-md">
             <div className="flex items-center gap-3 mb-5">
               <div className="w-10 h-10 bg-gold-50 rounded-xl flex items-center justify-center">
                 <i className="fa-solid fa-credit-card text-gold-600" />
@@ -179,7 +179,7 @@ export default function TrustPage() {
           </div>
 
           {/* Terms anchor */}
-          <div id="terms" className="bg-white rounded-2xl border border-gray-100 p-8">
+          <div id="terms" data-reveal="fade-up" className="bg-white rounded-2xl border border-gray-100 p-8">
             <h2 className="text-xl font-bold text-gray-900 mb-5">الشروط والأحكام</h2>
             <div className="prose prose-sm max-w-none text-gray-600 space-y-4 leading-relaxed">
               <p>بتسجيلك واستخدامك لمنصة ساستين بلس للاستشارات البيئية، فإنك توافق على ما يلي:</p>
@@ -195,7 +195,7 @@ export default function TrustPage() {
           </div>
 
           {/* Contact */}
-          <div className="bg-primary-50 border border-primary-100 rounded-2xl p-8 text-center">
+          <div data-reveal="zoom-in" className="bg-primary-50 border border-primary-100 rounded-2xl p-8 text-center">
             <i className="fa-solid fa-envelope text-primary-600 text-2xl mb-3" />
             <h3 className="font-bold text-gray-900 mb-2">أسئلة حول الخصوصية والأمان؟</h3>
             <p className="text-gray-500 text-sm mb-4">

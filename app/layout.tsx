@@ -1,6 +1,7 @@
 ﻿import type { Metadata } from 'next'
 import '@/app/globals.css'
 import { SessionProvider } from 'next-auth/react'
+import { ScrollReveal } from '@/components/animation/scroll-reveal'
 
 export const metadata: Metadata = {
   title: {
@@ -43,6 +44,7 @@ export default function RootLayout({
       </head>
       <body className="font-cairo antialiased">
         <SessionProvider>
+          <ScrollReveal />
           {children}
         </SessionProvider>
       </body>

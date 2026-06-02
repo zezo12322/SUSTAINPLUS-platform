@@ -67,10 +67,10 @@ export default function PricingPage() {
         {/* Header */}
         <section className="bg-white border-b border-gray-100 py-14">
           <div className="max-w-4xl mx-auto px-4 text-center">
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            <h1 data-reveal="fade-up" className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
               الأسعار والباقات
             </h1>
-            <p className="text-gray-500 text-lg max-w-xl mx-auto">
+            <p data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '100ms' }} className="text-gray-500 text-lg max-w-xl mx-auto">
               اختر الباقة التي تناسب حجم عملك واحتياجاتك البيئية. ابدأ مجاناً وطوّر عند الحاجة.
             </p>
           </div>
@@ -79,13 +79,15 @@ export default function PricingPage() {
         {/* Plans grid */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
-            {plans.map((plan) => (
+            {plans.map((plan, i) => (
               <div
                 key={plan.slug}
-                className={`relative bg-white rounded-2xl border-2 p-6 flex flex-col transition-all duration-300 ${
+                data-reveal="fade-up"
+                style={{ ['--reveal-delay' as string]: `${i * 80}ms` }}
+                className={`relative bg-white rounded-2xl border-2 p-6 flex flex-col ${
                   plan.isFeatured
                     ? 'border-primary-500 shadow-xl shadow-primary-100'
-                    : 'border-gray-100 hover:border-primary-200 hover:shadow-md'
+                    : 'border-gray-100 hover:border-primary-300 hover:shadow-lg'
                 }`}
               >
                 {plan.isFeatured && (
@@ -146,16 +148,18 @@ export default function PricingPage() {
 
         {/* Extra packs */}
         <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
-          <div className="bg-white rounded-2xl border border-gray-100 p-8">
+          <div data-reveal="fade-up" className="bg-white rounded-2xl border border-gray-100 p-8">
             <h2 className="text-xl font-bold text-gray-900 mb-2">استشارات إضافية</h2>
             <p className="text-gray-500 text-sm mb-7">
               أضف استشارات إضافية لأي باقة في أي وقت. الأسعار ثابتة ولا تتغير.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {CONSULTATION_PACKS.map((pack) => (
+              {CONSULTATION_PACKS.map((pack, i) => (
                 <div
                   key={pack.id}
-                  className="border-2 border-gray-100 hover:border-primary-300 rounded-xl p-5 text-center transition-colors cursor-pointer"
+                  data-reveal="zoom-in"
+                  style={{ ['--reveal-delay' as string]: `${i * 90}ms` }}
+                  className="border-2 border-gray-100 hover:border-primary-300 hover:shadow-md rounded-xl p-5 text-center cursor-pointer"
                 >
                   <p className="text-2xl font-bold text-primary-700 mb-1">{pack.labelAr}</p>
                   <p className="text-lg font-semibold text-gray-800">
@@ -175,7 +179,7 @@ export default function PricingPage() {
 
         {/* FAQ */}
         <section className="max-w-3xl mx-auto px-4 pb-16">
-          <h2 className="text-xl font-bold text-gray-900 mb-7 text-center">أسئلة شائعة</h2>
+          <h2 data-reveal="fade-up" className="text-xl font-bold text-gray-900 mb-7 text-center">أسئلة شائعة</h2>
           <div className="space-y-4">
             {[
               {
@@ -198,8 +202,8 @@ export default function PricingPage() {
                 q: 'هل يوجد عرض للمؤسسات؟',
                 a: 'نعم، باقة الأعمال قابلة للتخصيص للمؤسسات الكبيرة. تواصل معنا لمناقشة احتياجاتك.',
               },
-            ].map((faq) => (
-              <details key={faq.q} className="bg-white rounded-xl border border-gray-100 p-5 group">
+            ].map((faq, i) => (
+              <details key={faq.q} data-reveal="fade-up" style={{ ['--reveal-delay' as string]: `${i * 70}ms` }} className="bg-white rounded-xl border border-gray-100 p-5 group hover:border-primary-200 transition-colors">
                 <summary className="flex justify-between items-center cursor-pointer font-semibold text-gray-800 list-none">
                   {faq.q}
                   <i className="fa-solid fa-chevron-down text-gray-400 text-xs transition-transform group-open:rotate-180" />
@@ -211,12 +215,19 @@ export default function PricingPage() {
         </section>
 
         {/* CTA */}
-        <section className="bg-primary-600 py-14 text-center px-4">
-          <h2 className="text-2xl font-bold text-white mb-4">ابدأ استشارتك البيئية اليوم</h2>
-          <p className="text-white/80 mb-7">٣ استشارات مجانية بدون بطاقة ائتمان.</p>
+        <section className="relative overflow-hidden bg-primary-600 py-14 text-center px-4">
+          <div
+            aria-hidden="true"
+            className="animate-aurora pointer-events-none absolute -top-1/3 end-[12%] h-64 w-64 rounded-full opacity-20 blur-3xl"
+            style={{ background: 'radial-gradient(circle, #AF8443 0%, transparent 70%)' }}
+          />
+          <h2 data-reveal="fade-up" className="relative text-2xl font-bold text-white mb-4">ابدأ استشارتك البيئية اليوم</h2>
+          <p data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '100ms' }} className="relative text-white/80 mb-7">٣ استشارات مجانية بدون بطاقة ائتمان.</p>
           <Link
             href="/register"
-            className="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-600 text-white font-bold px-8 py-4 rounded-xl transition-colors"
+            data-reveal="fade-up"
+            style={{ ['--reveal-delay' as string]: '200ms' }}
+            className="sheen group relative inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-600 text-white font-bold px-8 py-4 rounded-xl transition-colors"
           >
             إنشاء حساب مجاني
           </Link>

@@ -114,7 +114,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="bg-white rounded-2xl shadow-2xl p-8">
+    <div className="animate-pop-in bg-white rounded-2xl shadow-2xl p-8">
       <div className="text-center mb-7">
         <h1 className="text-2xl font-bold text-gray-900 mb-1">إنشاء حساب مجاني</h1>
         <p className="text-gray-400 text-sm">٣ استشارات بيئية مجانية في انتظارك</p>

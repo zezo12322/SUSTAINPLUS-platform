@@ -62,7 +62,7 @@ export default function VerifyEmailPage() {
   const masked = email.replace(/(.{2})(.*)(@.*)/, (_, a, b, c) => a + '*'.repeat(b.length) + c)
 
   return (
-    <div className="bg-white rounded-2xl shadow-2xl p-8 text-center">
+    <div className="animate-pop-in bg-white rounded-2xl shadow-2xl p-8 text-center">
       <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-5">
         <i className="fa-solid fa-envelope-circle-check text-3xl text-primary-600" />
       </div>

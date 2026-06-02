@@ -1,7 +1,6 @@
 import { auth } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { DashboardSidebar } from '@/components/layout/dashboard-sidebar'
-import { ScrollReveal } from '@/components/animation/scroll-reveal'
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth()
@@ -10,7 +9,6 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50" dir="rtl">
-      <ScrollReveal />
       <DashboardSidebar />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <header className="bg-white border-b border-gray-100 h-14 flex items-center px-6 gap-3 flex-shrink-0">
