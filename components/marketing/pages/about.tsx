@@ -3,6 +3,7 @@ import { ClientLogoRails } from '@/components/marketing/client-logo-rails'
 import { MarketingShell } from '@/components/marketing/marketing-chrome'
 import { PageBanner } from '@/components/marketing/page-banner'
 import { SectionHeading, Eyebrow, Card } from '@/components/marketing/ui'
+import { CountUp } from '@/components/animation/count-up'
 import { type Locale } from '@/lib/marketing'
 import { COMPANY, ABOUT, STATS, CREDENTIALS } from '@/lib/company'
 
@@ -245,15 +246,17 @@ export function AboutPage({ locale }: { locale: Locale }) {
           </div>
 
           <div className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {STATS.map((s) => (
+            {STATS.map((s, i) => (
               <div
                 key={s.value + s.en}
-                className="rounded-2xl border border-white/15 bg-white/5 p-6 flex items-center gap-4"
+                data-reveal="fade-up"
+                style={{ ['--reveal-delay' as string]: `${i * 110}ms` }}
+                className="group rounded-2xl border border-white/15 bg-white/5 p-6 flex items-center gap-4 transition-colors hover:border-gold-400/40 hover:bg-white/[0.08]"
               >
-                <i className={`fa-solid ${s.icon} text-gold-400 text-2xl sm:text-3xl`} />
+                <i className={`fa-solid ${s.icon} text-gold-400 text-2xl sm:text-3xl transition-transform duration-300 group-hover:scale-110`} />
                 <div>
                   <p className="text-white text-2xl sm:text-3xl font-extrabold leading-none">
-                    {s.value}
+                    <CountUp value={s.value} />
                   </p>
                   <p className="text-white/60 text-xs sm:text-sm mt-1 leading-snug">
                     {isAr ? s.ar : s.en}
@@ -268,7 +271,7 @@ export function AboutPage({ locale }: { locale: Locale }) {
       {/* ───────────────────────── WHO WE WORK WITH ───────────────────────── */}
       <section id="clients" className="bg-white py-20 lg:py-24 border-y border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto">
+          <div data-reveal="fade-up" className="text-center max-w-2xl mx-auto">
             <Eyebrow>{t.clients.eyebrow}</Eyebrow>
             <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
               {t.clients.title}
@@ -292,20 +295,20 @@ export function AboutPage({ locale }: { locale: Locale }) {
           }}
         />
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-24 text-center">
-          <p className="text-gold-400 font-semibold uppercase tracking-widest text-sm">
+          <p data-reveal="fade-up" className="text-gold-400 font-semibold uppercase tracking-widest text-sm">
             {t.cta.eyebrow}
           </p>
-          <h2 className="mt-3 text-3xl sm:text-4xl font-extrabold text-white leading-tight">
+          <h2 data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '100ms' }} className="mt-3 text-3xl sm:text-4xl font-extrabold text-white leading-tight">
             {t.cta.title}
           </h2>
-          <p className="mt-4 text-white/75 text-lg leading-relaxed">{t.cta.subtitle}</p>
-          <div className="mt-9 flex justify-center">
+          <p data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '200ms' }} className="mt-4 text-white/75 text-lg leading-relaxed">{t.cta.subtitle}</p>
+          <div data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '300ms' }} className="mt-9 flex justify-center">
             <Link
               href="/platform"
-              className="inline-flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-semibold px-7 py-3.5 rounded-lg transition-colors shadow-lg shadow-black/20"
+              className="sheen group inline-flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-semibold px-7 py-3.5 rounded-lg transition-all shadow-lg shadow-black/20 hover:-translate-y-0.5"
             >
               {t.cta.button}
-              <i className={`fa-solid ${arrow} text-sm`} />
+              <i className={`fa-solid ${arrow} text-sm transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5`} />
             </Link>
           </div>
         </div>

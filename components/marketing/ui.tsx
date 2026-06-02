@@ -12,7 +12,7 @@ export function Eyebrow({ children }: { children: ReactNode }) {
 /** Section heading with the brand accent bar (matches the homepage). */
 export function SectionEyebrow({ text }: { text: string }) {
   return (
-    <div className="flex items-center gap-3">
+    <div data-reveal="fade-up" className="flex items-center gap-3">
       <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">{text}</h2>
       <span className="block h-1 w-10 rounded-full bg-gold-500" />
     </div>
@@ -32,7 +32,7 @@ export function SectionHeading({
   center?: boolean
 }) {
   return (
-    <div className={center ? 'text-center max-w-2xl mx-auto' : ''}>
+    <div data-reveal="fade-up" className={center ? 'text-center max-w-2xl mx-auto' : ''}>
       {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
       <h2 className="mt-3 text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
         {title}
@@ -52,7 +52,8 @@ export function Card({
 }) {
   return (
     <div
-      className={`rounded-2xl border border-gray-100 bg-white p-6 hover:border-primary-200 hover:shadow-md transition-all ${className}`}
+      data-reveal="fade-up"
+      className={`rounded-2xl border border-gray-100 bg-white p-6 hover:border-primary-300 hover:shadow-lg ${className}`}
     >
       {children}
     </div>

@@ -143,12 +143,177 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes pulse-ring {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(30, 107, 63, 0.4); }
-  50% { box-shadow: 0 0 0 8px rgba(30, 107, 63, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(175, 132, 67, 0.45); }
+  50% { box-shadow: 0 0 0 10px rgba(175, 132, 67, 0); }
 }
 
 .animate-fade-in { animation: fadeIn 0.3s ease forwards; }
 .animate-pulse-ring { animation: pulse-ring 2s infinite; }
+
+/* ====================================
+   SCROLL-REVEAL ENGINE
+   Server components opt in with `data-reveal="<variant>"`.
+   The <ScrollReveal/> client observer adds `.is-revealed` when
+   the element scrolls into view. Stagger via inline
+   `style={{ '--reveal-delay': '120ms' }}`.
+   ==================================== */
+[data-reveal] {
+  opacity: 0;
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 0.84, 0.44, 1) var(--reveal-delay, 0ms),
+    transform 0.7s cubic-bezier(0.16, 0.84, 0.44, 1) var(--reveal-delay, 0ms),
+    filter 0.7s cubic-bezier(0.16, 0.84, 0.44, 1) var(--reveal-delay, 0ms),
+    /* hover props stay snappy, no reveal delay */
+    box-shadow 0.3s ease,
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    color 0.3s ease;
+  will-change: opacity, transform;
+}
+[data-reveal="fade-up"]    { transform: translateY(34px); }
+[data-reveal="fade-down"]  { transform: translateY(-34px); }
+[data-reveal="fade-right"] { transform: translateX(40px); }
+[data-reveal="fade-left"]  { transform: translateX(-40px); }
+[data-reveal="zoom-in"]    { transform: scale(0.9); }
+[data-reveal="zoom-out"]   { transform: scale(1.06); }
+[data-reveal="blur-in"]    { filter: blur(14px); transform: translateY(20px); }
+[data-reveal="flip-up"]    { transform: perspective(900px) rotateX(-18deg) translateY(28px); transform-origin: bottom; }
+
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* ====================================
+   HERO ENTRANCE (runs on load, no observer)
+   ==================================== */
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(38px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes hero-zoom {
+  from { transform: scale(1.12); }
+  to   { transform: scale(1); }
+}
+@keyframes hero-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.hero-rise {
+  opacity: 0;
+  animation: hero-rise 0.9s cubic-bezier(0.16, 0.84, 0.44, 1) forwards;
+  animation-delay: var(--hero-delay, 0ms);
+}
+.hero-bg-zoom {
+  animation: hero-zoom 1.6s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+.hero-fade {
+  opacity: 0;
+  animation: hero-fade 1.2s ease forwards;
+  animation-delay: var(--hero-delay, 0ms);
+}
+
+/* ====================================
+   AMBIENT / DECORATIVE MOTION
+   ==================================== */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
+}
+@keyframes aurora-drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(4%, -3%, 0) scale(1.12); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes shimmer {
+  from { background-position: -150% 0; }
+  to   { background-position: 250% 0; }
+}
+@keyframes sheen {
+  0%   { transform: translateX(-130%) skewX(-18deg); opacity: 0; }
+  18%  { opacity: 0.55; }
+  60%, 100% { transform: translateX(230%) skewX(-18deg); opacity: 0; }
+}
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+.animate-float { animation: float-slow 6s ease-in-out infinite; }
+.animate-aurora { animation: aurora-drift 18s ease-in-out infinite; will-change: transform; }
+.animate-spin-slow { animation: spin-slow 22s linear infinite; }
+
+/* Gradient text shimmer (navy ↔ gold) */
+.text-shimmer {
+  background: linear-gradient(100deg, #AF8443 20%, #e3cba6 40%, #AF8443 60%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: shimmer 5s linear infinite;
+}
+
+/* Sheen swipe — apply to a `relative overflow-hidden` element */
+.sheen { position: relative; overflow: hidden; }
+.sheen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.35) 50%, transparent 100%);
+  transform: translateX(-130%) skewX(-18deg);
+  pointer-events: none;
+}
+.sheen:hover::after,
+.group:hover .sheen::after { animation: sheen 0.9s ease forwards; }
+
+/* Hover lift utility */
+.hover-lift {
+  transition: transform 0.35s cubic-bezier(0.16, 0.84, 0.44, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 0.84, 0.44, 1);
+}
+.hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 50px -18px rgba(12, 29, 50, 0.28);
+}
+
+/* Skeleton shimmer for loading states */
+.skeleton {
+  background: linear-gradient(90deg, #eceae5 25%, #f6f5f2 37%, #eceae5 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+/* Soft entrance for newly mounted blocks (used by chat bubbles, toasts) */
+@keyframes pop-in {
+  0%   { opacity: 0; transform: translateY(10px) scale(0.97); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-pop-in { animation: pop-in 0.45s cubic-bezier(0.16, 0.84, 0.44, 1) both; }
+
+/* ====================================
+   REDUCED MOTION — disable everything
+   ==================================== */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+  .hero-rise, .hero-fade, .hero-bg-zoom,
+  .animate-float, .animate-aurora, .animate-spin-slow,
+  .text-shimmer, .animate-pop-in, .skeleton {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .text-shimmer {
+    -webkit-text-fill-color: currentColor;
+    color: inherit;
+  }
+}
 
 /* ====================================
    CHAT SPECIFIC
@@ -188,12 +353,37 @@ h1, h2, h3, h4, h5, h6 {
    SIDEBAR
    ==================================== */
 .sidebar-nav-item {
-  @apply flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium
+  @apply relative flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium
          text-gray-600 hover:bg-primary-50 hover:text-primary-700
-         transition-colors duration-150 cursor-pointer;
+         transition-all duration-200 cursor-pointer;
+}
+.sidebar-nav-item:hover {
+  padding-inline-start: 1.35rem;
+}
+/* Animated active indicator bar on the inline-start edge */
+.sidebar-nav-item::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0.25rem;
+  top: 50%;
+  height: 0;
+  width: 3px;
+  border-radius: 9999px;
+  background: var(--accent);
+  transform: translateY(-50%);
+  transition: height 0.25s cubic-bezier(0.16, 0.84, 0.44, 1);
 }
 .sidebar-nav-item.active {
   @apply bg-primary-50 text-primary-700 font-semibold;
+}
+.sidebar-nav-item.active::before {
+  height: 60%;
+}
+.sidebar-nav-item .fa-solid {
+  transition: transform 0.2s ease;
+}
+.sidebar-nav-item:hover .fa-solid {
+  transform: scale(1.12);
 }
 
 /* ====================================

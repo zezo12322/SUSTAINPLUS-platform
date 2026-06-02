@@ -56,7 +56,7 @@ export default async function DashboardPage() {
       {/* Stats row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-7">
         {/* Consultations used */}
-        <div className="bg-white rounded-xl border border-gray-100 p-5">
+        <div data-reveal="fade-up" className="bg-white rounded-xl border border-gray-100 p-5 hover:shadow-md hover:border-primary-200">
           <div className="flex justify-between items-start mb-3">
             <p className="text-sm font-medium text-gray-500">الاستشارات المستخدمة</p>
             <i className="fa-solid fa-comments text-primary-400" />
@@ -69,7 +69,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Plan */}
-        <div className="bg-white rounded-xl border border-gray-100 p-5">
+        <div data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '90ms' }} className="bg-white rounded-xl border border-gray-100 p-5 hover:shadow-md hover:border-primary-200">
           <div className="flex justify-between items-start mb-3">
             <p className="text-sm font-medium text-gray-500">الباقة الحالية</p>
             <i className="fa-solid fa-star text-gold-500" />
@@ -81,7 +81,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Sessions */}
-        <div className="bg-white rounded-xl border border-gray-100 p-5">
+        <div data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '180ms' }} className="bg-white rounded-xl border border-gray-100 p-5 hover:shadow-md hover:border-primary-200">
           <div className="flex justify-between items-start mb-3">
             <p className="text-sm font-medium text-gray-500">المحادثات</p>
             <i className="fa-solid fa-message text-blue-400" />
@@ -93,7 +93,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Expert cases */}
-        <div className="bg-white rounded-xl border border-gray-100 p-5">
+        <div data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '270ms' }} className="bg-white rounded-xl border border-gray-100 p-5 hover:shadow-md hover:border-primary-200">
           <div className="flex justify-between items-start mb-3">
             <p className="text-sm font-medium text-gray-500">حالات الخبراء</p>
             <i className="fa-solid fa-user-tie text-purple-400" />
@@ -129,7 +129,7 @@ export default async function DashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Quick actions */}
-        <div className="bg-white rounded-xl border border-gray-100 p-6">
+        <div data-reveal="fade-up" className="bg-white rounded-xl border border-gray-100 p-6">
           <h2 className="font-bold text-gray-800 mb-4">إجراءات سريعة</h2>
           <div className="space-y-3">
             <Link
@@ -143,7 +143,7 @@ export default async function DashboardPage() {
                 <p className="font-semibold text-gray-800 text-sm">استشارة جديدة</p>
                 <p className="text-xs text-gray-400">اطرح سؤالاً بيئياً جديداً</p>
               </div>
-              <i className="fa-solid fa-chevron-left text-gray-300 mr-auto" />
+              <i className="fa-solid fa-chevron-left text-gray-300 mr-auto transition-transform duration-200 group-hover:-translate-x-1 group-hover:text-primary-400" />
             </Link>
 
             <Link
@@ -157,7 +157,7 @@ export default async function DashboardPage() {
                 <p className="font-semibold text-gray-800 text-sm">تصعيد لخبير</p>
                 <p className="text-xs text-gray-400">للحالات المعقدة والرسمية</p>
               </div>
-              <i className="fa-solid fa-chevron-left text-gray-300 mr-auto" />
+              <i className="fa-solid fa-chevron-left text-gray-300 mr-auto transition-transform duration-200 group-hover:-translate-x-1 group-hover:text-primary-400" />
             </Link>
 
             <Link
@@ -171,13 +171,13 @@ export default async function DashboardPage() {
                 <p className="font-semibold text-gray-800 text-sm">ترقية الباقة</p>
                 <p className="text-xs text-gray-400">احصل على استشارات أكثر</p>
               </div>
-              <i className="fa-solid fa-chevron-left text-gray-300 mr-auto" />
+              <i className="fa-solid fa-chevron-left text-gray-300 mr-auto transition-transform duration-200 group-hover:-translate-x-1 group-hover:text-primary-400" />
             </Link>
           </div>
         </div>
 
         {/* Recent sessions */}
-        <div className="bg-white rounded-xl border border-gray-100 p-6">
+        <div data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '120ms' }} className="bg-white rounded-xl border border-gray-100 p-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="font-bold text-gray-800">آخر المحادثات</h2>
             <Link href="/dashboard/chat" className="text-xs text-primary-600 hover:underline">

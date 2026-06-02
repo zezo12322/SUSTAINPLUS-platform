@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { DashboardSidebar } from '@/components/layout/dashboard-sidebar'
+import { ScrollReveal } from '@/components/animation/scroll-reveal'
 import { useSession } from 'next-auth/react'
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -10,6 +11,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50" dir="rtl">
+      <ScrollReveal />
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div

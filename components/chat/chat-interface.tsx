@@ -222,7 +222,7 @@ export function ChatInterface({
           return (
             <div
               key={msg.id || i}
-              className={cn('flex', isUser ? 'justify-end' : 'justify-start')}
+              className={cn('animate-pop-in flex', isUser ? 'justify-end' : 'justify-start')}
             >
               {!isUser && (
                 <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0 mt-1 ml-2">
