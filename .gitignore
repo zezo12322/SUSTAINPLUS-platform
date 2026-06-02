@@ -34,3 +34,15 @@ Thumbs.db
 .idea/
 .vscode/
 *.swp
+
+# Local dev & tooling artifacts
+/dev-server.log
+/dev-run.log
+/dev-err.txt
+/dev-out.txt
+.playwright-mcp/
+test-results/
+
+# Scratch logo assets
+/public/_logos/
+/public/_logocheck.html
