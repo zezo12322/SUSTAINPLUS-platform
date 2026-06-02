@@ -86,11 +86,11 @@ export default function ExpertPage() {
       </div>
 
       {/* Info banner */}
-      <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5 mb-6 flex gap-4">
-        <i className="fa-solid fa-circle-info text-amber-500 text-xl flex-shrink-0 mt-0.5" />
+      <div className="bg-gold-50 border border-gold-200 rounded-2xl p-5 mb-6 flex gap-4">
+        <i className="fa-solid fa-circle-info text-gold-500 text-xl flex-shrink-0 mt-0.5" />
         <div>
-          <p className="font-semibold text-amber-800 mb-1">متى تتحدث مع خبير؟</p>
-          <ul className="text-sm text-amber-700 space-y-1">
+          <p className="font-semibold text-gold-800 mb-1">متى تتحدث مع خبير؟</p>
+          <ul className="text-sm text-gold-700 space-y-1">
             <li>• حالات تستلزم تراخيص أو موافقات رسمية من الجهات الحكومية</li>
             <li>• قضايا قانونية أو غرامات أو مخالفات بيئية</li>
             <li>• دراسات تقييم الأثر البيئي (EIA) التي تتطلب توقيع متخصص</li>

@@ -63,8 +63,8 @@ export default function VerifyEmailPage() {
 
   return (
     <div className="bg-white rounded-2xl shadow-2xl p-8 text-center">
-      <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5">
-        <i className="fa-solid fa-envelope-circle-check text-3xl text-green-600" />
+      <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-5">
+        <i className="fa-solid fa-envelope-circle-check text-3xl text-primary-600" />
       </div>
 
       <h1 className="text-2xl font-bold text-gray-900 mb-2">تأكيد بريدك الإلكتروني</h1>
@@ -93,7 +93,7 @@ export default function VerifyEmailPage() {
           value={code}
           onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
           placeholder="أدخل الكود المكون من ٦ أرقام"
-          className="w-full border-2 border-gray-200 rounded-xl px-4 py-4 text-center text-2xl font-bold tracking-[0.5em] focus:outline-none focus:border-green-500"
+          className="w-full border-2 border-gray-200 rounded-xl px-4 py-4 text-center text-2xl font-bold tracking-[0.5em] focus:outline-none focus:border-primary-500"
           autoFocus
         />
 
@@ -107,7 +107,7 @@ export default function VerifyEmailPage() {
         <button
           onClick={handleResend}
           disabled={resending}
-          className="text-green-600 font-semibold hover:underline disabled:opacity-50"
+          className="text-primary-600 font-semibold hover:underline disabled:opacity-50"
         >
           {resending ? 'جاري الإرسال...' : 'إعادة الإرسال'}
         </button>

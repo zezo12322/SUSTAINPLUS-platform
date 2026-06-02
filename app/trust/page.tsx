@@ -40,19 +40,19 @@ export default function TrustPage() {
             </div>
             <ul className="space-y-3 text-gray-600 text-sm leading-relaxed">
               <li className="flex items-start gap-2">
-                <i className="fa-solid fa-check text-green-500 mt-0.5 flex-shrink-0" />
+                <i className="fa-solid fa-check text-gold-500 mt-0.5 flex-shrink-0" />
                 جميع الاتصالات مشفرة بـ TLS 1.3 بين متصفحك وخوادمنا.
               </li>
               <li className="flex items-start gap-2">
-                <i className="fa-solid fa-check text-green-500 mt-0.5 flex-shrink-0" />
+                <i className="fa-solid fa-check text-gold-500 mt-0.5 flex-shrink-0" />
                 كلمات المرور محمية بتشفير bcrypt (معامل تكلفة 12) ولا تُخزن بأي شكل قابل للقراءة.
               </li>
               <li className="flex items-start gap-2">
-                <i className="fa-solid fa-check text-green-500 mt-0.5 flex-shrink-0" />
+                <i className="fa-solid fa-check text-gold-500 mt-0.5 flex-shrink-0" />
                 قاعدة البيانات محمية وغير قابلة للوصول العام. البيانات مشفرة في حالة التخزين.
               </li>
               <li className="flex items-start gap-2">
-                <i className="fa-solid fa-check text-green-500 mt-0.5 flex-shrink-0" />
+                <i className="fa-solid fa-check text-gold-500 mt-0.5 flex-shrink-0" />
                 مفاتيح API وبيانات الدفع لا تُخزن على خوادمنا — نتعامل مع بوابة Paymob المعتمدة مباشرة.
               </li>
             </ul>
@@ -61,26 +61,26 @@ export default function TrustPage() {
           {/* Privacy */}
           <div className="bg-white rounded-2xl border border-gray-100 p-8">
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center">
-                <i className="fa-solid fa-eye-slash text-green-600" />
+              <div className="w-10 h-10 bg-primary-50 rounded-xl flex items-center justify-center">
+                <i className="fa-solid fa-eye-slash text-primary-600" />
               </div>
               <h2 className="text-xl font-bold text-gray-900">الخصوصية</h2>
             </div>
             <ul className="space-y-3 text-gray-600 text-sm leading-relaxed">
               <li className="flex items-start gap-2">
-                <i className="fa-solid fa-check text-green-500 mt-0.5 flex-shrink-0" />
+                <i className="fa-solid fa-check text-gold-500 mt-0.5 flex-shrink-0" />
                 لا نبيع بياناتك لأي طرف ثالث، ولا نشاركها مع شركاء إعلانيين.
               </li>
               <li className="flex items-start gap-2">
-                <i className="fa-solid fa-check text-green-500 mt-0.5 flex-shrink-0" />
+                <i className="fa-solid fa-check text-gold-500 mt-0.5 flex-shrink-0" />
                 محادثاتك خاصة لك. لا يطلع عليها إلا فريق الدعم الفني عند الضرورة القصوى لحل مشكلة فنية، وبموافقتك.
               </li>
               <li className="flex items-start gap-2">
-                <i className="fa-solid fa-check text-green-500 mt-0.5 flex-shrink-0" />
+                <i className="fa-solid fa-check text-gold-500 mt-0.5 flex-shrink-0" />
                 لا نستخدم محادثاتك لتدريب نماذج الذكاء الاصطناعي أو لأغراض تجارية خارجية.
               </li>
               <li className="flex items-start gap-2">
-                <i className="fa-solid fa-check text-green-500 mt-0.5 flex-shrink-0" />
+                <i className="fa-solid fa-check text-gold-500 mt-0.5 flex-shrink-0" />
                 يمكنك طلب حذف حسابك وجميع بياناتك في أي وقت عبر صفحة الإعدادات.
               </li>
             </ul>
@@ -104,19 +104,19 @@ export default function TrustPage() {
             </div>
             <ul className="space-y-3 text-gray-600 text-sm leading-relaxed">
               <li className="flex items-start gap-2">
-                <i className="fa-solid fa-check text-green-500 mt-0.5 flex-shrink-0" />
+                <i className="fa-solid fa-check text-gold-500 mt-0.5 flex-shrink-0" />
                 الأسئلة البسيطة تُعالَج بنموذج ذكاء اصطناعي سريع ومتخصص.
               </li>
               <li className="flex items-start gap-2">
-                <i className="fa-solid fa-check text-green-500 mt-0.5 flex-shrink-0" />
+                <i className="fa-solid fa-check text-gold-500 mt-0.5 flex-shrink-0" />
                 الأسئلة المعقدة والتقنية تُحوَّل تلقائياً لنموذج أكثر تقدماً.
               </li>
               <li className="flex items-start gap-2">
-                <i className="fa-solid fa-check text-green-500 mt-0.5 flex-shrink-0" />
+                <i className="fa-solid fa-check text-gold-500 mt-0.5 flex-shrink-0" />
                 الحالات الحساسة (التراخيص، الغرامات، الإجراءات القانونية) تُقترح فيها دائماً الإحالة لخبير بشري.
               </li>
               <li className="flex items-start gap-2">
-                <i className="fa-solid fa-check text-green-500 mt-0.5 flex-shrink-0" />
+                <i className="fa-solid fa-check text-gold-500 mt-0.5 flex-shrink-0" />
                 لا ندّعي الحصول على شهادات ISO 27001 أو ISO/IEC 42001 أو SOC 2 أو أي اعتماد حكومي ما لم يُعلن رسمياً.
               </li>
             </ul>
@@ -132,19 +132,19 @@ export default function TrustPage() {
             </div>
             <ul className="space-y-3 text-gray-600 text-sm leading-relaxed">
               <li className="flex items-start gap-2">
-                <i className="fa-solid fa-check text-green-500 mt-0.5 flex-shrink-0" />
+                <i className="fa-solid fa-check text-gold-500 mt-0.5 flex-shrink-0" />
                 نظام صلاحيات متعدد المستويات (مستخدم، خبير، مدير) مع فصل كامل بين الأدوار.
               </li>
               <li className="flex items-start gap-2">
-                <i className="fa-solid fa-check text-green-500 mt-0.5 flex-shrink-0" />
+                <i className="fa-solid fa-check text-gold-500 mt-0.5 flex-shrink-0" />
                 تحديد معدل الطلبات (Rate Limiting) للحماية من الاستخدام المفرط وهجمات brute-force.
               </li>
               <li className="flex items-start gap-2">
-                <i className="fa-solid fa-check text-green-500 mt-0.5 flex-shrink-0" />
+                <i className="fa-solid fa-check text-gold-500 mt-0.5 flex-shrink-0" />
                 سجل تدقيق كامل (Audit Log) لكل العمليات الحساسة على المنصة.
               </li>
               <li className="flex items-start gap-2">
-                <i className="fa-solid fa-check text-green-500 mt-0.5 flex-shrink-0" />
+                <i className="fa-solid fa-check text-gold-500 mt-0.5 flex-shrink-0" />
                 التحقق من صحة جميع المدخلات والبيانات على مستوى الخادم لمنع الحقن وهجمات XSS.
               </li>
             </ul>
@@ -153,26 +153,26 @@ export default function TrustPage() {
           {/* Payment security */}
           <div className="bg-white rounded-2xl border border-gray-100 p-8">
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center">
-                <i className="fa-solid fa-credit-card text-emerald-600" />
+              <div className="w-10 h-10 bg-gold-50 rounded-xl flex items-center justify-center">
+                <i className="fa-solid fa-credit-card text-gold-600" />
               </div>
               <h2 className="text-xl font-bold text-gray-900">أمان المدفوعات</h2>
             </div>
             <ul className="space-y-3 text-gray-600 text-sm leading-relaxed">
               <li className="flex items-start gap-2">
-                <i className="fa-solid fa-check text-green-500 mt-0.5 flex-shrink-0" />
+                <i className="fa-solid fa-check text-gold-500 mt-0.5 flex-shrink-0" />
                 جميع المدفوعات تُعالَج عبر بوابة Paymob المعتمدة من البنك المركزي المصري.
               </li>
               <li className="flex items-start gap-2">
-                <i className="fa-solid fa-check text-green-500 mt-0.5 flex-shrink-0" />
+                <i className="fa-solid fa-check text-gold-500 mt-0.5 flex-shrink-0" />
                 لا نخزن بيانات بطاقاتك الائتمانية على خوادمنا إطلاقاً.
               </li>
               <li className="flex items-start gap-2">
-                <i className="fa-solid fa-check text-green-500 mt-0.5 flex-shrink-0" />
+                <i className="fa-solid fa-check text-gold-500 mt-0.5 flex-shrink-0" />
                 التحقق من HMAC لجميع إشعارات الدفع الواردة من Paymob لمنع التزوير.
               </li>
               <li className="flex items-start gap-2">
-                <i className="fa-solid fa-check text-green-500 mt-0.5 flex-shrink-0" />
+                <i className="fa-solid fa-check text-gold-500 mt-0.5 flex-shrink-0" />
                 لا تُفعَّل الاستشارات المدفوعة إلا بعد التأكيد الكامل للدفع.
               </li>
             </ul>

@@ -72,7 +72,7 @@ export default async function DashboardPage() {
         <div className="bg-white rounded-xl border border-gray-100 p-5">
           <div className="flex justify-between items-start mb-3">
             <p className="text-sm font-medium text-gray-500">الباقة الحالية</p>
-            <i className="fa-solid fa-star text-amber-400" />
+            <i className="fa-solid fa-star text-gold-500" />
           </div>
           <p className="text-2xl font-bold text-gray-900">{plan?.nameAr || 'مجاني'}</p>
           <Link href="/dashboard/billing" className="text-xs text-primary-600 hover:underline mt-1 inline-block">
@@ -148,10 +148,10 @@ export default async function DashboardPage() {
 
             <Link
               href="/dashboard/expert"
-              className="flex items-center gap-3 p-3 rounded-lg hover:bg-amber-50 transition-colors group"
+              className="flex items-center gap-3 p-3 rounded-lg hover:bg-gold-50 transition-colors group"
             >
-              <div className="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center group-hover:bg-amber-200 transition-colors">
-                <i className="fa-solid fa-user-tie text-amber-600" />
+              <div className="w-10 h-10 bg-gold-100 rounded-lg flex items-center justify-center group-hover:bg-gold-200 transition-colors">
+                <i className="fa-solid fa-user-tie text-gold-600" />
               </div>
               <div>
                 <p className="font-semibold text-gray-800 text-sm">تصعيد لخبير</p>

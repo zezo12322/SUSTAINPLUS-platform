@@ -216,7 +216,7 @@ export default function PricingPage() {
           <p className="text-white/80 mb-7">٣ استشارات مجانية بدون بطاقة ائتمان.</p>
           <Link
             href="/register"
-            className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-white font-bold px-8 py-4 rounded-xl transition-colors"
+            className="inline-flex items-center gap-2 bg-gold-500 hover:bg-gold-600 text-white font-bold px-8 py-4 rounded-xl transition-colors"
           >
             إنشاء حساب مجاني
           </Link>

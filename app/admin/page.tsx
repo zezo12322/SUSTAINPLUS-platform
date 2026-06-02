@@ -66,12 +66,12 @@ export default async function AdminDashboard() {
 
   const statsCards = [
     { label: 'إجمالي المستخدمين', value: totalUsers, icon: 'fa-users', color: 'bg-blue-50 text-blue-600' },
-    { label: 'اشتراكات نشطة', value: activeSubscriptions, icon: 'fa-star', color: 'bg-green-50 text-green-600' },
+    { label: 'اشتراكات نشطة', value: activeSubscriptions, icon: 'fa-star', color: 'bg-gold-50 text-gold-600' },
     { label: 'مستخدمو الباقة المجانية', value: freeUsers, icon: 'fa-user', color: 'bg-gray-50 text-gray-600' },
     { label: 'استشارات هذا الشهر', value: totalConsultationsThisMonth._sum.consultationsUsed ?? 0, icon: 'fa-comments', color: 'bg-primary-50 text-primary-600' },
-    { label: 'حالات خبراء معلقة', value: pendingExpertCases, icon: 'fa-user-tie', color: 'bg-amber-50 text-amber-600' },
+    { label: 'حالات خبراء معلقة', value: pendingExpertCases, icon: 'fa-user-tie', color: 'bg-gold-50 text-gold-600' },
     { label: 'مدفوعات فاشلة', value: failedPayments, icon: 'fa-exclamation-triangle', color: 'bg-red-50 text-red-600' },
-    { label: 'إيرادات الشهر (ج.م)', value: `${((revenueThisMonth._sum.amountPiasters ?? 0) / 100).toLocaleString('ar-EG')}`, icon: 'fa-money-bill', color: 'bg-emerald-50 text-emerald-600' },
+    { label: 'إيرادات الشهر (ج.م)', value: `${((revenueThisMonth._sum.amountPiasters ?? 0) / 100).toLocaleString('ar-EG')}`, icon: 'fa-money-bill', color: 'bg-primary-50 text-primary-600' },
     { label: 'إجمالي الإيرادات (ج.م)', value: `${((totalRevenue._sum.amountPiasters ?? 0) / 100).toLocaleString('ar-EG')}`, icon: 'fa-chart-line', color: 'bg-purple-50 text-purple-600' },
   ]
 
@@ -169,7 +169,7 @@ export default async function AdminDashboard() {
                 إدارة المستخدمين
               </Link>
               <Link href="/admin/expert-cases" className="flex items-center gap-2 text-sm text-gray-600 hover:text-primary-700 p-2 rounded-lg hover:bg-gray-50">
-                <i className="fa-solid fa-briefcase text-amber-500 w-4" />
+                <i className="fa-solid fa-briefcase text-gold-500 w-4" />
                 حالات الخبراء ({pendingExpertCases})
               </Link>
               <Link href="/admin/knowledge-base" className="flex items-center gap-2 text-sm text-gray-600 hover:text-primary-700 p-2 rounded-lg hover:bg-gray-50">

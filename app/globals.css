@@ -10,20 +10,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --primary: #1e6b3f;
-  --primary-dark: #14502e;
-  --primary-light: #2d9b5a;
-  --accent: #f0a500;
-  --accent-dark: #c98a00;
+  --primary: #0C1D32;
+  --primary-dark: #081320;
+  --primary-light: #16335C;
+  --accent: #AF8443;
+  --accent-dark: #8f6a35;
   --bg: #ffffff;
-  --bg-secondary: #f4f8f5;
+  --bg-secondary: #f6f5f2;
   --bg-card: #ffffff;
-  --text: #1a1a1a;
-  --text-secondary: #555555;
-  --text-muted: #888888;
-  --border: #e0e0e0;
-  --footer-bg: #0f3d22;
-  --footer-text: #cce5d5;
+  --text: #0C1D32;
+  --text-secondary: #33383F;
+  --text-muted: #6b7280;
+  --border: #e4e2dd;
+  --footer-bg: #0C1D32;
+  --footer-text: #cdd6e3;
   --sidebar-width: 260px;
 }
 
@@ -223,6 +223,64 @@ h1, h2, h3, h4, h5, h6 {
   content: 'الأكثر شيوعاً';
   @apply absolute -top-3 right-1/2 translate-x-1/2 bg-primary-600 text-white
          text-xs font-bold px-4 py-1 rounded-full;
+}
+
+/* ====================================
+   CLIENT LOGO RAILS
+   ==================================== */
+.client-logo-rails {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+}
+
+.client-logo-rail,
+.client-logo-rail-reverse {
+  will-change: transform;
+}
+
+.client-logo-rail {
+  animation: client-logo-rail 42s linear infinite;
+}
+
+.client-logo-rail-reverse {
+  animation: client-logo-rail-reverse 48s linear infinite;
+}
+
+.client-logo-rails:hover .client-logo-rail,
+.client-logo-rails:hover .client-logo-rail-reverse {
+  animation-play-state: paused;
+}
+
+@keyframes client-logo-rail {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes client-logo-rail-reverse {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .client-logo-rails {
+    -webkit-mask-image: none;
+    mask-image: none;
+    overflow: visible;
+  }
+
+  .client-logo-rail,
+  .client-logo-rail-reverse {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    transform: none;
+    width: auto !important;
+  }
+
+  .client-logo-rail [aria-hidden="true"],
+  .client-logo-rail-reverse [aria-hidden="true"] {
+    display: none;
+  }
 }
 
 /* ====================================

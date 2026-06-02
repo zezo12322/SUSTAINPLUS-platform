@@ -208,16 +208,16 @@ export default function BillingPage() {
           })}
 
           {/* PAYG */}
-          <div className="border-2 border-gray-100 hover:border-amber-300 rounded-xl p-4 transition-all">
+          <div className="border-2 border-gray-100 hover:border-gold-300 rounded-xl p-4 transition-all">
             <p className="font-bold text-gray-800">{PLANS.PAYG.nameAr}</p>
-            <p className="text-lg font-bold text-amber-600 mt-1">
+            <p className="text-lg font-bold text-gold-600 mt-1">
               ٣٥ ج.م
               <span className="text-xs font-normal text-gray-400">/استشارة</span>
             </p>
             <p className="text-xs text-gray-400 mt-1">دفع مسبق قبل الاستخدام</p>
             <Link
               href="#packs"
-              className="mt-3 inline-block w-full text-center text-sm font-semibold border-2 border-amber-400 text-amber-600 hover:bg-amber-50 py-1.5 rounded-lg transition-colors"
+              className="mt-3 inline-block w-full text-center text-sm font-semibold border-2 border-gold-400 text-gold-600 hover:bg-gold-50 py-1.5 rounded-lg transition-colors"
             >
               شحن رصيد
             </Link>

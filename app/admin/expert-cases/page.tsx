@@ -108,9 +108,9 @@ export default async function AdminExpertCasesPage({
                 </p>
 
                 {c.adminNotes && (
-                  <div className="bg-green-50 border border-green-100 rounded-lg p-3 mb-3">
-                    <p className="text-xs font-semibold text-green-700 mb-1">ملاحظات الخبير</p>
-                    <p className="text-sm text-green-800">{c.adminNotes}</p>
+                  <div className="bg-gold-50 border border-gold-100 rounded-lg p-3 mb-3">
+                    <p className="text-xs font-semibold text-gold-700 mb-1">ملاحظات الخبير</p>
+                    <p className="text-sm text-gold-800">{c.adminNotes}</p>
                   </div>
                 )}
 

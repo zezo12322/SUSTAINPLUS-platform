@@ -177,7 +177,7 @@ export function ChatInterface({
           ) : (
             <button
               onClick={() => setShowEscalation(true)}
-              className="flex items-center gap-1.5 text-xs font-medium text-amber-600 hover:text-amber-700 bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 text-xs font-medium text-gold-600 hover:text-gold-700 bg-gold-50 hover:bg-gold-100 px-3 py-1.5 rounded-lg transition-colors"
             >
               <i className="fa-solid fa-user-tie" />
               تحدث مع خبير
@@ -286,25 +286,25 @@ export function ChatInterface({
 
       {/* Escalation modal */}
       {showEscalation && !escalationSent && (
-        <div className="mx-4 mb-2 bg-amber-50 border border-amber-200 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div className="mx-4 mb-2 bg-gold-50 border border-gold-200 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
-            <p className="font-semibold text-amber-800 text-sm">
+            <p className="font-semibold text-gold-800 text-sm">
               يبدو أن استفسارك قد يحتاج متخصصاً بشرياً
             </p>
-            <p className="text-amber-600 text-xs mt-0.5">
+            <p className="text-gold-600 text-xs mt-0.5">
               للحالات الرسمية والتراخيص والقضايا القانونية، يُنصح بالتحدث مع خبير.
             </p>
           </div>
           <div className="flex gap-2 flex-shrink-0">
             <button
               onClick={() => setShowEscalation(false)}
-              className="text-xs text-amber-600 hover:text-amber-800 px-3 py-1.5 rounded-lg hover:bg-amber-100"
+              className="text-xs text-gold-600 hover:text-gold-800 px-3 py-1.5 rounded-lg hover:bg-gold-100"
             >
               لاحقاً
             </button>
             <button
               onClick={escalateToExpert}
-              className="text-xs font-semibold bg-amber-500 hover:bg-amber-600 text-white px-4 py-1.5 rounded-lg transition-colors"
+              className="text-xs font-semibold bg-gold-500 hover:bg-gold-600 text-white px-4 py-1.5 rounded-lg transition-colors"
             >
               تصعيد لخبير
             </button>

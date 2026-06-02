@@ -14,7 +14,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         <header className="bg-white border-b border-gray-100 h-14 flex items-center px-6 gap-3 flex-shrink-0">
           <i className="fa-solid fa-shield text-primary-600" />
           <span className="text-sm font-semibold text-gray-700">لوحة الإدارة</span>
-          <span className="mr-auto text-xs text-amber-600 bg-amber-50 px-2 py-1 rounded-full font-medium">
+          <span className="mr-auto text-xs text-gold-600 bg-gold-50 px-2 py-1 rounded-full font-medium">
             Admin
           </span>
         </header>
