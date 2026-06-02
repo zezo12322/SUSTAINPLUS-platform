@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { MarketingShell } from '@/components/marketing/marketing-chrome'
+import { AuroraBackground } from '@/components/animation/aurora-background'
 import { PageBanner } from '@/components/marketing/page-banner'
 import { type Locale } from '@/lib/marketing'
 import { CASE_STUDIES_DATA, type CaseSection } from '@/lib/case-studies-data'
@@ -144,12 +145,7 @@ export function CaseStudyDetail({ slug, locale }: { slug: string; locale: Locale
       {/* ── CTA ── */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-[#0C1D32]" />
-        <div
-          className="absolute inset-0 opacity-15"
-          style={{
-            backgroundImage: 'radial-gradient(circle at 85% 30%, #2E5A93 0, transparent 45%)',
-          }}
-        />
+        <AuroraBackground conic />
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-24 text-center">
           <p data-reveal="fade-up" className="text-gold-400 font-semibold uppercase tracking-widest text-sm">
             {t.cta.eyebrow}

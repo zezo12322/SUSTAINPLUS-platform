@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { MarketingShell } from '@/components/marketing/marketing-chrome'
+import { AuroraBackground } from '@/components/animation/aurora-background'
 import { PageBanner } from '@/components/marketing/page-banner'
 import { SectionHeading, Eyebrow } from '@/components/marketing/ui'
 import { type Locale } from '@/lib/marketing'
@@ -274,12 +275,7 @@ export function InsightsPage({ locale }: { locale: Locale }) {
 
       {/* ───────────────── NEWSLETTER ───────────────── */}
       <section className="relative overflow-hidden bg-[#0C1D32]">
-        <div
-          className="absolute inset-0 opacity-15"
-          style={{
-            backgroundImage: 'radial-gradient(circle at 85% 25%, #2E5A93 0, transparent 45%)',
-          }}
-        />
+        <AuroraBackground conic />
         <div className="relative mx-auto max-w-3xl px-4 py-20 text-center sm:px-6 lg:px-8 lg:py-24">
           <p data-reveal="fade-up" className="text-sm font-semibold uppercase tracking-widest text-gold-400">
             {t.newsletter.eyebrow}

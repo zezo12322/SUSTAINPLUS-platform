@@ -4,6 +4,7 @@ import { MarketingShell } from '@/components/marketing/marketing-chrome'
 import { PageBanner } from '@/components/marketing/page-banner'
 import { SectionHeading, Eyebrow, Card } from '@/components/marketing/ui'
 import { CountUp } from '@/components/animation/count-up'
+import { AuroraBackground } from '@/components/animation/aurora-background'
 import { type Locale } from '@/lib/marketing'
 import { COMPANY, ABOUT, STATS, CREDENTIALS } from '@/lib/company'
 
@@ -228,12 +229,7 @@ export function AboutPage({ locale }: { locale: Locale }) {
 
       {/* ───────────────────────── STATS BAND ───────────────────────── */}
       <section className="relative overflow-hidden bg-[#0C1D32]">
-        <div
-          className="absolute inset-0 opacity-15"
-          style={{
-            backgroundImage: 'radial-gradient(circle at 85% 25%, #2E5A93 0, transparent 50%)',
-          }}
-        />
+        <AuroraBackground conic />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-24">
           <div className="max-w-2xl">
             <p className="text-gold-400 font-semibold uppercase tracking-widest text-sm">
@@ -288,12 +284,7 @@ export function AboutPage({ locale }: { locale: Locale }) {
       {/* ───────────────────────── CLOSING CTA ───────────────────────── */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-[#0C1D32]" />
-        <div
-          className="absolute inset-0 opacity-15"
-          style={{
-            backgroundImage: 'radial-gradient(circle at 15% 70%, #2E5A93 0, transparent 45%)',
-          }}
-        />
+        <AuroraBackground conic />
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-24 text-center">
           <p data-reveal="fade-up" className="text-gold-400 font-semibold uppercase tracking-widest text-sm">
             {t.cta.eyebrow}

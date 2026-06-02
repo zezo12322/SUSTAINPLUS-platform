@@ -1,4 +1,5 @@
 import type { Locale } from '@/lib/marketing'
+import { AuroraBackground } from '@/components/animation/aurora-background'
 
 /**
  * Dark-navy page banner used as the top of every marketing subpage.
@@ -31,12 +32,8 @@ export function PageBanner({
       />
       <div className="absolute inset-0 bg-[#0A1626]/55" />
       <div className="absolute inset-0" style={{ background: gradient }} />
-      {/* Ambient gold glow */}
-      <div
-        aria-hidden="true"
-        className="animate-aurora pointer-events-none absolute -top-1/4 end-[-8%] h-[50vh] w-[50vh] rounded-full opacity-20 blur-3xl"
-        style={{ background: 'radial-gradient(circle, #AF8443 0%, transparent 70%)' }}
-      />
+      {/* Living animated background */}
+      <AuroraBackground intensity="soft" conic />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 lg:pt-40 pb-16 lg:pb-20">
         {eyebrow && (

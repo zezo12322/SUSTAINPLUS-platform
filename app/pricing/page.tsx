@@ -3,6 +3,7 @@ import { PlatformHeader } from '@/components/layout/platform-header'
 import { PlatformFooter } from '@/components/layout/platform-footer'
 import { PLANS, CONSULTATION_PACKS } from '@/lib/constants'
 import { formatPiasters } from '@/lib/utils'
+import { AuroraBackground } from '@/components/animation/aurora-background'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -216,11 +217,7 @@ export default function PricingPage() {
 
         {/* CTA */}
         <section className="relative overflow-hidden bg-primary-600 py-14 text-center px-4">
-          <div
-            aria-hidden="true"
-            className="animate-aurora pointer-events-none absolute -top-1/3 end-[12%] h-64 w-64 rounded-full opacity-20 blur-3xl"
-            style={{ background: 'radial-gradient(circle, #AF8443 0%, transparent 70%)' }}
-          />
+          <AuroraBackground conic />
           <h2 data-reveal="fade-up" className="relative text-2xl font-bold text-white mb-4">ابدأ استشارتك البيئية اليوم</h2>
           <p data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '100ms' }} className="relative text-white/80 mb-7">٣ استشارات مجانية بدون بطاقة ائتمان.</p>
           <Link

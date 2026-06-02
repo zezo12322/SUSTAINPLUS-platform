@@ -3,6 +3,7 @@ import { ClientLogoRails } from './client-logo-rails'
 import { MarketingShell } from './marketing-chrome'
 import { SectionEyebrow } from './ui'
 import { CountUp } from '@/components/animation/count-up'
+import { AuroraBackground } from '@/components/animation/aurora-background'
 import { MARKETING, type Locale } from '@/lib/marketing'
 
 // Maps each home service card (by index) to its service detail-page slug.
@@ -43,12 +44,8 @@ export function MarketingHome({ locale }: { locale: Locale }) {
           {/* Navy tint + directional fade so the copy side stays solid and the photo reads on the far side */}
           <div className="absolute inset-0 bg-[#0A1626]/55" />
           <div className="absolute inset-0" style={{ background: heroGradient }} />
-          {/* Ambient gold aurora glow */}
-          <div
-            aria-hidden="true"
-            className="animate-aurora pointer-events-none absolute -top-1/3 end-[-10%] h-[60vh] w-[60vh] rounded-full opacity-25 blur-3xl"
-            style={{ background: 'radial-gradient(circle, #AF8443 0%, transparent 70%)' }}
-          />
+          {/* Living animated background over the photo */}
+          <AuroraBackground intensity="soft" conic />
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 lg:pt-36 pb-20 lg:pb-28">
             <div className="grid lg:grid-cols-12 gap-10 items-center">
@@ -56,7 +53,7 @@ export function MarketingHome({ locale }: { locale: Locale }) {
               <div className="lg:col-span-8">
                 <h1 className="hero-rise text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.08] tracking-tight max-w-3xl">
                   {dict.hero.title}{' '}
-                  <span className="text-gold-400">{dict.hero.titleAccent}</span>
+                  <span className="text-shimmer">{dict.hero.titleAccent}</span>
                 </h1>
                 <p
                   className="hero-rise mt-6 text-lg text-white/75 max-w-xl leading-relaxed"
@@ -274,18 +271,7 @@ export function MarketingHome({ locale }: { locale: Locale }) {
         {/* ───────────────────────── CONTACT CTA ───────────────────────── */}
         <section id="contact" className="relative overflow-hidden">
           <div className="absolute inset-0 bg-[#0C1D32]" />
-          <div
-            className="animate-aurora absolute inset-0 opacity-20"
-            style={{
-              backgroundImage:
-                'radial-gradient(circle at 85% 30%, #2E5A93 0, transparent 45%)',
-            }}
-          />
-          <div
-            aria-hidden="true"
-            className="animate-float pointer-events-none absolute bottom-[-20%] start-[10%] h-72 w-72 rounded-full opacity-15 blur-3xl"
-            style={{ background: 'radial-gradient(circle, #AF8443 0%, transparent 70%)' }}
-          />
+          <AuroraBackground conic intensity="bold" />
           <div className="relative max-w-3xl mx-auto px-4 py-20 text-center">
             <h2 data-reveal="fade-up" className="text-3xl sm:text-4xl font-extrabold text-white">{dict.contact.title}</h2>
             <p data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '120ms' }} className="mt-4 text-white/75 text-lg">{dict.contact.subtitle}</p>

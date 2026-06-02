@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { MarketingShell } from '@/components/marketing/marketing-chrome'
+import { AuroraBackground } from '@/components/animation/aurora-background'
 import { PageBanner } from '@/components/marketing/page-banner'
 import { SectionHeading, IconBadge } from '@/components/marketing/ui'
 import { type Locale } from '@/lib/marketing'
@@ -188,12 +189,7 @@ export function ServiceDetail({ slug, locale }: { slug: string; locale: Locale }
       {/* ── BACK LINK + CTA ── */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-[#0C1D32]" />
-        <div
-          className="absolute inset-0 opacity-15"
-          style={{
-            backgroundImage: 'radial-gradient(circle at 85% 30%, #2E5A93 0, transparent 45%)',
-          }}
-        />
+        <AuroraBackground conic />
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-24 text-center">
           <h2 data-reveal="fade-up" className="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
             {t.cta.title}

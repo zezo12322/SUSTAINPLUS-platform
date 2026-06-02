@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { PlatformHeader } from '@/components/layout/platform-header'
 import { PlatformFooter } from '@/components/layout/platform-footer'
+import { AuroraBackground } from '@/components/animation/aurora-background'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -63,10 +64,7 @@ export default function ConsultationLanding() {
           className="relative overflow-hidden"
           style={{ background: 'linear-gradient(135deg, #0C1D32 0%, #16335C 50%, #1F4A7A 100%)' }}
         >
-          <div className="absolute inset-0 opacity-10">
-            <div className="animate-float absolute top-20 right-20 w-72 h-72 bg-white rounded-full blur-3xl" />
-            <div className="animate-aurora absolute bottom-10 left-20 w-96 h-96 bg-gold-400 rounded-full blur-3xl" />
-          </div>
+          <AuroraBackground conic intensity="normal" />
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28 text-center">
             <div className="hero-rise inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-6">
@@ -77,7 +75,7 @@ export default function ConsultationLanding() {
             <h1 className="hero-rise text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-6" style={{ ['--hero-delay' as string]: '120ms' }}>
               استشارتك البيئية
               <br />
-              <span className="text-gold-400">في ثوانٍ، لا أيام</span>
+              <span className="text-shimmer">في ثوانٍ، لا أيام</span>
             </h1>
 
             <p className="hero-rise text-lg text-white/80 max-w-2xl mx-auto mb-10 leading-relaxed" style={{ ['--hero-delay' as string]: '240ms' }}>
@@ -210,11 +208,7 @@ export default function ConsultationLanding() {
 
         {/* ── CTA ── */}
         <section className="relative overflow-hidden py-20 bg-primary-600">
-          <div
-            aria-hidden="true"
-            className="animate-aurora pointer-events-none absolute -bottom-1/3 start-[15%] h-72 w-72 rounded-full opacity-20 blur-3xl"
-            style={{ background: 'radial-gradient(circle, #AF8443 0%, transparent 70%)' }}
-          />
+          <AuroraBackground conic />
           <div className="relative max-w-3xl mx-auto px-4 text-center">
             <h2 data-reveal="fade-up" className="text-2xl sm:text-3xl font-bold text-white mb-4">
               جاهز للبدء؟
