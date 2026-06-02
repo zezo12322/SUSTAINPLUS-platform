@@ -281,13 +281,13 @@ export function InsightsPage({ locale }: { locale: Locale }) {
           }}
         />
         <div className="relative mx-auto max-w-3xl px-4 py-20 text-center sm:px-6 lg:px-8 lg:py-24">
-          <p className="text-sm font-semibold uppercase tracking-widest text-gold-400">
+          <p data-reveal="fade-up" className="text-sm font-semibold uppercase tracking-widest text-gold-400">
             {t.newsletter.eyebrow}
           </p>
-          <h2 className="mt-3 text-3xl font-extrabold text-white sm:text-4xl">
+          <h2 data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '100ms' }} className="mt-3 text-3xl font-extrabold text-white sm:text-4xl">
             {t.newsletter.title}
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-white/75">
+          <p data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '200ms' }} className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-white/75">
             {t.newsletter.body}
           </p>
 

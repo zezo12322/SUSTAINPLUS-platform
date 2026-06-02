@@ -128,20 +128,20 @@ export function ServicesPage({ locale }: { locale: Locale }) {
           }}
         />
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-24 text-center">
-          <p className="text-gold-400 font-semibold uppercase tracking-widest text-sm">
+          <p data-reveal="fade-up" className="text-gold-400 font-semibold uppercase tracking-widest text-sm">
             {t.cta.eyebrow}
           </p>
-          <h2 className="mt-3 text-3xl sm:text-4xl font-extrabold text-white leading-tight">
+          <h2 data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '100ms' }} className="mt-3 text-3xl sm:text-4xl font-extrabold text-white leading-tight">
             {t.cta.title}
           </h2>
-          <p className="mt-4 text-lg text-white/75 leading-relaxed">{t.cta.body}</p>
-          <div className="mt-9 flex flex-col sm:flex-row gap-4 justify-center">
+          <p data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '200ms' }} className="mt-4 text-lg text-white/75 leading-relaxed">{t.cta.body}</p>
+          <div data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '300ms' }} className="mt-9 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/platform"
-              className="inline-flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-semibold px-7 py-3.5 rounded-lg transition-colors shadow-lg shadow-black/20"
+              className="sheen group inline-flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-semibold px-7 py-3.5 rounded-lg transition-all shadow-lg shadow-black/20 hover:-translate-y-0.5"
             >
               {t.cta.primary}
-              <i className={`fa-solid ${arrow} text-sm`} />
+              <i className={`fa-solid ${arrow} text-sm transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5`} />
             </Link>
             <Link
               href={contactHref}

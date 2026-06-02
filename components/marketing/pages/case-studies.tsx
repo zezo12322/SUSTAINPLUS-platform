@@ -92,15 +92,16 @@ export function CaseStudiesPage({ locale }: { locale: Locale }) {
           {/* Featured (large) card */}
           <Link
             href={caseHref(featuredSlug, locale)}
-            className="mt-14 group block rounded-2xl overflow-hidden border border-gray-100 bg-white shadow-sm hover:shadow-md transition-shadow"
+            data-reveal="fade-up"
+            className="mt-14 group block rounded-2xl overflow-hidden border border-gray-100 bg-white shadow-sm hover:shadow-lg transition-shadow"
           >
             <div className="grid lg:grid-cols-2">
-              <div className="relative min-h-[16rem]">
+              <div className="relative min-h-[16rem] overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={featured.image}
                   alt={f.title}
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div
                   className="absolute inset-0"
@@ -130,21 +131,23 @@ export function CaseStudiesPage({ locale }: { locale: Locale }) {
 
           {/* Remaining cases grid */}
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {restSlugs.map((slug) => {
+            {restSlugs.map((slug, i) => {
               const cs = CASE_STUDIES_DATA[slug]
               const c = cs[locale]
               return (
                 <Link
                   key={slug}
                   href={caseHref(slug, locale)}
-                  className="group rounded-2xl overflow-hidden border border-gray-100 bg-white hover:border-primary-200 hover:shadow-md transition-all flex flex-col"
+                  data-reveal="fade-up"
+                  style={{ ['--reveal-delay' as string]: `${i * 90}ms` }}
+                  className="group rounded-2xl overflow-hidden border border-gray-100 bg-white hover:border-primary-300 hover:shadow-lg flex flex-col"
                 >
-                  <div className="relative h-40">
+                  <div className="relative h-40 overflow-hidden">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={cs.image}
                       alt={c.title}
-                      className="absolute inset-0 w-full h-full object-cover"
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                     <div
                       className="absolute inset-0"

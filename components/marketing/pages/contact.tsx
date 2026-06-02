@@ -264,7 +264,7 @@ export function ContactPage({ locale }: { locale: Locale }) {
                 lead={c.form.lead}
               />
 
-              <div className="mt-8 rounded-2xl border border-gray-100 bg-white p-6 sm:p-8 shadow-sm">
+              <div data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '80ms' }} className="mt-8 rounded-2xl border border-gray-100 bg-white p-6 sm:p-8 shadow-sm">
                 {submitted ? (
                   <div className="text-center py-8">
                     <div className="mx-auto w-16 h-16 rounded-full bg-primary-50 flex items-center justify-center">
@@ -375,7 +375,7 @@ export function ContactPage({ locale }: { locale: Locale }) {
 
             {/* RIGHT — Contact details (real) */}
             <div className="lg:col-span-5">
-              <div className="rounded-2xl border border-gray-100 bg-sp-bg-secondary p-6 sm:p-8">
+              <div data-reveal="fade-left" className="rounded-2xl border border-gray-100 bg-sp-bg-secondary p-6 sm:p-8">
                 <h2 className="text-xl font-bold text-gray-900">{c.details.title}</h2>
                 <p className="mt-2 text-sm text-gray-500 leading-relaxed">{c.details.lead}</p>
 
