@@ -4,7 +4,6 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useSession, signOut } from 'next-auth/react'
-import { MAIN_SITE_URL } from '@/lib/constants'
 
 export function PlatformHeader() {
   const { data: session } = useSession()
@@ -33,14 +32,12 @@ export function PlatformHeader() {
             >
               الأمان والخصوصية
             </Link>
-            <a
-              href={MAIN_SITE_URL}
+            <Link
+              href="/ar"
               className="px-3 py-2 text-sm text-gray-600 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-colors font-medium"
-              target="_blank"
-              rel="noopener noreferrer"
             >
               الموقع الرئيسي
-            </a>
+            </Link>
           </nav>
 
           {/* Auth area */}

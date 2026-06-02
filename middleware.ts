@@ -16,7 +16,19 @@ export default auth(function middleware(req) {
     nextUrl.pathname.startsWith('/reset-password')
 
   const isApiAuth = nextUrl.pathname.startsWith('/api/auth')
-  const isPublic = nextUrl.pathname === '/' ||
+  const isStaticAsset = /\.(png|jpe?g|gif|svg|webp|ico|css|js|txt|woff2?|map)$/i.test(nextUrl.pathname)
+  // Public marketing routes (EN at root, AR under /ar).
+  const marketingRoutes = ['/about', '/services', '/case-studies', '/insights', '/contact']
+  const p = nextUrl.pathname
+  const isMarketing =
+    p === '/' ||
+    p === '/ar' ||
+    marketingRoutes.some(
+      (r) => p === r || p.startsWith(r + '/') || p === '/ar' + r || p.startsWith('/ar' + r + '/'),
+    )
+
+  const isPublic = isMarketing ||
+    nextUrl.pathname.startsWith('/platform') ||
     nextUrl.pathname.startsWith('/pricing') ||
     nextUrl.pathname.startsWith('/trust') ||
     nextUrl.pathname.startsWith('/_next') ||
@@ -25,7 +37,7 @@ export default auth(function middleware(req) {
     nextUrl.pathname === '/api/health' ||
     nextUrl.pathname === '/api/env'
 
-  if (isPublic || isApiAuth) return NextResponse.next()
+  if (isPublic || isApiAuth || isStaticAsset) return NextResponse.next()
 
   // Not logged in → redirect to login
   if (!isLoggedIn && !isAuthRoute) {

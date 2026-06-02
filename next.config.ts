@@ -2,6 +2,7 @@ import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  images: { unoptimized: true },
   outputFileTracingIncludes: {
     '/**': [
       // Prisma — not traced by default
