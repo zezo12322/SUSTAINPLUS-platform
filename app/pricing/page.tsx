@@ -99,9 +99,9 @@ export default function PricingPage() {
 
                 <div className="mb-4">
                   <h2 className="font-bold text-lg text-gray-900">{plan.nameAr}</h2>
-                  <div className="mt-3">
+                  <div className="mt-3 flex items-baseline gap-1.5 flex-wrap">
                     <span className="text-2xl font-bold text-primary-700">{plan.priceLabel}</span>
-                    <span className="text-gray-400 text-sm mr-1">{plan.priceSub}</span>
+                    <span className="text-gray-400 text-sm">{plan.priceSub}</span>
                   </div>
                   {plan.consultationsPerMonth > 0 && (
                     <p className="text-xs text-gray-400 mt-1">

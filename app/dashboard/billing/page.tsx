@@ -185,8 +185,8 @@ export default function BillingPage() {
                 }`}
               >
                 <p className="font-bold text-gray-800">{plan.nameAr}</p>
-                <p className="text-lg font-bold text-primary-700 mt-1">
-                  {plan.pricePiasters / 100} ج.م
+                <p className="mt-1 flex items-baseline gap-1 text-lg font-bold text-primary-700">
+                  <span>{plan.pricePiasters / 100} ج.م</span>
                   <span className="text-xs font-normal text-gray-400">/شهر</span>
                 </p>
                 <p className="text-xs text-gray-400 mt-1">{plan.consultationsPerMonth} استشارة/شهر</p>
@@ -210,8 +210,8 @@ export default function BillingPage() {
           {/* PAYG */}
           <div className="border-2 border-gray-100 hover:border-gold-300 rounded-xl p-4 transition-all">
             <p className="font-bold text-gray-800">{PLANS.PAYG.nameAr}</p>
-            <p className="text-lg font-bold text-gold-600 mt-1">
-              ٣٥ ج.م
+            <p className="mt-1 flex items-baseline gap-1 text-lg font-bold text-gold-600">
+              <span>٣٥ ج.م</span>
               <span className="text-xs font-normal text-gray-400">/استشارة</span>
             </p>
             <p className="text-xs text-gray-400 mt-1">دفع مسبق قبل الاستخدام</p>

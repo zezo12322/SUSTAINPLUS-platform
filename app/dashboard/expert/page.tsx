@@ -167,7 +167,7 @@ export default function ExpertPage() {
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1.5">
               وصف الحالة
-              <span className="text-gray-400 font-normal mr-1">(اشرح حالتك بالتفصيل)</span>
+              <span className="text-gray-400 font-normal ms-1">(اشرح حالتك بالتفصيل)</span>
             </label>
             <textarea
               value={form.descriptionAr}
