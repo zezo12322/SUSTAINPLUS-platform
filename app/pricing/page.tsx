@@ -2,7 +2,6 @@
 import { PlatformHeader } from '@/components/layout/platform-header'
 import { PlatformFooter } from '@/components/layout/platform-footer'
 import { PLANS, CONSULTATION_PACKS } from '@/lib/constants'
-import { formatPiasters } from '@/lib/utils'
 import { AuroraBackground } from '@/components/animation/aurora-background'
 import type { Metadata } from 'next'
 

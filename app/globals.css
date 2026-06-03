@@ -190,6 +190,8 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 1;
   transform: none;
   filter: none;
+  /* Drop the compositing hint once the entrance has played. */
+  will-change: auto;
 }
 
 /* ====================================
@@ -372,9 +374,11 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 1 !important;
     transform: none !important;
   }
+  /* Keep the accent gold (not the inherited white) when motion is off. */
   .text-shimmer {
-    -webkit-text-fill-color: currentColor;
-    color: inherit;
+    background: none;
+    -webkit-text-fill-color: #c8a368;
+    color: #c8a368;
   }
 }
 
