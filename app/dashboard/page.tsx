@@ -84,7 +84,7 @@ export default async function DashboardPage() {
         <div data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '180ms' }} className="bg-white rounded-xl border border-gray-100 p-5 hover:shadow-md hover:border-primary-200">
           <div className="flex justify-between items-start mb-3">
             <p className="text-sm font-medium text-gray-500">المحادثات</p>
-            <i className="fa-solid fa-message text-blue-400" />
+            <i className="fa-solid fa-message text-primary-400" />
           </div>
           <p className="text-2xl font-bold text-gray-900">{recentSessions.length}</p>
           <Link href="/dashboard/chat" className="text-xs text-primary-600 hover:underline mt-1 inline-block">
@@ -96,7 +96,7 @@ export default async function DashboardPage() {
         <div data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '270ms' }} className="bg-white rounded-xl border border-gray-100 p-5 hover:shadow-md hover:border-primary-200">
           <div className="flex justify-between items-start mb-3">
             <p className="text-sm font-medium text-gray-500">حالات الخبراء</p>
-            <i className="fa-solid fa-user-tie text-purple-400" />
+            <i className="fa-solid fa-user-tie text-gold-500" />
           </div>
           <p className="text-2xl font-bold text-gray-900">{openCases}</p>
           <Link href="/dashboard/expert" className="text-xs text-primary-600 hover:underline mt-1 inline-block">
@@ -162,10 +162,10 @@ export default async function DashboardPage() {
 
             <Link
               href="/dashboard/billing"
-              className="flex items-center gap-3 p-3 rounded-lg hover:bg-blue-50 transition-colors group"
+              className="flex items-center gap-3 p-3 rounded-lg hover:bg-primary-50 transition-colors group"
             >
-              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors">
-                <i className="fa-solid fa-arrow-up text-blue-600" />
+              <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center group-hover:bg-primary-200 transition-colors">
+                <i className="fa-solid fa-arrow-up text-primary-600" />
               </div>
               <div>
                 <p className="font-semibold text-gray-800 text-sm">ترقية الباقة</p>

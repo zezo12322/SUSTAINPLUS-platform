@@ -228,7 +228,7 @@ export default function KnowledgeBasePage() {
                         <div className="flex items-center gap-1">
                           <button
                             onClick={() => openEdit(e as any)}
-                            className="text-xs p-1.5 text-blue-600 hover:bg-blue-50 rounded"
+                            className="text-xs p-1.5 text-primary-600 hover:bg-primary-50 rounded"
                             title="تعديل"
                           >
                             <i className="fa-solid fa-pen" />

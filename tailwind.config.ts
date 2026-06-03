@@ -58,6 +58,8 @@ const config: Config = {
         },
       },
       fontFamily: {
+        // Platform (consultation app) default — modern, premium Arabic.
+        tajawal: ['Tajawal', 'Cairo', 'Noto Sans Arabic', 'sans-serif'],
         cairo: ['Cairo', 'Noto Sans Arabic', 'sans-serif'],
         montserrat: ['Montserrat', 'Segoe UI', 'system-ui', 'sans-serif'],
         sans: ['Montserrat', 'Segoe UI', 'system-ui', '-apple-system', 'sans-serif'],

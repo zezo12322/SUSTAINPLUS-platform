@@ -49,21 +49,28 @@ html {
 }
 
 body {
-  font-family: 'Cairo', 'Noto Sans Arabic', system-ui, sans-serif;
+  /* Platform (consultation app) default font. Marketing pages override this
+     on their own wrapper (font-cairo for AR, font-sans/Montserrat for EN). */
+  font-family: 'Tajawal', 'Cairo', 'Noto Sans Arabic', system-ui, sans-serif;
   background-color: var(--bg-secondary);
   color: var(--text);
-  line-height: 1.7;
+  line-height: 1.75;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 /* ====================================
    TYPOGRAPHY
+   Headings inherit their section's font (Tajawal on the platform, Cairo/
+   Montserrat on the marketing site) instead of being hard-pinned to one face.
    ==================================== */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Cairo', sans-serif;
+  font-family: inherit;
   font-weight: 700;
   color: var(--text);
   line-height: 1.3;
+  letter-spacing: 0;
 }
 
 /* ====================================

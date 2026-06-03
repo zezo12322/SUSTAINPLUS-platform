@@ -33,7 +33,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800;900&family=Montserrat:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
         <link
@@ -42,7 +42,7 @@ export default function RootLayout({
         />
         <link rel="icon" type="image/png" href="/logo.png" />
       </head>
-      <body className="font-cairo antialiased">
+      <body className="font-tajawal antialiased">
         <SessionProvider>
           <ScrollReveal />
           {children}

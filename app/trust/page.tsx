@@ -33,8 +33,8 @@ export default function TrustPage() {
           {/* Data security */}
           <div data-reveal="fade-up" className="bg-white rounded-2xl border border-gray-100 p-8 transition-shadow hover:shadow-md">
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
-                <i className="fa-solid fa-lock text-blue-600" />
+              <div className="w-10 h-10 bg-primary-50 rounded-xl flex items-center justify-center">
+                <i className="fa-solid fa-lock text-primary-600" />
               </div>
               <h2 className="text-xl font-bold text-gray-900">أمان البيانات</h2>
             </div>
@@ -125,8 +125,8 @@ export default function TrustPage() {
           {/* Access control */}
           <div data-reveal="fade-up" className="bg-white rounded-2xl border border-gray-100 p-8 transition-shadow hover:shadow-md">
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center">
-                <i className="fa-solid fa-users-gear text-purple-600" />
+              <div className="w-10 h-10 bg-gold-50 rounded-xl flex items-center justify-center">
+                <i className="fa-solid fa-users-gear text-gold-600" />
               </div>
               <h2 className="text-xl font-bold text-gray-900">التحكم في الوصول</h2>
             </div>
