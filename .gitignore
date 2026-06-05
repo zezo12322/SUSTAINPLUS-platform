@@ -46,3 +46,6 @@ test-results/
 # Scratch logo assets
 /public/_logos/
 /public/_logocheck.html
+
+# TestSprite scaffolding (local only)
+testsprite_tests/

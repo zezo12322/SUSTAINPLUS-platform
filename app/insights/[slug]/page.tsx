@@ -16,7 +16,7 @@ export async function generateMetadata({
   const e = INSIGHTS_DATA[slug]
   if (!e) return {}
   return {
-    title: e.en.title + ' — Sustain Plus',
+    title: { absolute: e.en.title + ' — Sustain Plus' },
     description: e.en.excerpt,
     alternates: { languages: { en: `/insights/${slug}`, ar: `/ar/insights/${slug}` } },
   }

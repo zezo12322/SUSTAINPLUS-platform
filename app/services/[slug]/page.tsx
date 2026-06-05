@@ -16,7 +16,7 @@ export async function generateMetadata({
   const e = SERVICES_DATA[slug]
   if (!e) return {}
   return {
-    title: e.en.title + ' — Sustain Plus',
+    title: { absolute: e.en.title + ' — Sustain Plus' },
     description: e.en.summary,
     alternates: { languages: { en: `/services/${slug}`, ar: `/ar/services/${slug}` } },
   }

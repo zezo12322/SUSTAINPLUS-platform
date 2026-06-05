@@ -16,7 +16,7 @@ export async function generateMetadata({
   const e = SERVICES_DATA[slug]
   if (!e) return {}
   return {
-    title: e.ar.title + ' — ساستين بلس',
+    title: { absolute: e.ar.title + ' — ساستين بلس' },
     description: e.ar.summary,
     alternates: { languages: { en: `/services/${slug}`, ar: `/ar/services/${slug}` } },
   }

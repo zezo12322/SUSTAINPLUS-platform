@@ -24,7 +24,7 @@ export function MarketingFooter({ dict }: { dict: MarketingDict }) {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div className="md:col-span-2">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo-on-dark.png" alt="Sustain Plus" className="object-contain h-10 w-auto" />
+            <img src="/logo-wide.png" alt="Sustain Plus" className="object-contain h-10 w-auto logo-gold" />
             <p className="mt-5 text-sm text-[#cdd6e3]/75 max-w-sm leading-relaxed">
               {dict.footer.blurb}
             </p>

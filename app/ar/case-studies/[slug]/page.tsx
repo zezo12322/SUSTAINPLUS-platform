@@ -16,7 +16,7 @@ export async function generateMetadata({
   const cs = CASE_STUDIES_DATA[slug]
   if (!cs) return {}
   return {
-    title: cs.ar.title + ' — ساستين بلس',
+    title: { absolute: cs.ar.title + ' — ساستين بلس' },
     description: cs.ar.summary,
     alternates: {
       languages: { en: `/case-studies/${slug}`, ar: `/ar/case-studies/${slug}` },

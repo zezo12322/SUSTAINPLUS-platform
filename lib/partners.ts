@@ -4,6 +4,8 @@ export interface Partner {
   name: string | Record<Locale, string>
   logo?: string
   note?: string | Record<Locale, string>
+  /** Render the logo on a dark chip (for logos that ship with a dark background). */
+  darkCard?: boolean
 }
 
 export const CLIENT_PARTNERS: readonly Partner[] = [
@@ -18,8 +20,8 @@ export const CLIENT_PARTNERS: readonly Partner[] = [
   { name: 'GSK', logo: '/images/partners/gsk-card.png' },
   { name: 'Elaraby Group', logo: '/images/partners/elaraby-group.png' },
   { name: 'Empower Capital', logo: '/images/partners/empower-capital.png' },
-  { name: 'Impero Group', logo: '/images/partners/impero-group.png' },
-  { name: 'Astrovita', logo: '/images/partners/astrovita.png' },
+  { name: 'Impero Group', logo: '/images/partners/impero-group.png', darkCard: true },
+  { name: 'Astrovida', logo: '/images/partners/astrovita.png' },
   { name: 'Petromaint', logo: '/images/partners/petromaint.png' },
   { name: 'Fixbond', logo: '/images/partners/fixbond.png' },
 ]

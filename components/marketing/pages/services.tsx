@@ -19,11 +19,11 @@ const UI: Record<Locale, ServicesUI> = {
       eyebrow: 'Our Services',
       title: 'Engineering, consulting, and compliance for a sustainable world',
       subtitle:
-        'Four integrated service areas — environmental consulting, water and energy infrastructure, mining exploration, and permits and training — delivered by our experts from study through to long-term operation.',
+        'Five integrated service areas — environmental consulting, environmental awareness, water and energy infrastructure, mining exploration, and permits and training — delivered by our experts from study through to long-term operation.',
     },
     intro: {
       eyebrow: 'What we do',
-      title: 'Four service areas, one integrated partner',
+      title: 'Five service areas, one integrated partner',
       lead: 'Each area pairs deep technical capability with international standards and real project delivery — so you can plan, build, comply, and report with confidence.',
     },
     learnMore: 'Explore this service',
@@ -40,11 +40,11 @@ const UI: Record<Locale, ServicesUI> = {
       eyebrow: 'خدماتنا',
       title: 'هندسة واستشارات وامتثال من أجل عالم مستدام',
       subtitle:
-        'أربعة مجالات خدمات متكاملة — الاستشارات البيئية، والبنية التحتية للمياه والطاقة، واستكشاف التعدين، والتصاريح والتدريب — يقدّمها خبراؤنا من مرحلة الدراسة وصولاً إلى التشغيل طويل الأمد.',
+        'خمسة مجالات خدمات متكاملة — الاستشارات البيئية، والتوعية البيئية، والبنية التحتية للمياه والطاقة، واستكشاف التعدين، والتصاريح والتدريب — يقدّمها خبراؤنا من مرحلة الدراسة وصولاً إلى التشغيل طويل الأمد.',
     },
     intro: {
       eyebrow: 'ماذا نقدّم',
-      title: 'أربعة مجالات خدمات وشريك واحد متكامل',
+      title: 'خمسة مجالات خدمات وشريك واحد متكامل',
       lead: 'يجمع كل مجال بين قدرة فنية عميقة ومعايير دولية وتنفيذ مشاريع حقيقي — لتتمكن من التخطيط والبناء والامتثال وإعداد التقارير بثقة.',
     },
     learnMore: 'استكشف هذه الخدمة',

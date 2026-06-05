@@ -33,7 +33,11 @@ export function ClientLogoRails({
                 <div
                   key={`${partnerName(partner, 'en')}-${copyIndex}-${partnerIndex}`}
                   aria-hidden={isDuplicate || undefined}
-                  className={`shrink-0 rounded-lg border border-gray-100 bg-white px-5 py-4 flex flex-col items-center justify-center text-center shadow-[0_18px_45px_rgba(12,29,50,0.08)] transition-[border-color,box-shadow] hover:border-gold-300 hover:shadow-[0_22px_55px_rgba(12,29,50,0.13)] ${
+                  className={`shrink-0 rounded-lg border px-5 py-4 flex flex-col items-center justify-center text-center shadow-[0_18px_45px_rgba(12,29,50,0.08)] transition-[border-color,box-shadow] hover:shadow-[0_22px_55px_rgba(12,29,50,0.13)] ${
+                    partner.darkCard
+                      ? 'bg-primary-900 border-primary-700 hover:border-gold-400'
+                      : 'bg-white border-gray-100 hover:border-gold-300'
+                  } ${
                     compact
                       ? 'h-[112px] w-[230px] sm:w-[250px]'
                       : 'h-[132px] w-[250px] sm:w-[290px]'

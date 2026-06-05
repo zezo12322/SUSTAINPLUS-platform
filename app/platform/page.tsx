@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { PlatformHeader } from '@/components/layout/platform-header'
 import { PlatformFooter } from '@/components/layout/platform-footer'
 import { AuroraBackground } from '@/components/animation/aurora-background'
+import { BackgroundPathsLayer } from '@/components/ui/background-paths'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -65,8 +66,9 @@ export default function ConsultationLanding() {
           style={{ background: 'linear-gradient(135deg, #0C1D32 0%, #16335C 50%, #1F4A7A 100%)' }}
         >
           <AuroraBackground conic intensity="normal" />
+          <BackgroundPathsLayer strokes={['#c8a368', '#8ba2c4']} className="opacity-50" />
 
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28 text-center">
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28 text-center">
             <div className="hero-rise inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 mb-6">
               <span className="w-2 h-2 bg-gold-400 rounded-full animate-pulse" />
               <span className="text-white/90 text-sm font-medium">مدعوم بخبرة ساستين بلس وذكاء اصطناعي متخصص</span>

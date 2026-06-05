@@ -16,7 +16,7 @@ export async function generateMetadata({
   const cs = CASE_STUDIES_DATA[slug]
   if (!cs) return {}
   return {
-    title: cs.en.title + ' — Sustain Plus',
+    title: { absolute: cs.en.title + ' — Sustain Plus' },
     description: cs.en.summary,
     alternates: {
       languages: { en: `/case-studies/${slug}`, ar: `/ar/case-studies/${slug}` },

@@ -133,6 +133,77 @@ export const SERVICES_DATA: Record<string, ServiceEntry> = {
   },
 
   // ────────────────────────────────────────────────────────────
+  'environmental-awareness': {
+    icon: 'fa-bullhorn',
+    cardBullets: [
+      { en: 'Awareness campaigns & events', ar: 'حملات وفعاليات توعية' },
+      { en: 'School & community programs', ar: 'برامج للمدارس والمجتمع' },
+      { en: 'Corporate environmental culture', ar: 'ثقافة بيئية مؤسسية' },
+      { en: 'Behavior-change initiatives', ar: 'مبادرات تغيير السلوك' },
+    ],
+    en: {
+      title: 'Environmental Awareness',
+      summary:
+        'Awareness programs and campaigns that build a genuine environmental culture across communities, schools, and organizations.',
+      intro:
+        'We design and deliver environmental awareness programs that turn knowledge into everyday action. From schools and local communities to corporate teams, we build campaigns, events, and educational content that nurture a lasting environmental culture — encouraging responsible behavior around waste, water, energy, and climate.',
+    },
+    ar: {
+      title: 'التوعية البيئية',
+      summary:
+        'برامج وحملات توعية تبني ثقافة بيئية حقيقية في المجتمعات والمدارس والمؤسسات.',
+      intro:
+        'نصمّم وننفّذ برامج توعية بيئية تحوّل المعرفة إلى سلوك يومي. من المدارس والمجتمعات المحلية إلى فِرق العمل في المؤسسات، نبني حملات وفعاليات ومحتوى تعليمي يرسّخ ثقافة بيئية مستدامة — ويشجّع السلوك المسؤول تجاه النفايات والمياه والطاقة والمناخ.',
+    },
+    capabilities: [
+      {
+        icon: 'fa-bullhorn',
+        en: {
+          title: 'Awareness Campaigns',
+          desc: 'End-to-end environmental awareness campaigns — messaging, materials, and channels that reach your target audience and drive lasting behavior change.',
+        },
+        ar: {
+          title: 'حملات التوعية',
+          desc: 'حملات توعية بيئية متكاملة — الرسائل والمواد والقنوات التي تصل إلى جمهورك المستهدف وتحفّز تغييراً دائماً في السلوك.',
+        },
+      },
+      {
+        icon: 'fa-school',
+        en: {
+          title: 'School & Community Programs',
+          desc: 'Educational programs for schools, universities, and local communities that build environmental literacy from an early age.',
+        },
+        ar: {
+          title: 'برامج المدارس والمجتمع',
+          desc: 'برامج تعليمية للمدارس والجامعات والمجتمعات المحلية تبني الوعي البيئي من سنّ مبكرة.',
+        },
+      },
+      {
+        icon: 'fa-people-group',
+        en: {
+          title: 'Corporate Environmental Culture',
+          desc: 'Employee engagement and internal awareness initiatives that embed sustainability into your organization’s day-to-day culture.',
+        },
+        ar: {
+          title: 'الثقافة البيئية المؤسسية',
+          desc: 'مبادرات إشراك الموظفين والتوعية الداخلية التي ترسّخ الاستدامة في ثقافة مؤسستك اليومية.',
+        },
+      },
+      {
+        icon: 'fa-calendar-day',
+        en: {
+          title: 'Events & Environmental Occasions',
+          desc: 'Workshops, seminars, and activations around key environmental occasions — such as World Environment Day — that turn moments into momentum.',
+        },
+        ar: {
+          title: 'الفعاليات والمناسبات البيئية',
+          desc: 'ورش عمل وندوات وفعاليات حول المناسبات البيئية الكبرى — مثل يوم البيئة العالمي — تحوّل المناسبة إلى زخم مستمر.',
+        },
+      },
+    ],
+  },
+
+  // ────────────────────────────────────────────────────────────
   'engineering-water-infrastructure': {
     icon: 'fa-water',
     cardBullets: [
@@ -409,6 +480,7 @@ export const SERVICES_DATA: Record<string, ServiceEntry> = {
 /** Ordered listing of services for the index grid. */
 export const SERVICES_ORDER = [
   'environmental-consulting',
+  'environmental-awareness',
   'engineering-water-infrastructure',
   'mining-exploration',
   'permits-training',

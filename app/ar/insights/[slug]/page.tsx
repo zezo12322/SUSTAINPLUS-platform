@@ -16,7 +16,7 @@ export async function generateMetadata({
   const e = INSIGHTS_DATA[slug]
   if (!e) return {}
   return {
-    title: e.ar.title + ' — ساستين بلس',
+    title: { absolute: e.ar.title + ' — ساستين بلس' },
     description: e.ar.excerpt,
     alternates: { languages: { en: `/insights/${slug}`, ar: `/ar/insights/${slug}` } },
   }

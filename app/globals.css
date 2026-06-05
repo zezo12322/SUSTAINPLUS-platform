@@ -93,6 +93,14 @@ h1, h2, h3, h4, h5, h6 {
 
   .rtl-flip { transform: scaleX(-1); }
 
+  /* Colorize the horizontal navy logo to brand gold for dark backgrounds
+     (hero header + footer). Avoids needing a separate gold horizontal asset.
+     Tuned to approximate gold.light (#c8a368). */
+  .logo-gold {
+    filter: brightness(0) saturate(100%) invert(78%) sepia(36%) saturate(560%)
+            hue-rotate(351deg) brightness(94%) contrast(88%);
+  }
+
   .chat-bubble-user {
     @apply bg-primary text-white rounded-2xl rounded-tl-none px-4 py-3 max-w-[80%] self-end;
   }

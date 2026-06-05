@@ -39,9 +39,9 @@ export function MarketingHeader({ dict, locale }: { dict: MarketingDict; locale:
           <Link href={home} className="flex items-center flex-shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src={scrolled ? '/logo-color.png' : '/logo-on-dark.png'}
+              src={scrolled ? '/logo-color.png' : '/logo-wide.png'}
               alt="Sustain Plus"
-              className="object-contain h-9 lg:h-11 w-auto transition"
+              className={`object-contain h-9 lg:h-11 w-auto transition ${scrolled ? '' : 'logo-gold'}`}
             />
           </Link>
 

@@ -4,6 +4,8 @@ import { MarketingShell } from './marketing-chrome'
 import { SectionEyebrow } from './ui'
 import { CountUp } from '@/components/animation/count-up'
 import { AuroraBackground } from '@/components/animation/aurora-background'
+import { MetalButton } from '@/components/ui/metal-button'
+import { LiquidButton } from '@/components/ui/liquid-glass-button'
 import { MARKETING, type Locale } from '@/lib/marketing'
 
 // Maps each home service card (by index) to its service detail-page slug.
@@ -275,14 +277,13 @@ export function MarketingHome({ locale }: { locale: Locale }) {
           <div className="relative max-w-3xl mx-auto px-4 py-20 text-center">
             <h2 data-reveal="fade-up" className="text-3xl sm:text-4xl font-extrabold text-white">{dict.contact.title}</h2>
             <p data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '120ms' }} className="mt-4 text-white/75 text-lg">{dict.contact.subtitle}</p>
-            <div data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '240ms' }} className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/platform"
-                className="sheen group inline-flex items-center justify-center gap-2 bg-primary-500 hover:bg-primary-400 text-white font-semibold px-8 py-4 rounded-lg transition-all shadow-lg hover:-translate-y-0.5 animate-pulse-ring"
-              >
+            <div data-reveal="fade-up" style={{ ['--reveal-delay' as string]: '240ms' }} className="mt-9 flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <MetalButton variant="gold" href="/platform" className="px-8">
                 {dict.contact.cta}
-                <i className={`fa-solid ${arrow} text-sm transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5`} />
-              </Link>
+              </MetalButton>
+              <LiquidButton variant="light" size="lg" href={`${localePrefix}/contact`}>
+                {locale === 'ar' ? 'تواصل معنا' : 'Contact us'}
+              </LiquidButton>
             </div>
           </div>
         </section>
