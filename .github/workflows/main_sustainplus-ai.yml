@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      id-token: write
+    env:
+      HAS_DB_SECRET: ${{ secrets.DATABASE_URL != '' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -30,6 +33,51 @@ jobs:
         run: npx prisma generate
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgresql://build:build@localhost:5432/build' }}
+
+      # --- Apply Prisma schema to the production Postgres (additive db push) ---
+      # The Azure PostgreSQL firewall only allows Azure services, so we briefly
+      # whitelist this runner's IP, push, then remove the rule (trap on EXIT).
+      - name: Azure login (for DB schema push)
+        if: ${{ env.HAS_DB_SECRET == 'true' }}
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_86676FDEC0E2484C9A4F8565D7A6A923 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_15F3F85CE5DD4E12A40C34C92652F4FD }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_8DA9C8C14EA64431A7B4BA255A8F16C7 }}
+
+      - name: Push Prisma schema to database
+        if: ${{ env.HAS_DB_SECRET == 'true' }}
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          set -e
+          PG_SERVER="sustainplus-pg"
+          PG_RG="Sustainplus"
+          RUNNER_IP=$(curl -s https://api.ipify.org || echo "")
+          echo "Runner IP: $RUNNER_IP ; PG resource group: $PG_RG"
+
+          if [ -n "$PG_RG" ] && [ -n "$RUNNER_IP" ]; then
+            RULE="gha-dbpush-${GITHUB_RUN_ID}"
+            cleanup() {
+              az postgres flexible-server firewall-rule delete \
+                --name "$PG_SERVER" --resource-group "$PG_RG" \
+                --rule-name "$RULE" --yes >/dev/null 2>&1 || true
+              echo "Removed temporary firewall rule $RULE"
+            }
+            trap cleanup EXIT
+            az postgres flexible-server firewall-rule create \
+              --name "$PG_SERVER" --resource-group "$PG_RG" \
+              --rule-name "$RULE" \
+              --start-ip-address "$RUNNER_IP" --end-ip-address "$RUNNER_IP" >/dev/null
+            echo "Opened temporary firewall rule $RULE for $RUNNER_IP"
+            sleep 5
+          else
+            echo "WARNING: could not resolve PG server or runner IP; attempting db push anyway."
+          fi
+
+          echo "=== prisma db push (additive schema sync) ==="
+          npx prisma db push --skip-generate
+          echo "Schema pushed to database."
 
       - name: Verify Prisma client after generate
         run: |
@@ -51,8 +99,8 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgresql://build:build@localhost:5432/build' }}
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'build-secret-placeholder' }}
-          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL || 'https://sustainplus-ai-crh0bqhffyewhxa5.westeurope-01.azurewebsites.net' }}
-          NEXT_PUBLIC_PLATFORM_URL: 'https://sustainplus-ai-crh0bqhffyewhxa5.westeurope-01.azurewebsites.net'
+          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL || 'https://sustainplus-ai-eg.azurewebsites.net' }}
+          NEXT_PUBLIC_PLATFORM_URL: 'https://sustainplus-ai-eg.azurewebsites.net'
           NEXT_PUBLIC_MAIN_SITE_URL: 'https://sustainplus-eg.com'
 
       - name: Prepare standalone package
@@ -231,7 +279,7 @@ jobs:
       - name: Configure Azure App Service
         uses: azure/appservice-settings@v1
         with:
-          app-name: sustainplus-ai
+          app-name: sustainplus-ai-eg
           app-settings-json: '[{"name":"SCM_DO_BUILD_DURING_DEPLOYMENT","value":"false","slotSetting":false}]'
           general-settings-json: '{"appCommandLine":"/bin/sh start.sh","linuxFxVersion":"NODE|22-lts"}'
 
@@ -248,8 +296,8 @@ jobs:
           RESEND_KEY: ${{ secrets.RESEND_API_KEY }}
           EMAIL_FROM_VAL: ${{ secrets.EMAIL_FROM }}
         run: |
-          RG=$(az webapp list --query "[?name=='sustainplus-ai'].resourceGroup | [0]" --output tsv)
-          SITE_URL="https://sustainplus-ai-crh0bqhffyewhxa5.westeurope-01.azurewebsites.net"
+          RG="Sustainplus"
+          SITE_URL="https://sustainplus-ai-eg.azurewebsites.net"
           FINAL_URL="${NEXTAUTH_URL_VAL:-$SITE_URL}"
 
           SETTINGS=(
@@ -273,7 +321,7 @@ jobs:
 
           echo "Applying ${#SETTINGS[@]} app settings to $RG/sustainplus-ai ..."
           az webapp config appsettings set \
-            --name sustainplus-ai \
+            --name sustainplus-ai-eg \
             --resource-group "$RG" \
             --settings "${SETTINGS[@]}"
 
@@ -281,31 +329,21 @@ jobs:
 
       - name: Open PostgreSQL firewall for Azure services
         run: |
-          PG_RG=$(az postgres flexible-server list \
-            --query "[?name=='sustainplus-db'].resourceGroup | [0]" \
-            --output tsv 2>/dev/null || echo "")
-
-          if [ -n "$PG_RG" ]; then
-            echo "Found PostgreSQL server in resource group: $PG_RG"
-
-            az postgres flexible-server firewall-rule create \
-              --name sustainplus-db \
-              --resource-group "$PG_RG" \
-              --rule-name AllowAllAzureServices \
-              --start-ip-address 0.0.0.0 \
-              --end-ip-address 0.0.0.0 2>/dev/null \
-              && echo "Firewall rule created/updated." \
-              || echo "Rule may already exist — skipping."
-          else
-            echo "WARNING: Could not find PostgreSQL server 'sustainplus-db' in this subscription."
-            echo "Manually enable 'Allow Azure services' in the Azure Portal > PostgreSQL > Networking."
-          fi
+          PG_RG="Sustainplus"
+          az postgres flexible-server firewall-rule create \
+            --name sustainplus-pg \
+            --resource-group "$PG_RG" \
+            --rule-name AllowAllAzureServices \
+            --start-ip-address 0.0.0.0 \
+            --end-ip-address 0.0.0.0 2>/dev/null \
+            && echo "Firewall rule created/updated." \
+            || echo "Rule may already exist — skipping."
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: sustainplus-ai
+          app-name: sustainplus-ai-eg
           slot-name: Production
           package: .
 
@@ -314,15 +352,15 @@ jobs:
           echo "Waiting 30s for app to boot..."
           sleep 30
 
-          RG=$(az webapp list --query "[?name=='sustainplus-ai'].resourceGroup | [0]" --output tsv)
+          RG="Sustainplus"
 
           az webapp log config \
-            --name sustainplus-ai \
+            --name sustainplus-ai-eg \
             --resource-group "$RG" \
             --application-logging filesystem \
             --level verbose
 
-          SITE_URL="https://sustainplus-ai-crh0bqhffyewhxa5.westeurope-01.azurewebsites.net"
+          SITE_URL="https://sustainplus-ai-eg.azurewebsites.net"
 
           echo "=== Testing /api/ping ==="
           PING=$(curl -sf "$SITE_URL/api/ping" 2>/dev/null || echo "FAILED")
@@ -334,7 +372,7 @@ jobs:
 
           echo "=== STARTUP LOGS (30 seconds) ==="
           timeout 30 az webapp log tail \
-            --name sustainplus-ai \
+            --name sustainplus-ai-eg \
             --resource-group "$RG" || true
 
           if echo "$HEALTH" | grep -q '"prisma":{"status":"ok"'; then

@@ -49,3 +49,7 @@ test-results/
 
 # TestSprite scaffolding (local only)
 testsprite_tests/
+
+# Migration secrets (local only — NEVER commit)
+/scripts/.migration.env
+/scripts/*.secret
