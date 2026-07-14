@@ -147,6 +147,12 @@ function AdminUserActions({
 }) {
   return (
     <div className="flex items-center gap-2">
+      <a
+        href={`/admin/users/${userId}`}
+        className="text-xs px-2 py-1 rounded text-primary-600 hover:bg-primary-50 font-medium"
+      >
+        تفاصيل
+      </a>
       <form action={`/api/admin/users/${userId}/toggle`} method="POST">
         <button
           type="submit"
