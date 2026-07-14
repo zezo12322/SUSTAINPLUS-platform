@@ -60,14 +60,14 @@ jobs:
             RULE="gha-dbpush-${GITHUB_RUN_ID}"
             cleanup() {
               az postgres flexible-server firewall-rule delete \
-                --name "$PG_SERVER" --resource-group "$PG_RG" \
-                --rule-name "$RULE" --yes >/dev/null 2>&1 || true
+                --server-name "$PG_SERVER" --resource-group "$PG_RG" \
+                --name "$RULE" --yes >/dev/null 2>&1 || true
               echo "Removed temporary firewall rule $RULE"
             }
             trap cleanup EXIT
             az postgres flexible-server firewall-rule create \
-              --name "$PG_SERVER" --resource-group "$PG_RG" \
-              --rule-name "$RULE" \
+              --server-name "$PG_SERVER" --resource-group "$PG_RG" \
+              --name "$RULE" \
               --start-ip-address "$RUNNER_IP" --end-ip-address "$RUNNER_IP" >/dev/null
             echo "Opened temporary firewall rule $RULE for $RUNNER_IP"
             sleep 5
@@ -331,9 +331,9 @@ jobs:
         run: |
           PG_RG="Sustainplus"
           az postgres flexible-server firewall-rule create \
-            --name sustainplus-pg \
+            --server-name sustainplus-pg \
             --resource-group "$PG_RG" \
-            --rule-name AllowAllAzureServices \
+            --name AllowAllAzureServices \
             --start-ip-address 0.0.0.0 \
             --end-ip-address 0.0.0.0 2>/dev/null \
             && echo "Firewall rule created/updated." \
