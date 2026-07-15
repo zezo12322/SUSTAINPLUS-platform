@@ -44,6 +44,10 @@ export function ChatInterface({
   const [remainingCount, setRemainingCount] = useState(remaining)
   const [showEscalation, setShowEscalation] = useState(false)
   const [escalationSent, setEscalationSent] = useState(false)
+  const [escalationReason, setEscalationReason] = useState('')
+  const [showModal, setShowModal] = useState(false)
+  const [note, setNote] = useState('')
+  const [escalating, setEscalating] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
@@ -107,8 +111,9 @@ export function ChatInterface({
       setMessages((prev) => [...prev, aiMsg])
       setRemainingCount((prev) => Math.max(0, prev - 1))
 
-      if (data.needsEscalation) {
+      if (data.needsEscalation || data.escalationSuggested) {
         setShowEscalation(true)
+        setEscalationReason(data.escalationReason || '')
       }
     } catch {
       setError('حدث خطأ في الاتصال. يُرجى المحاولة مجدداً.')
@@ -126,24 +131,37 @@ export function ChatInterface({
     }
   }
 
-  async function escalateToExpert() {
-    if (!sessionId || escalationSent) return
+  function openEscalationModal() {
+    setShowEscalation(false)
+    setShowModal(true)
+  }
+
+  async function submitEscalation() {
+    if (!sessionId || escalationSent || escalating) return
+    setEscalating(true)
     try {
-      await fetch('/api/expert-cases', {
+      const descriptionAr =
+        messages
+          .filter((m) => m.role === 'USER' || m.role === 'user')
+          .map((m) => m.content)
+          .join('\n') || 'تصعيد من محادثة المساعد الذكي.'
+      const res = await fetch('/api/expert-cases', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           sessionId,
-          descriptionAr: messages
-            .filter((m) => m.role === 'USER' || m.role === 'user')
-            .map((m) => m.content)
-            .join('\n'),
+          descriptionAr,
+          userNote: note.trim() || undefined,
+          trigger: escalationReason ? 'AI_OUT_OF_SCOPE' : 'USER_REQUEST',
         }),
       })
-      setEscalationSent(true)
-      setShowEscalation(false)
-    } catch {
-      // silent
+      if (res.ok) {
+        setEscalationSent(true)
+        setShowModal(false)
+        setNote('')
+      }
+    } finally {
+      setEscalating(false)
     }
   }
 
@@ -176,7 +194,7 @@ export function ChatInterface({
             </span>
           ) : (
             <button
-              onClick={() => setShowEscalation(true)}
+              onClick={openEscalationModal}
               className="flex items-center gap-1.5 text-xs font-medium text-gold-600 hover:text-gold-700 bg-gold-50 hover:bg-gold-100 px-3 py-1.5 rounded-lg transition-colors"
             >
               <i className="fa-solid fa-user-tie" />
@@ -284,15 +302,15 @@ export function ChatInterface({
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Escalation modal */}
+      {/* AI escalation suggestion card */}
       {showEscalation && !escalationSent && (
         <div className="mx-4 mb-2 bg-gold-50 border border-gold-200 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
             <p className="font-semibold text-gold-800 text-sm">
-              يبدو أن استفسارك قد يحتاج متخصصاً بشرياً
+              هذه الحالة قد تحتاج رأي خبير
             </p>
             <p className="text-gold-600 text-xs mt-0.5">
-              للحالات الرسمية والتراخيص والقضايا القانونية، يُنصح بالتحدث مع خبير.
+              {escalationReason || 'للحالات الرسمية والتراخيص والقضايا القانونية، يُنصح بالتحدث مع خبير.'}
             </p>
           </div>
           <div className="flex gap-2 flex-shrink-0">
@@ -303,11 +321,55 @@ export function ChatInterface({
               لاحقاً
             </button>
             <button
-              onClick={escalateToExpert}
+              onClick={openEscalationModal}
               className="text-xs font-semibold bg-gold-500 hover:bg-gold-600 text-white px-4 py-1.5 rounded-lg transition-colors"
             >
               تصعيد لخبير
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Escalation modal with optional note */}
+      {showModal && !escalationSent && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+          onClick={() => setShowModal(false)}
+        >
+          <div
+            className="bg-white rounded-2xl w-full max-w-md p-6 shadow-xl animate-pop-in"
+            onClick={(e) => e.stopPropagation()}
+            dir="rtl"
+          >
+            <div className="flex items-center gap-2 mb-3">
+              <i className="fa-solid fa-user-tie text-gold-600" />
+              <h3 className="font-bold text-gray-800">تصعيد لخبير بشري</h3>
+            </div>
+            <p className="text-sm text-gray-500 mb-4 leading-relaxed">
+              سيستلم الخبير ملخّص محادثتك كاملاً. أضف ملاحظة اختيارية لتوضيح طلبك.
+            </p>
+            <textarea
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              rows={3}
+              placeholder="ملاحظة اختيارية للخبير..."
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-right text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none mb-4"
+            />
+            <div className="flex gap-2 justify-end">
+              <button
+                onClick={() => setShowModal(false)}
+                className="text-sm text-gray-500 hover:text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100"
+              >
+                إلغاء
+              </button>
+              <button
+                onClick={submitEscalation}
+                disabled={escalating}
+                className="text-sm font-semibold bg-gold-500 hover:bg-gold-600 disabled:opacity-50 text-white px-5 py-2 rounded-lg transition-colors"
+              >
+                {escalating ? 'جاري الإرسال...' : 'إرسال الطلب'}
+              </button>
+            </div>
           </div>
         </div>
       )}

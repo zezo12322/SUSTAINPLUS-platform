@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import { formatDateAr } from '@/lib/utils'
+import { expertMatchesCategory } from '@/lib/specializations'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = { title: 'حالات الخبراء' }
@@ -9,7 +10,9 @@ const STATUS_LABELS: Record<string, { label: string; cls: string }> = {
   IN_REVIEW: { label: 'قيد المراجعة', cls: 'sp-badge-yellow' },
   ASSIGNED: { label: 'مخصص', cls: 'sp-badge-green' },
   IN_PROGRESS: { label: 'جارٍ العمل', cls: 'sp-badge-green' },
+  ANSWERED: { label: 'تمت الإجابة', cls: 'sp-badge-green' },
   RESOLVED: { label: 'محلول', cls: 'sp-badge-gray' },
+  CONVERTED_TO_BOOKING: { label: 'محوّل لحجز', cls: 'sp-badge-gray' },
   CLOSED: { label: 'مغلق', cls: 'sp-badge-gray' },
 }
 
@@ -33,8 +36,26 @@ export default async function AdminExpertCasesPage({
     include: {
       user: { select: { nameAr: true, email: true } },
       session: { select: { id: true, titleAr: true } },
+      assignedExpertUser: { select: { id: true, nameAr: true, email: true } },
     },
   })
+
+  const expertUsers = await prisma.user.findMany({
+    where: { role: 'EXPERT', isActive: true },
+    select: {
+      id: true,
+      nameAr: true,
+      email: true,
+      expertProfile: { select: { specializations: true } },
+    },
+    orderBy: { nameAr: 'asc' },
+  })
+  const experts = expertUsers.map((e) => ({
+    id: e.id,
+    nameAr: e.nameAr,
+    email: e.email,
+    specializations: e.expertProfile?.specializations ?? [],
+  }))
 
   return (
     <div className="p-4 sm:p-6 max-w-7xl mx-auto">
@@ -114,10 +135,21 @@ export default async function AdminExpertCasesPage({
                   </div>
                 )}
 
+                {c.assignedExpertUser && (
+                  <p className="text-xs text-gray-500 mb-2">
+                    <i className="fa-solid fa-user-doctor text-primary-500 ms-1" />
+                    مُسندة إلى:{' '}
+                    <span className="font-semibold text-gray-700">
+                      {c.assignedExpertUser.nameAr || c.assignedExpertUser.email}
+                    </span>
+                  </p>
+                )}
                 <UpdateCaseForm
                   caseId={c.id}
                   currentStatus={c.status}
-                  currentAssigned={c.assignedExpert || ''}
+                  currentAssignedId={c.assignedExpertId || ''}
+                  experts={experts}
+                  caseCategory={c.category}
                 />
               </div>
             )
@@ -131,12 +163,22 @@ export default async function AdminExpertCasesPage({
 function UpdateCaseForm({
   caseId,
   currentStatus,
-  currentAssigned,
+  currentAssignedId,
+  experts,
+  caseCategory,
 }: {
   caseId: string
   currentStatus: string
-  currentAssigned: string
+  currentAssignedId: string
+  experts: { id: string; nameAr: string | null; email: string; specializations: string[] }[]
+  caseCategory: string | null
 }) {
+  // Rank experts whose specialization matches the case category first.
+  const ranked = [...experts].sort(
+    (a, b) =>
+      (expertMatchesCategory(b.specializations, caseCategory) ? 1 : 0) -
+      (expertMatchesCategory(a.specializations, caseCategory) ? 1 : 0),
+  )
   return (
     <form
       action={`/api/admin/expert-cases/${caseId}`}
@@ -153,15 +195,26 @@ function UpdateCaseForm({
         <option value="IN_REVIEW">قيد المراجعة</option>
         <option value="ASSIGNED">مخصص</option>
         <option value="IN_PROGRESS">جارٍ العمل</option>
+        <option value="ANSWERED">تمت الإجابة</option>
         <option value="RESOLVED">محلول</option>
+        <option value="CONVERTED_TO_BOOKING">محوّل لحجز</option>
         <option value="CLOSED">مغلق</option>
       </select>
-      <input
-        name="assignedExpert"
-        defaultValue={currentAssigned}
-        placeholder="اسم الخبير المخصص"
-        className="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-right focus:outline-none focus:ring-1 focus:ring-primary-500"
-      />
+      <select
+        name="assignedExpertId"
+        defaultValue={currentAssignedId}
+        className="border border-gray-200 rounded-lg px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-1 focus:ring-primary-500"
+      >
+        <option value="">— غير مُسندة —</option>
+        {ranked.map((e) => {
+          const match = expertMatchesCategory(e.specializations, caseCategory)
+          return (
+            <option key={e.id} value={e.id}>
+              {(e.nameAr || e.email) + (match ? ' ★ تخصص مطابق' : '')}
+            </option>
+          )
+        })}
+      </select>
       <button
         type="submit"
         className="text-sm bg-primary-600 hover:bg-primary-700 text-white px-4 py-1.5 rounded-lg transition-colors font-medium"

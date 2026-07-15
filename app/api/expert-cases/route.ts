@@ -2,12 +2,15 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { summarizeConversationAr } from '@/lib/ai'
 
 const createSchema = z.object({
   sessionId: z.string().optional(),
   descriptionAr: z.string().min(10).max(5000),
+  userNote: z.string().max(2000).optional(),
   category: z.string().optional(),
   priority: z.enum(['low', 'normal', 'high']).default('normal'),
+  trigger: z.enum(['USER_REQUEST', 'AI_LOW_CONFIDENCE', 'AI_OUT_OF_SCOPE', 'COMPLEXITY']).optional(),
 })
 
 export async function GET() {
@@ -34,13 +37,39 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ messageAr: 'بيانات غير صالحة.' }, { status: 400 })
     }
 
-    const { sessionId, descriptionAr, category, priority } = parsed.data
+    const { sessionId, descriptionAr, userNote, category, priority, trigger } = parsed.data
 
-    // Check for existing case on same session
+    // Verify the session belongs to the caller, then check for an existing case.
     if (sessionId) {
+      const ownedSession = await prisma.chatSession.findFirst({
+        where: { id: sessionId, userId: session.user.id },
+        select: { id: true },
+      })
+      if (!ownedSession) {
+        return NextResponse.json({ messageAr: 'الجلسة غير موجودة.' }, { status: 404 })
+      }
       const existing = await prisma.expertCase.findUnique({ where: { sessionId } })
       if (existing) {
         return NextResponse.json({ caseId: existing.id, messageAr: 'تم تقديم الطلب مسبقاً.' })
+      }
+    }
+
+    // Best-effort Arabic summary of the linked conversation for the expert (Gemini Flash).
+    let aiSummaryAr: string | null = null
+    if (sessionId) {
+      const msgs = await prisma.message.findMany({
+        where: {
+          session: { id: sessionId, userId: session.user.id },
+          role: { in: ['USER', 'ASSISTANT'] },
+        },
+        orderBy: { createdAt: 'asc' },
+        take: 30,
+        select: { role: true, content: true },
+      })
+      if (msgs.length > 0) {
+        aiSummaryAr = await summarizeConversationAr(
+          msgs.map((m) => ({ role: m.role === 'USER' ? 'user' : 'assistant', content: m.content }))
+        )
       }
     }
 
@@ -49,8 +78,11 @@ export async function POST(req: NextRequest) {
         userId: session.user.id,
         sessionId: sessionId || null,
         descriptionAr,
+        userNote: userNote || null,
         category: category || 'general',
         priority,
+        trigger: trigger || 'USER_REQUEST',
+        aiSummaryAr,
         status: 'PENDING',
       },
     })

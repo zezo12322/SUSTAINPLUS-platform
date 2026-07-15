@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { AdminUserManager } from './user-manager'
+import { SubscriptionControl } from './subscription-control'
 
 export const metadata: Metadata = { title: 'تفاصيل المستخدم' }
 
@@ -28,6 +29,12 @@ export default async function AdminUserDetailPage({
     where: { details: { path: ['targetUserId'], equals: id } },
     orderBy: { createdAt: 'desc' },
     take: 10,
+  })
+
+  const plans = await prisma.plan.findMany({
+    where: { isActive: true },
+    orderBy: { sortOrder: 'asc' },
+    select: { id: true, nameAr: true },
   })
 
   return (
@@ -77,6 +84,13 @@ export default async function AdminUserDetailPage({
           emailVerified: user.emailVerified,
           isActive: user.isActive,
         }}
+      />
+
+      {/* Subscription management */}
+      <SubscriptionControl
+        userId={user.id}
+        plans={plans}
+        current={{ planId: user.subscription?.planId ?? null, status: user.subscription?.status ?? null }}
       />
 
       {/* Audit trail */}

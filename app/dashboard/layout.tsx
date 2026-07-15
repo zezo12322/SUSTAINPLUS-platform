@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { DashboardSidebar } from '@/components/layout/dashboard-sidebar'
+import { NotificationBell } from '@/components/layout/notification-bell'
 import { useSession } from 'next-auth/react'
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -40,9 +41,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
           <div className="flex items-center gap-3 mr-auto">
             {/* Notifications bell */}
-            <button className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 relative">
-              <i className="fa-solid fa-bell" />
-            </button>
+            <NotificationBell />
 
             {/* User menu */}
             <div className="flex items-center gap-2">

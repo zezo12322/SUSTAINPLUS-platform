@@ -1,6 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import { formatPiasters, formatDateAr } from '@/lib/utils'
 import type { Metadata } from 'next'
+import { PaymentActions } from './payment-actions'
 
 export const metadata: Metadata = { title: 'المدفوعات' }
 
@@ -140,12 +141,13 @@ export default async function AdminPaymentsPage({
                 <th className="text-right px-4 py-3 font-semibold text-gray-500">الحالة</th>
                 <th className="text-right px-4 py-3 font-semibold text-gray-500">رقم الطلب</th>
                 <th className="text-right px-4 py-3 font-semibold text-gray-500">التاريخ</th>
+                <th className="text-right px-4 py-3 font-semibold text-gray-500">إجراءات</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
               {payments.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="text-center py-12 text-gray-400">
+                  <td colSpan={7} className="text-center py-12 text-gray-400">
                     لا توجد مدفوعات مطابقة
                   </td>
                 </tr>
@@ -182,6 +184,9 @@ export default async function AdminPaymentsPage({
                       </td>
                       <td className="px-4 py-3 text-gray-500 text-xs whitespace-nowrap">
                         {formatDateAr(payment.createdAt)}
+                      </td>
+                      <td className="px-4 py-3">
+                        <PaymentActions paymentId={payment.id} status={payment.status} />
                       </td>
                     </tr>
                   )

@@ -47,8 +47,22 @@ enum ExpertCaseStatus {
   IN_REVIEW
   ASSIGNED
   IN_PROGRESS
+  ANSWERED
   RESOLVED
+  CONVERTED_TO_BOOKING
   CLOSED
+}
+
+enum EscalationTrigger {
+  USER_REQUEST
+  AI_LOW_CONFIDENCE
+  AI_OUT_OF_SCOPE
+  COMPLEXITY
+}
+
+enum EscalationSender {
+  USER
+  EXPERT
 }
 
 enum PaymentType {
@@ -102,7 +116,9 @@ model User {
   subscription    Subscription?
   chatSessions    ChatSession[]
   payments        Payment[]
-  expertCases     ExpertCase[]
+  expertCases     ExpertCase[]   @relation("ExpertCaseOwner")
+  assignedCases   ExpertCase[]   @relation("ExpertAssignedCases")
+  expertProfile   Expert?
   usageRecords    UsageRecord[]
   auditLogs       AuditLog[]
   notifications   Notification[]
@@ -223,25 +239,66 @@ model KnowledgeEntry {
 }
 
 model ExpertCase {
-  id              String           @id @default(cuid())
-  userId          String
-  sessionId       String?          @unique
-  descriptionAr   String           @db.Text
-  descriptionEn   String?          @db.Text
-  category        String?
-  status          ExpertCaseStatus @default(PENDING)
-  priority        String           @default("normal")
-  assignedExpert  String?
-  adminNotes      String?          @db.Text
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  resolvedAt      DateTime?
+  id               String            @id @default(cuid())
+  userId           String
+  sessionId        String?           @unique
+  descriptionAr    String            @db.Text
+  descriptionEn    String?           @db.Text
+  category         String?
+  status           ExpertCaseStatus  @default(PENDING)
+  trigger          EscalationTrigger @default(USER_REQUEST)
+  priority         String            @default("normal")
+  assignedExpert   String?           // legacy free-text label (deprecated; use assignedExpertId)
+  assignedExpertId String?
+  userNote         String?           @db.Text // optional note the user adds when escalating
+  aiSummaryAr      String?           @db.Text
+  bookingId        String?           // placeholder for a future booking link (Phase 2+)
+  adminNotes       String?           @db.Text
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  resolvedAt       DateTime?
 
-  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  session         ChatSession?     @relation(fields: [sessionId], references: [id])
+  user               User                @relation("ExpertCaseOwner", fields: [userId], references: [id], onDelete: Cascade)
+  assignedExpertUser User?               @relation("ExpertAssignedCases", fields: [assignedExpertId], references: [id], onDelete: SetNull)
+  session            ChatSession?        @relation(fields: [sessionId], references: [id])
+  messages           EscalationMessage[]
 
   @@index([userId])
   @@index([status])
+  @@index([assignedExpertId])
+}
+
+model Expert {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  title           String?
+  bioAr           String?  @db.Text
+  bioEn           String?  @db.Text
+  specializations String[]
+  languages       String[]
+  hourlyRateEgp   Int?
+  isActive        Boolean  @default(true)
+  avatarUrl       String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([isActive])
+}
+
+model EscalationMessage {
+  id           String           @id @default(cuid())
+  expertCaseId String
+  senderRole   EscalationSender
+  senderId     String
+  body         String           @db.Text
+  attachments  Json?
+  createdAt    DateTime         @default(now())
+
+  expertCase   ExpertCase       @relation(fields: [expertCaseId], references: [id], onDelete: Cascade)
+
+  @@index([expertCaseId, createdAt])
 }
 
 model Payment {

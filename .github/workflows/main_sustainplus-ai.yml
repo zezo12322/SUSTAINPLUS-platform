@@ -99,8 +99,8 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgresql://build:build@localhost:5432/build' }}
           NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'build-secret-placeholder' }}
-          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL || 'https://sustainplus-ai-eg.azurewebsites.net' }}
-          NEXT_PUBLIC_PLATFORM_URL: 'https://sustainplus-ai-eg.azurewebsites.net'
+          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL || 'https://www.sustainplus-eg.com' }}
+          NEXT_PUBLIC_PLATFORM_URL: 'https://www.sustainplus-eg.com'
           NEXT_PUBLIC_MAIN_SITE_URL: 'https://sustainplus-eg.com'
 
       - name: Prepare standalone package
@@ -305,7 +305,7 @@ jobs:
             "AUTH_TRUST_HOST=true"
             "NEXTAUTH_URL=$FINAL_URL"
             "AUTH_URL=$FINAL_URL"
-            "NEXT_PUBLIC_PLATFORM_URL=$SITE_URL"
+            "NEXT_PUBLIC_PLATFORM_URL=$FINAL_URL"
             "NEXT_PUBLIC_MAIN_SITE_URL=https://sustainplus-eg.com"
           )
 

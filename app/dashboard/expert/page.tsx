@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 interface ExpertCase {
@@ -202,7 +203,11 @@ export default function ExpertPage() {
               const st = STATUS_MAP[c.status] || { label: c.status, cls: 'sp-badge-gray', icon: 'fa-circle' }
               const pr = PRIORITY_MAP[c.priority] || { label: c.priority, cls: 'sp-badge-gray' }
               return (
-                <div key={c.id} className="border border-gray-100 rounded-xl p-4">
+                <Link
+                  key={c.id}
+                  href={`/dashboard/expert/${c.id}`}
+                  className="block border border-gray-100 rounded-xl p-4 hover:border-primary-300 hover:shadow-sm transition-all"
+                >
                   <div className="flex items-start justify-between gap-3 mb-3">
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className={st.cls}>
@@ -220,7 +225,11 @@ export default function ExpertPage() {
                       <p className="text-sm text-green-800">{c.adminNotes}</p>
                     </div>
                   )}
-                </div>
+                  <p className="mt-3 inline-flex items-center gap-1 text-xs text-primary-600 font-medium">
+                    فتح المحادثة
+                    <i className="fa-solid fa-arrow-left text-[10px]" />
+                  </p>
+                </Link>
               )
             })}
           </div>

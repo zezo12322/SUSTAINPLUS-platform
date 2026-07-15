@@ -40,6 +40,11 @@ Thumbs.db
 /dev-run.log
 /dev-err.txt
 /dev-out.txt
+/err.log
+/out.log
+/dev-err.log
+/dev-out.log
+/scripts/
 .playwright-mcp/
 test-results/
 

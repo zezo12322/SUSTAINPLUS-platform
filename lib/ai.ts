@@ -162,6 +162,87 @@ async function generateWithGemini(
 }
 
 // ==========================================
+// CONVERSATION SUMMARY (cheap Gemini Flash route)
+// Used when escalating a consultation to a human expert.
+// ==========================================
+
+const SUMMARY_SYSTEM_PROMPT = `أنت مساعد يلخّص محادثات استشارية بيئية لعرضها على خبير بشري.
+لخّص المحادثة التالية بالعربية في فقرة موجزة (٤-٦ جمل) تغطّي:
+(١) مشكلة العميل أو سؤاله الأساسي،
+(٢) ما نصح به المساعد الذكي،
+(٣) النقاط المفتوحة أو ما يحتاج رأي خبير.
+اكتب الملخّص فقط بصيغة مباشرة بدون مقدمات أو عناوين.`
+
+/** Returns a concise Arabic summary of a conversation, or null if unavailable. */
+export async function summarizeConversationAr(
+  messages: { role: 'user' | 'assistant'; content: string }[]
+): Promise<string | null> {
+  const client = getGeminiClient()
+  if (!client || messages.length === 0) return null
+
+  const convo = messages
+    .map((m) => `${m.role === 'user' ? 'العميل' : 'المساعد'}: ${m.content}`)
+    .join('\n')
+    .slice(0, 12000)
+
+  try {
+    const model = client.getGenerativeModel({
+      model: AI_MODELS.simple,
+      systemInstruction: SUMMARY_SYSTEM_PROMPT,
+    })
+    const result = await model.generateContent(convo)
+    const text = result.response.text().trim()
+    return text || null
+  } catch (e) {
+    console.error('summarizeConversationAr failed:', e)
+    return null
+  }
+}
+
+// ==========================================
+// ESCALATION CLASSIFIER (cheap Gemini Flash route)
+// Model-judged signal for whether a consultation should be escalated to a
+// human expert. Used as a non-blocking suggestion only (never auto-escalates).
+// ==========================================
+
+const ESCALATION_CLASSIFIER_PROMPT = `أنت مصنّف لمنصة استشارات بيئية. مهمتك تحديد ما إذا كانت الحالة تحتاج تصعيداً لخبير بشري.
+صعّد عندما تتضمن الحالة: إجراءات رسمية أو تراخيص أو موافقات حكومية، قضايا قانونية أو غرامات أو مخالفات، دراسات تحتاج توقيع متخصص، حوادث طارئة، أو أسئلة تتجاوز نطاق المساعد الذكي.
+أعد JSON فقط بالشكل التالي بدون أي نص آخر: {"suggested": true, "reason": "سبب موجز جداً بالعربية"} أو {"suggested": false, "reason": ""}.`
+
+/** Returns a model-judged escalation suggestion, or null if unavailable. */
+export async function classifyEscalation(
+  userMessage: string,
+  aiAnswer: string
+): Promise<{ suggested: boolean; reason: string } | null> {
+  const client = getGeminiClient()
+  if (!client) return null
+
+  try {
+    const model = client.getGenerativeModel({
+      model: AI_MODELS.simple,
+      systemInstruction: ESCALATION_CLASSIFIER_PROMPT,
+    })
+    const prompt = `سؤال العميل:\n${userMessage}\n\nإجابة المساعد:\n${aiAnswer}`.slice(0, 8000)
+    const result = await model.generateContent(prompt)
+    const raw = result.response
+      .text()
+      .trim()
+      .replace(/^```json\s*/i, '')
+      .replace(/^```\s*/, '')
+      .replace(/```$/, '')
+      .trim()
+    const parsed = JSON.parse(raw)
+    if (typeof parsed?.suggested === 'boolean') {
+      return { suggested: parsed.suggested, reason: typeof parsed.reason === 'string' ? parsed.reason : '' }
+    }
+    return null
+  } catch (e) {
+    console.error('classifyEscalation failed:', e)
+    return null
+  }
+}
+
+// ==========================================
 // AZURE OPENAI GENERATION (Primary fallback)
 // ==========================================
 

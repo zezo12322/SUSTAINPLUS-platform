@@ -13,12 +13,20 @@ const navItems = [
   { href: '/dashboard/billing', label: 'اشتراكي والفواتير', icon: 'fa-credit-card' },
 ]
 
+const expertItems = [
+  { href: '/expert', label: 'حالاتي كخبير', icon: 'fa-user-doctor' },
+]
+
 const adminItems = [
   { href: '/admin', label: 'لوحة الإدارة', icon: 'fa-chart-line' },
   { href: '/admin/users', label: 'إدارة المستخدمين', icon: 'fa-users' },
+  { href: '/admin/plans', label: 'الخطط', icon: 'fa-layer-group' },
   { href: '/admin/knowledge-base', label: 'قاعدة المعرفة', icon: 'fa-book' },
   { href: '/admin/expert-cases', label: 'حالات الخبراء', icon: 'fa-briefcase' },
+  { href: '/admin/experts', label: 'الخبراء', icon: 'fa-user-doctor' },
   { href: '/admin/payments', label: 'المدفوعات', icon: 'fa-money-bill' },
+  { href: '/admin/broadcast', label: 'بثّ إشعار', icon: 'fa-bullhorn' },
+  { href: '/admin/audit', label: 'سجل التدقيق', icon: 'fa-clock-rotate-left' },
 ]
 
 interface DashboardSidebarProps {
@@ -28,7 +36,9 @@ interface DashboardSidebarProps {
 export function DashboardSidebar({ onClose }: DashboardSidebarProps) {
   const pathname = usePathname()
   const { data: session } = useSession()
-  const isAdmin = (session?.user as any)?.role === 'ADMIN'
+  const role = (session?.user as any)?.role
+  const isAdmin = role === 'ADMIN'
+  const isExpert = role === 'EXPERT'
 
   return (
     <aside className="w-64 flex-shrink-0 bg-white border-l border-gray-100 flex flex-col h-full">
@@ -73,6 +83,31 @@ export function DashboardSidebar({ onClose }: DashboardSidebarProps) {
             </Link>
           ))}
         </div>
+
+        {/* Expert section */}
+        {(isExpert || isAdmin) && (
+          <div className="mt-6">
+            <p className="px-4 py-1 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+              الخبير
+            </p>
+            <div className="space-y-0.5 mt-1">
+              {expertItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={onClose}
+                  className={cn(
+                    'sidebar-nav-item',
+                    pathname?.startsWith(item.href) ? 'active' : ''
+                  )}
+                >
+                  <i className={`fa-solid ${item.icon} w-4 text-primary-600`} />
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Admin section */}
         {isAdmin && (

@@ -147,22 +147,48 @@ export async function getCurrentUser() {
   const session = await auth()
   if (!session?.user?.id) return null
 
-  return prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: { id: session.user.id },
     include: {
       subscription: { include: { plan: true } },
     },
   })
+
+  // Enforce live account state against the JWT: a deactivated account or one
+  // whose sessionVersion was bumped (role change / password reset / admin action)
+  // is treated as logged out on the next server render.
+  if (!user || !user.isActive) return null
+  const tokenVersion = (session.user as any).sessionVersion
+  if (typeof tokenVersion === 'number' && tokenVersion !== user.sessionVersion) return null
+
+  return user
 }
 
 export async function requireAuth() {
   const session = await auth()
-  if (!session?.user) throw new Error('UNAUTHORIZED')
+  if (!session?.user?.id) throw new Error('UNAUTHORIZED')
+
+  // Validate live account state (active + current session version).
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { isActive: true, sessionVersion: true },
+  })
+  const tokenVersion = (session.user as any).sessionVersion
+  if (!user || !user.isActive) throw new Error('UNAUTHORIZED')
+  if (typeof tokenVersion === 'number' && tokenVersion !== user.sessionVersion) throw new Error('UNAUTHORIZED')
+
   return session
 }
 
 export async function requireAdmin() {
   const session = await auth()
-  if (!session?.user || (session.user as any).role !== 'ADMIN') throw new Error('FORBIDDEN')
+  if (!session?.user?.id) throw new Error('FORBIDDEN')
+
+  // Re-check role + active flag against the DB so demotions take effect immediately.
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { role: true, isActive: true },
+  })
+  if (!user || !user.isActive || user.role !== 'ADMIN') throw new Error('FORBIDDEN')
   return session
 }

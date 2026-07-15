@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-import { generateAIResponse } from '@/lib/ai'
+import { generateAIResponse, classifyEscalation } from '@/lib/ai'
 import { getMonthYear, generateSessionTitle } from '@/lib/utils'
 
 const schema = z.object({
@@ -67,6 +67,18 @@ export async function POST(req: NextRequest) {
 
     // Generate AI response
     const aiResult = await generateAIResponse(message, history)
+
+    // Model-judged escalation suggestion (only when keyword detection didn't
+    // already flag it). Suggestion only — never auto-escalates.
+    let escalationSuggested = aiResult.needsEscalation
+    let escalationReason = ''
+    if (!aiResult.needsEscalation && aiResult.isComplex) {
+      const cls = await classifyEscalation(message, aiResult.content)
+      if (cls?.suggested) {
+        escalationSuggested = true
+        escalationReason = cls.reason
+      }
+    }
 
     // Persist in transaction
     const result = await prisma.$transaction(async (tx) => {
@@ -134,6 +146,8 @@ export async function POST(req: NextRequest) {
       content: aiResult.content,
       isComplex: aiResult.isComplex,
       needsEscalation: aiResult.needsEscalation,
+      escalationSuggested,
+      escalationReason,
       isFallback: aiResult.isFallback,
     })
   } catch (error) {
