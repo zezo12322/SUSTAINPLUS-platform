@@ -34,6 +34,13 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgresql://build:build@localhost:5432/build' }}
 
+      - name: Run tests
+        run: npm test
+        env:
+          DATABASE_URL: 'postgresql://build:build@localhost:5432/build'
+          NEXTAUTH_SECRET: 'test-secret-placeholder'
+          NODE_ENV: 'test'
+
       # --- Apply Prisma schema to the production Postgres (additive db push) ---
       # The Azure PostgreSQL firewall only allows Azure services, so we briefly
       # whitelist this runner's IP, push, then remove the rule (trap on EXIT).
@@ -295,6 +302,10 @@ jobs:
           AZURE_OAI_DEPLOYMENT: ${{ secrets.AZURE_OPENAI_DEPLOYMENT }}
           RESEND_KEY: ${{ secrets.RESEND_API_KEY }}
           EMAIL_FROM_VAL: ${{ secrets.EMAIL_FROM }}
+          PAYMOB_API_KEY_VAL: ${{ secrets.PAYMOB_API_KEY }}
+          PAYMOB_HMAC_VAL: ${{ secrets.PAYMOB_HMAC_SECRET }}
+          PAYMOB_IFRAME_VAL: ${{ secrets.PAYMOB_IFRAME_ID }}
+          PAYMOB_INT_CARD_VAL: ${{ secrets.PAYMOB_INTEGRATION_ID_CARD }}
         run: |
           RG="Sustainplus"
           SITE_URL="https://sustainplus-ai-eg.azurewebsites.net"
@@ -318,12 +329,18 @@ jobs:
           [ -n "$AZURE_OAI_DEPLOYMENT" ] && SETTINGS+=("AZURE_OPENAI_DEPLOYMENT=$AZURE_OAI_DEPLOYMENT")
           [ -n "$RESEND_KEY" ]          && SETTINGS+=("RESEND_API_KEY=$RESEND_KEY")
           [ -n "$EMAIL_FROM_VAL" ]      && SETTINGS+=("EMAIL_FROM=$EMAIL_FROM_VAL")
+          [ -n "$PAYMOB_API_KEY_VAL" ]  && SETTINGS+=("PAYMOB_API_KEY=$PAYMOB_API_KEY_VAL")
+          [ -n "$PAYMOB_HMAC_VAL" ]     && SETTINGS+=("PAYMOB_HMAC_SECRET=$PAYMOB_HMAC_VAL")
+          [ -n "$PAYMOB_IFRAME_VAL" ]   && SETTINGS+=("PAYMOB_IFRAME_ID=$PAYMOB_IFRAME_VAL")
+          [ -n "$PAYMOB_INT_CARD_VAL" ] && SETTINGS+=("PAYMOB_INTEGRATION_ID_CARD=$PAYMOB_INT_CARD_VAL")
 
           echo "Applying ${#SETTINGS[@]} app settings to $RG/sustainplus-ai ..."
+          # -o none: do NOT echo the settings (they contain secrets) back to the CI log.
           az webapp config appsettings set \
             --name sustainplus-ai-eg \
             --resource-group "$RG" \
-            --settings "${SETTINGS[@]}"
+            --settings "${SETTINGS[@]}" \
+            -o none
 
           echo "App settings updated."
 

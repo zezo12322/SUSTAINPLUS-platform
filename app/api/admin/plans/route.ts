@@ -7,8 +7,9 @@ const planSchema = z.object({
   slug: z.string().min(2).max(40).regex(/^[a-z0-9-]+$/, 'حروف صغيرة وأرقام وشرطات فقط'),
   nameAr: z.string().min(2).max(100),
   nameEn: z.string().min(2).max(100),
-  pricePiasters: z.number().int(),
-  consultationsPerMonth: z.number().int(),
+  // -1 is the PAYG sentinel (billed per use); anything below is invalid.
+  pricePiasters: z.number().int().min(-1),
+  consultationsPerMonth: z.number().int().min(-1),
   maxUsers: z.number().int().min(1).default(1),
   featuresAr: z.array(z.string()).default([]),
   featuresEn: z.array(z.string()).default([]),

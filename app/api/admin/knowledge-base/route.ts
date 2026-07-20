@@ -1,14 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-
-async function requireAdmin() {
-  const session = await auth()
-  if (!session?.user) return null
-  if ((session.user as any).role !== 'ADMIN') return null
-  return session
-}
+import { requireAdmin } from '@/lib/admin'
 
 const entrySchema = z.object({
   titleAr: z.string().min(2).max(300),
@@ -27,8 +20,8 @@ const entrySchema = z.object({
 })
 
 export async function GET(req: NextRequest) {
-  const session = await requireAdmin()
-  if (!session) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+  const admin = await requireAdmin()
+  if (!admin) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
   const { searchParams } = req.nextUrl
   const q = searchParams.get('q')
@@ -55,8 +48,8 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const session = await requireAdmin()
-  if (!session) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+  const admin = await requireAdmin()
+  if (!admin) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
   try {
     const body = await req.json()
@@ -68,7 +61,7 @@ export async function POST(req: NextRequest) {
     const entry = await prisma.knowledgeEntry.create({
       data: {
         ...parsed.data,
-        createdBy: session.user!.id!,
+        createdBy: admin.adminId,
         reviewedAt: parsed.data.reviewer ? new Date() : null,
       },
     })

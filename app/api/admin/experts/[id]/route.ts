@@ -1,11 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-
-function isAdmin(session: any) {
-  return session?.user && (session.user as any).role === 'ADMIN'
-}
+import { requireAdmin } from '@/lib/admin'
 
 const patchSchema = z.object({
   title: z.string().max(120).optional(),
@@ -16,8 +12,8 @@ const patchSchema = z.object({
 })
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth()
-  if (!isAdmin(session)) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+  const admin = await requireAdmin()
+  if (!admin) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
   const { id } = await params
   const expert = await prisma.expert.findUnique({ where: { id }, select: { userId: true } })

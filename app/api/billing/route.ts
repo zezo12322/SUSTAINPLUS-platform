@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server'
-import { auth } from '@/lib/auth'
+import { getAuthedUser } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { getMonthYear } from '@/lib/utils'
 
 export async function GET() {
-  const session = await auth()
-  if (!session?.user?.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const authed = await getAuthedUser()
+  if (!authed) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const userId = session.user.id
+  const userId = authed.userId
   const monthYear = getMonthYear()
 
   const [userSub, usage, payments] = await Promise.all([

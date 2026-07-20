@@ -13,6 +13,24 @@ interface Message {
   createdAt?: string
 }
 
+// Render a *safe* subset of markdown. HTML in the raw content is escaped FIRST,
+// so model output (which can echo attacker-controlled text) can never inject
+// live markup — only our own generated tags survive.
+function renderSafeMarkdown(raw: string): string {
+  const escaped = raw
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+  return escaped
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/^#{1,3}\s(.+)$/gm, '<h3 class="font-bold mt-3 mb-1">$1</h3>')
+    .replace(/^(\d+)\.\s/gm, '<br/>$1. ')
+    .replace(/^[-•]\s(.+)$/gm, '<li>$1</li>')
+    .replace(/\n/g, '<br/>')
+}
+
 interface ChatInterfaceProps {
   userId: string
   sessionId: string | null
@@ -260,14 +278,7 @@ export function ChatInterface({
                 ) : (
                   <div
                     className="prose prose-sm max-w-none prose-p:my-1 prose-ul:my-1 prose-ol:my-1"
-                    dangerouslySetInnerHTML={{
-                      __html: msg.content
-                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                        .replace(/^#{1,3}\s(.+)$/gm, '<h3 class="font-bold mt-3 mb-1">$1</h3>')
-                        .replace(/^(\d+)\.\s/gm, '<br/>$1. ')
-                        .replace(/^[-•]\s(.+)$/gm, '<li>$1</li>')
-                        .replace(/\n/g, '<br/>'),
-                    }}
+                    dangerouslySetInnerHTML={{ __html: renderSafeMarkdown(msg.content) }}
                   />
                 )}
                 {!isUser && msg.isComplex && (

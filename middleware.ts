@@ -33,9 +33,12 @@ export default auth(function middleware(req) {
     nextUrl.pathname.startsWith('/trust') ||
     nextUrl.pathname.startsWith('/_next') ||
     nextUrl.pathname.startsWith('/favicon') ||
+    // Payment return pages + Paymob's server-to-server webhook (authenticated by
+    // HMAC, not by session — must not be redirected to /login).
+    nextUrl.pathname.startsWith('/payment/') ||
+    nextUrl.pathname === '/api/payments/webhook' ||
     nextUrl.pathname === '/api/ping' ||
-    nextUrl.pathname === '/api/health' ||
-    nextUrl.pathname === '/api/env'
+    nextUrl.pathname === '/api/health'
 
   if (isPublic || isApiAuth || isStaticAsset) return NextResponse.next()
 

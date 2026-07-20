@@ -314,7 +314,9 @@ model Payment {
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
 
-  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Financial records must survive user deletion (accounting / legal / audit).
+  // Restrict blocks hard-deleting a user who has payments — deactivate instead.
+  user           User          @relation(fields: [userId], references: [id], onDelete: Restrict)
 
   @@index([userId])
   @@index([status])
@@ -356,8 +358,9 @@ model Notification {
 model OtpCode {
   id        String      @id @default(cuid())
   userId    String
-  code      String
+  code      String      // SHA-256 hash of the OTP, never the plaintext code
   type      OtpCodeType
+  attempts  Int         @default(0) // failed verification attempts; code is burned at the cap
   expiresAt DateTime
   usedAt    DateTime?
   createdAt DateTime    @default(now())

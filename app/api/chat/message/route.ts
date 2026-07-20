@@ -1,29 +1,46 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { auth } from '@/lib/auth'
+import { getAuthedUser } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { generateAIResponse, classifyEscalation } from '@/lib/ai'
 import { getMonthYear, generateSessionTitle } from '@/lib/utils'
+import { rateLimit } from '@/lib/rate-limit'
+import { RATE_LIMITS } from '@/lib/constants'
 
 const schema = z.object({
   sessionId: z.string().nullable(),
   message: z.string().min(1).max(4000),
-  history: z.array(
-    z.object({
-      role: z.enum(['user', 'assistant']),
-      content: z.string(),
-    })
-  ).max(40),
+  // `history` is accepted for backward compatibility but NOT trusted: the server
+  // rebuilds conversation context from the DB so a client cannot inject fake
+  // turns or oversized payloads.
+  history: z
+    .array(z.object({ role: z.enum(['user', 'assistant']), content: z.string().max(4000) }))
+    .max(40)
+    .optional(),
 })
 
+const FREE_LIMIT = 3
+const HISTORY_LIMIT = 20
+
 export async function POST(req: NextRequest) {
-  const session = await auth()
-  if (!session?.user?.id) {
+  const authed = await getAuthedUser()
+  if (!authed) {
     return NextResponse.json({ messageAr: 'غير مصرح.' }, { status: 401 })
   }
-
-  const userId = session.user.id
+  const userId = authed.userId
   const monthYear = getMonthYear()
+
+  // Per-user rate limit (in addition to the monthly consultation quota).
+  const rl = rateLimit(`chat:${userId}`, RATE_LIMITS.chat.requests, RATE_LIMITS.chat.windowSeconds)
+  if (!rl.ok) {
+    return NextResponse.json(
+      { messageAr: 'عدد كبير من الطلبات في وقت قصير. يُرجى الانتظار قليلاً ثم المحاولة مجدداً.' },
+      { status: 429 }
+    )
+  }
+
+  // Declared outside the try so a failure after reservation can refund it.
+  let reserved: 'payg' | 'monthly' | null = null
 
   try {
     const body = await req.json()
@@ -32,47 +49,101 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ messageAr: 'بيانات غير صالحة.' }, { status: 400 })
     }
 
-    const { sessionId, message, history } = parsed.data
+    const { sessionId, message } = parsed.data
 
-    // Get user subscription and usage
-    const [userSub, usageRecord] = await Promise.all([
-      prisma.user.findUnique({
-        where: { id: userId },
-        include: { subscription: { include: { plan: true } } },
-      }),
-      prisma.usageRecord.findUnique({
-        where: { userId_monthYear: { userId, monthYear } },
-      }),
-    ])
+    // If a session was supplied, it must belong to the caller.
+    if (sessionId) {
+      const owned = await prisma.chatSession.findFirst({
+        where: { id: sessionId, userId },
+        select: { id: true },
+      })
+      if (!owned) {
+        return NextResponse.json({ messageAr: 'الجلسة غير موجودة.' }, { status: 404 })
+      }
+    }
 
-    const plan = userSub?.subscription?.plan
-    const used = usageRecord?.consultationsUsed ?? 0
-    const limit = plan?.consultationsPerMonth ?? 3
-    const paygCredits = usageRecord?.paygCredits ?? 0
+    // Effective plan honours subscription status + expiry: an expired, cancelled
+    // or past-due subscription falls back to the free tier — it does NOT keep
+    // granting paid limits forever.
+    const userSub = await prisma.user.findUnique({
+      where: { id: userId },
+      include: { subscription: { include: { plan: true } } },
+    })
+    const sub = userSub?.subscription
+    const subActive = !!sub && sub.status === 'ACTIVE' && sub.currentPeriodEnd > new Date()
+    const plan = subActive ? sub!.plan : null
+    const isPayg = plan?.slug === 'payg'
+    const limit = plan?.consultationsPerMonth ?? FREE_LIMIT
 
-    // Check limits
-    if (plan?.slug === 'payg') {
-      if (paygCredits <= 0) {
+    // --- Atomically reserve one consultation BEFORE the (slow) AI call. ---
+    // This closes the check-then-increment race (two parallel requests can no
+    // longer both pass a pre-check) and lets us refund cleanly if the AI fails.
+    if (isPayg) {
+      const res = await prisma.usageRecord.updateMany({
+        where: { userId, monthYear, paygCredits: { gt: 0 } },
+        data: { paygCredits: { decrement: 1 } },
+      })
+      if (res.count === 0) {
         return NextResponse.json(
           { messageAr: 'رصيدك الحالي صفر. يُرجى شحن رصيد لمتابعة الاستشارات.' },
           { status: 402 }
         )
       }
-    } else if (used >= limit) {
-      return NextResponse.json(
-        { messageAr: 'لقد استنفدت استشاراتك الشهرية. يُرجى ترقية باقتك أو شراء استشارات إضافية.' },
-        { status: 402 }
-      )
+      reserved = 'payg'
+    } else {
+      // Ensure the month's usage row exists, then increment only if under the limit.
+      await prisma.usageRecord.upsert({
+        where: { userId_monthYear: { userId, monthYear } },
+        create: { userId, monthYear, consultationsUsed: 0 },
+        update: {},
+      })
+      const res = await prisma.usageRecord.updateMany({
+        where: { userId, monthYear, consultationsUsed: { lt: limit } },
+        data: { consultationsUsed: { increment: 1 } },
+      })
+      if (res.count === 0) {
+        return NextResponse.json(
+          { messageAr: 'لقد استنفدت استشاراتك الشهرية. يُرجى ترقية باقتك أو شراء استشارات إضافية.' },
+          { status: 402 }
+        )
+      }
+      reserved = 'monthly'
     }
 
-    // Generate AI response
+    // Rebuild conversation history from the DB (never trust the client's copy).
+    let history: { role: 'user' | 'assistant'; content: string }[] = []
+    if (sessionId) {
+      const past = await prisma.message.findMany({
+        where: { sessionId, role: { in: ['USER', 'ASSISTANT'] } },
+        orderBy: { createdAt: 'desc' },
+        take: HISTORY_LIMIT,
+        select: { role: true, content: true },
+      })
+      history = past
+        .reverse()
+        .map((m) => ({ role: m.role === 'USER' ? 'user' : 'assistant', content: m.content }))
+    }
+
+    // Generate AI response (never throws — signals failure via isFallback).
     const aiResult = await generateAIResponse(message, history)
+
+    // Do not charge a consultation for a failed generation — refund the reservation.
+    if (aiResult.isFallback) {
+      await prisma.usageRecord.updateMany({
+        where: { userId, monthYear },
+        data:
+          reserved === 'payg'
+            ? { paygCredits: { increment: 1 } }
+            : { consultationsUsed: { decrement: 1 } },
+      })
+      reserved = null // already refunded — prevent the catch handler from double-refunding
+    }
 
     // Model-judged escalation suggestion (only when keyword detection didn't
     // already flag it). Suggestion only — never auto-escalates.
     let escalationSuggested = aiResult.needsEscalation
     let escalationReason = ''
-    if (!aiResult.needsEscalation && aiResult.isComplex) {
+    if (!aiResult.needsEscalation && aiResult.isComplex && !aiResult.isFallback) {
       const cls = await classifyEscalation(message, aiResult.content)
       if (cls?.suggested) {
         escalationSuggested = true
@@ -80,30 +151,20 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // Persist in transaction
+    // Persist the exchange (usage was already reserved/refunded above).
     const result = await prisma.$transaction(async (tx) => {
-      // Create or verify session
       let chatSessionId = sessionId
       if (!chatSessionId) {
         const newSession = await tx.chatSession.create({
-          data: {
-            userId,
-            titleAr: generateSessionTitle(message),
-          },
+          data: { userId, titleAr: generateSessionTitle(message) },
         })
         chatSessionId = newSession.id
       }
 
-      // Save user message
       await tx.message.create({
-        data: {
-          sessionId: chatSessionId,
-          role: 'USER',
-          content: message,
-        },
+        data: { sessionId: chatSessionId, role: 'USER', content: message },
       })
 
-      // Save AI response
       const aiMessage = await tx.message.create({
         data: {
           sessionId: chatSessionId,
@@ -116,26 +177,10 @@ export async function POST(req: NextRequest) {
         },
       })
 
-      // Update session timestamp
       await tx.chatSession.update({
         where: { id: chatSessionId },
         data: { updatedAt: new Date() },
       })
-
-      // Update usage
-      if (plan?.slug === 'payg') {
-        await tx.usageRecord.upsert({
-          where: { userId_monthYear: { userId, monthYear } },
-          create: { userId, monthYear, paygCredits: -1, consultationsUsed: 1 },
-          update: { paygCredits: { decrement: 1 }, consultationsUsed: { increment: 1 } },
-        })
-      } else {
-        await tx.usageRecord.upsert({
-          where: { userId_monthYear: { userId, monthYear } },
-          create: { userId, monthYear, consultationsUsed: 1 },
-          update: { consultationsUsed: { increment: 1 } },
-        })
-      }
 
       return { chatSessionId, aiMessage }
     })
@@ -152,6 +197,19 @@ export async function POST(req: NextRequest) {
     })
   } catch (error) {
     console.error('Chat message error:', error)
+    // A consultation was reserved but the request failed before completing —
+    // refund it so the user isn't charged for an error.
+    if (reserved) {
+      await prisma.usageRecord
+        .updateMany({
+          where: { userId, monthYear },
+          data:
+            reserved === 'payg'
+              ? { paygCredits: { increment: 1 } }
+              : { consultationsUsed: { decrement: 1 } },
+        })
+        .catch(() => {})
+    }
     return NextResponse.json(
       { messageAr: 'حدث خطأ في معالجة طلبك. يُرجى المحاولة مجدداً.' },
       { status: 500 }

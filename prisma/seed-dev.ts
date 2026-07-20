@@ -90,7 +90,7 @@ async function main() {
   console.log('DEV_SEED_DONE')
   console.log('USER:   user@dev.local / Test@12345!')
   console.log('EXPERT: expert@dev.local / Test@12345!')
-  console.log('ADMIN:  admin@sustainplus-eg.com / Admin@12345!')
+  console.log('ADMIN:  admin@sustainplus-eg.com / (the ADMIN_PASSWORD used by the base seed)')
 }
 
 main()

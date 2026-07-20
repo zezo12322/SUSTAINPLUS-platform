@@ -3,14 +3,22 @@ import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
 import { verifyOtp } from '@/lib/otp'
 import { hashPassword } from '@/lib/auth'
+import { rateLimit, getClientIp } from '@/lib/rate-limit'
+import { RATE_LIMITS } from '@/lib/constants'
 
 const schema = z.object({
   email: z.string().email(),
   code: z.string().length(6),
-  newPassword: z.string().min(8),
+  newPassword: z.string().min(8).max(128),
 })
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req)
+  const rl = rateLimit(`reset-pw:${ip}`, RATE_LIMITS.auth.requests, RATE_LIMITS.auth.windowSeconds)
+  if (!rl.ok) {
+    return NextResponse.json({ messageAr: 'محاولات كثيرة. يُرجى المحاولة لاحقاً.' }, { status: 429 })
+  }
+
   const body = await req.json()
   const parsed = schema.safeParse(body)
   if (!parsed.success) return NextResponse.json({ messageAr: 'بيانات غير صالحة.' }, { status: 400 })
@@ -22,10 +30,14 @@ export async function POST(req: NextRequest) {
     select: { id: true },
   })
 
-  if (!user) return NextResponse.json({ messageAr: 'البريد الإلكتروني غير مسجّل.' }, { status: 404 })
+  // Uniform response whether or not the email exists — prevents account enumeration.
+  const invalidResponse = () =>
+    NextResponse.json({ messageAr: 'الكود غير صحيح أو منتهي الصلاحية.' }, { status: 400 })
+
+  if (!user) return invalidResponse()
 
   const valid = await verifyOtp(user.id, code, 'PASSWORD_RESET')
-  if (!valid) return NextResponse.json({ messageAr: 'الكود غير صحيح أو منتهي الصلاحية.' }, { status: 400 })
+  if (!valid) return invalidResponse()
 
   const passwordHash = await hashPassword(newPassword)
   await prisma.user.update({

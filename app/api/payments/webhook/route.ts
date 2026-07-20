@@ -15,8 +15,13 @@ export async function POST(req: NextRequest) {
     const hmac = req.nextUrl.searchParams.get('hmac') || ''
     const transactionData = obj as Record<string, any>
 
-    // Verify HMAC signature
-    if (process.env.PAYMOB_HMAC_SECRET) {
+    // Verify HMAC signature — reject when the secret is not configured (fail closed).
+    // Never process a payment webhook we cannot authenticate.
+    if (!process.env.PAYMOB_HMAC_SECRET) {
+      console.error('PAYMOB_HMAC_SECRET is not configured — rejecting unauthenticated webhook.')
+      return NextResponse.json({ error: 'Webhook not configured' }, { status: 500 })
+    }
+    {
       const params = {
         amount_cents: String(transactionData.amount_cents),
         created_at: String(transactionData.created_at),
