@@ -11,6 +11,7 @@ interface SubscriptionData {
   used: number
   remaining: number
   pct: number
+  paygCredits: number
   payments: Array<{
     id: string
     amountPiasters: number
@@ -162,6 +163,12 @@ export default function BillingPage() {
                 style={{ width: `${data?.pct ?? 0}%` }}
               />
             </div>
+            {(data?.paygCredits ?? 0) > 0 && (
+              <p className="text-xs font-semibold text-gold-600 mt-2">
+                <i className="fa-solid fa-coins ml-1" />
+                رصيد مدفوع: {data?.paygCredits} استشارة
+              </p>
+            )}
           </div>
         </div>
       </div>

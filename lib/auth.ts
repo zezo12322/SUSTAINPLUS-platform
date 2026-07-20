@@ -192,3 +192,35 @@ export async function requireAdmin() {
   if (!user || !user.isActive || user.role !== 'ADMIN') throw new Error('FORBIDDEN')
   return session
 }
+
+export interface AuthedUser {
+  userId: string
+  role: 'USER' | 'EXPERT' | 'ADMIN'
+  emailVerified: boolean
+}
+
+/**
+ * Non-throwing auth guard for API route handlers.
+ *
+ * Unlike a raw `auth()` call (which trusts role/isActive from the JWT), this
+ * re-validates the token against the DB on every request: a deactivated account
+ * or one whose `sessionVersion` was bumped (password reset / admin action) is
+ * rejected immediately, and `role` reflects the current DB value — not the
+ * possibly-stale token claim. Returns null when the caller is not a valid,
+ * active user.
+ */
+export async function getAuthedUser(): Promise<AuthedUser | null> {
+  const session = await auth()
+  if (!session?.user?.id) return null
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { isActive: true, sessionVersion: true, role: true, emailVerified: true },
+  })
+  if (!user || !user.isActive) return null
+
+  const tokenVersion = (session.user as any).sessionVersion
+  if (typeof tokenVersion === 'number' && tokenVersion !== user.sessionVersion) return null
+
+  return { userId: session.user.id, role: user.role, emailVerified: user.emailVerified }
+}

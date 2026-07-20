@@ -103,6 +103,20 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     return NextResponse.json({ messageAr: 'لا يمكن حذف آخر مدير نشط.' }, { status: 409 })
   }
 
+  // Financial records are protected (Payment.onDelete = Restrict). A user with
+  // payment history cannot be hard-deleted — deactivate them instead so the
+  // accounting/audit trail is preserved.
+  const paymentCount = await prisma.payment.count({ where: { userId: id } })
+  if (paymentCount > 0) {
+    return NextResponse.json(
+      {
+        messageAr:
+          'لا يمكن حذف مستخدم له سجل مدفوعات. يُرجى تعطيل الحساب بدلاً من حذفه للحفاظ على السجل المالي.',
+      },
+      { status: 409 }
+    )
+  }
+
   // Record the audit entry before deletion (cascades remove related rows).
   await prisma.auditLog.create({
     data: {

@@ -44,9 +44,16 @@ Thumbs.db
 /out.log
 /dev-err.log
 /dev-out.log
-/scripts/
 .playwright-mcp/
 test-results/
+
+# Debug screenshots — only root-level PNGs (leading slash = root only, so
+# public/**/*.png assets are NOT ignored). Never commit debug screenshots.
+/*.png
+
+# Local operational scripts may contain secrets — keep the dir ignored.
+# scripts/start.js is force-tracked (production `npm start` entrypoint).
+/scripts/
 
 # Scratch logo assets
 /public/_logos/

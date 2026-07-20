@@ -33,8 +33,10 @@ export default async function DashboardPage() {
 
   const plan = user?.subscription?.plan
   const used = usage?.consultationsUsed ?? 0
-  const limit = plan?.consultationsPerMonth ?? 3
-  const remaining = Math.max(0, limit - used)
+  const credits = user?.paygCredits ?? 0
+  const limit = plan && plan.consultationsPerMonth > 0 ? plan.consultationsPerMonth : plan ? 0 : 3
+  const monthlyRemaining = Math.max(0, limit - used)
+  const remaining = monthlyRemaining + credits
   const pct = limit > 0 ? Math.min(100, Math.round((used / limit) * 100)) : 0
 
   function usageClass(p: number) {
@@ -105,8 +107,8 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* Limit warning */}
-      {pct >= 80 && (
+      {/* Limit warning — suppressed when the user still has prepaid credits. */}
+      {pct >= 80 && credits === 0 && (
         <div className={`rounded-xl border px-5 py-4 mb-6 flex items-center justify-between gap-4 ${
           pct >= 100 ? 'bg-red-50 border-red-200' : 'bg-amber-50 border-amber-200'
         }`}>

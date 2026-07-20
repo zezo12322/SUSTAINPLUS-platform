@@ -1,6 +1,6 @@
 ﻿import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { auth } from '@/lib/auth'
+import { getAuthedUser } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { createPaymobCheckout, isPaymobConfigured } from '@/lib/paymob'
 import { PLANS, CONSULTATION_PACKS, MIN_PAYG_PRICE_PIASTERS } from '@/lib/constants'
@@ -21,8 +21,8 @@ const schema = z.discriminatedUnion('type', [
 ])
 
 export async function POST(req: NextRequest) {
-  const session = await auth()
-  if (!session?.user?.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const authed = await getAuthedUser()
+  if (!authed) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   try {
     const body = await req.json()
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
+      where: { id: authed.userId },
       select: { id: true, email: true, nameAr: true, nameEn: true, phone: true },
     })
     if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 })

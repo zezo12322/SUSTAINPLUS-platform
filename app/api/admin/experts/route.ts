@@ -1,15 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
-
-function isAdmin(session: any) {
-  return session?.user && (session.user as any).role === 'ADMIN'
-}
+import { requireAdmin } from '@/lib/admin'
 
 export async function GET() {
-  const session = await auth()
-  if (!isAdmin(session)) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+  const admin = await requireAdmin()
+  if (!admin) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
   const [experts, candidates] = await Promise.all([
     prisma.expert.findMany({
@@ -35,8 +31,8 @@ const createSchema = z.object({
 })
 
 export async function POST(req: NextRequest) {
-  const session = await auth()
-  if (!isAdmin(session)) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+  const admin = await requireAdmin()
+  if (!admin) return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
 
   const parsed = createSchema.safeParse(await req.json().catch(() => ({})))
   if (!parsed.success) return NextResponse.json({ messageAr: 'بيانات غير صالحة.' }, { status: 400 })

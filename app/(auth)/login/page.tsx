@@ -10,7 +10,10 @@ import { Button } from '@/components/ui/button'
 function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const redirect = searchParams?.get('redirect') || '/dashboard'
+  // Only allow same-origin relative paths (single leading slash) to block
+  // open-redirect payloads like `//evil.com` or `https://evil.com`.
+  const rawRedirect = searchParams?.get('redirect') || '/dashboard'
+  const redirect = /^\/(?!\/)/.test(rawRedirect) ? rawRedirect : '/dashboard'
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

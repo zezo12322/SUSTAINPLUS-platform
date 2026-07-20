@@ -80,7 +80,13 @@ async function main() {
   // ADMIN USER
   // ==========================================
   const adminEmail = process.env.ADMIN_EMAIL || 'admin@sustainplus-eg.com'
-  const adminPassword = process.env.ADMIN_PASSWORD || 'Admin@12345!'
+  const adminPassword = process.env.ADMIN_PASSWORD
+  if (!adminPassword || adminPassword.length < 10) {
+    throw new Error(
+      'ADMIN_PASSWORD env var is required (min 10 chars) to seed the admin user. ' +
+        'Set it before running the seed — no default password is created.'
+    )
+  }
   const passwordHash = await bcrypt.hash(adminPassword, 12)
 
   const admin = await prisma.user.upsert({
@@ -238,10 +244,9 @@ async function main() {
   console.log(`✅ ${kbEntries.length} knowledge base entries seeded`)
 
   console.log('\n🎉 Seed complete!')
-  console.log(`\nAdmin credentials:`)
-  console.log(`  Email: ${adminEmail}`)
-  console.log(`  Password: ${adminPassword}`)
-  console.log('\n⚠️  Change the admin password immediately after first login!')
+  console.log(`\nAdmin user: ${adminEmail}`)
+  console.log('  Password: (the value of ADMIN_PASSWORD — not printed)')
+  console.log('\n⚠️  Change the admin password after first login.')
 }
 
 main()

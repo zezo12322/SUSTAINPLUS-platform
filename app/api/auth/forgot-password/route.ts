@@ -3,10 +3,18 @@ import { z } from 'zod'
 import { prisma } from '@/lib/prisma'
 import { createOtp } from '@/lib/otp'
 import { sendPasswordResetEmail } from '@/lib/email'
+import { rateLimit, getClientIp } from '@/lib/rate-limit'
+import { RATE_LIMITS } from '@/lib/constants'
 
 const schema = z.object({ email: z.string().email() })
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req)
+  const rl = rateLimit(`forgot-pw:${ip}`, RATE_LIMITS.auth.requests, RATE_LIMITS.auth.windowSeconds)
+  if (!rl.ok) {
+    return NextResponse.json({ messageAr: 'محاولات كثيرة. يُرجى المحاولة لاحقاً.' }, { status: 429 })
+  }
+
   const body = await req.json()
   const parsed = schema.safeParse(body)
   if (!parsed.success) return NextResponse.json({ messageAr: 'بريد إلكتروني غير صالح.' }, { status: 400 })

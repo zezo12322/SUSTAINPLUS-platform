@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { auth } from '@/lib/auth'
+import { getAuthedUser } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
 // Status transitions an assigned expert (or admin) may perform on their case.
@@ -9,17 +9,16 @@ const patchSchema = z.object({
 })
 
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth()
-  if (!session?.user?.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const authed = await getAuthedUser()
+  if (!authed) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const { id } = await params
-  const role = (session.user as any).role
 
   const c = await prisma.expertCase.findUnique({
     where: { id },
     select: { userId: true, assignedExpertId: true },
   })
   if (!c) return NextResponse.json({ error: 'Not found' }, { status: 404 })
-  if (role !== 'ADMIN' && c.assignedExpertId !== session.user.id) {
+  if (authed.role !== 'ADMIN' && c.assignedExpertId !== authed.userId) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
 

@@ -60,7 +60,8 @@ const pendingSubscriptionPayment = {
 
 beforeEach(() => {
   vi.clearAllMocks()
-  delete process.env.PAYMOB_HMAC_SECRET
+  // The webhook now fails closed: a configured HMAC secret is required.
+  process.env.PAYMOB_HMAC_SECRET = 'test-secret'
   vi.mocked(verifyPaymobHmac).mockReturnValue(true)
 })
 
@@ -79,6 +80,14 @@ describe('POST /api/payments/webhook', () => {
 
     const res = await POST(makeWebhookRequest({ type: 'TRANSACTION', obj: baseTransaction }, 'wrong-hmac'))
     expect(res.status).toBe(400)
+  })
+
+  it('returns 500 and does not process when HMAC secret is not configured (fail closed)', async () => {
+    delete process.env.PAYMOB_HMAC_SECRET
+
+    const res = await POST(makeWebhookRequest({ type: 'TRANSACTION', obj: baseTransaction }))
+    expect(res.status).toBe(500)
+    expect(prisma.$transaction).not.toHaveBeenCalled()
   })
 
   it('returns 200 when payment record not found', async () => {

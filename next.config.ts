@@ -45,6 +45,9 @@ const nextConfig: NextConfig = {
     serverActions: {
       allowedOrigins: [
         'localhost:3001',
+        'www.sustainplus-eg.com',
+        'sustainplus-eg.com',
+        'sustainplus-ai-eg.azurewebsites.net',
         'sustainplus-ai-crh0bqhffyewhxa5.westeurope-01.azurewebsites.net',
       ],
     },
@@ -60,6 +63,11 @@ const nextConfig: NextConfig = {
           {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()',
+          },
+          // Enforce HTTPS at the browser for 2 years (site is HTTPS-only via Cloudflare).
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
           },
         ],
       },

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { auth } from '@/lib/auth'
+import { getAuthedUser } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
 const createSchema = z.object({ body: z.string().min(1).max(5000) })
@@ -24,10 +24,10 @@ async function loadAuthorizedCase(
 }
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth()
-  if (!session?.user?.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const authed = await getAuthedUser()
+  if (!authed) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const { id } = await params
-  const res = await loadAuthorizedCase(id, session.user.id, (session.user as any).role)
+  const res = await loadAuthorizedCase(id, authed.userId, authed.role)
   if ('error' in res) {
     return NextResponse.json({ error: res.error }, { status: res.error === 'not_found' ? 404 : 403 })
   }
@@ -40,10 +40,10 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
 }
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const session = await auth()
-  if (!session?.user?.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const authed = await getAuthedUser()
+  if (!authed) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const { id } = await params
-  const res = await loadAuthorizedCase(id, session.user.id, (session.user as any).role)
+  const res = await loadAuthorizedCase(id, authed.userId, authed.role)
   if ('error' in res) {
     return NextResponse.json({ error: res.error }, { status: res.error === 'not_found' ? 404 : 403 })
   }
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
     const senderRole = res.isOwner ? 'USER' : 'EXPERT'
     const message = await prisma.escalationMessage.create({
-      data: { expertCaseId: id, senderRole, senderId: session.user.id, body: parsed.data.body },
+      data: { expertCaseId: id, senderRole, senderId: authed.userId, body: parsed.data.body },
     })
 
     const theCase = res.case

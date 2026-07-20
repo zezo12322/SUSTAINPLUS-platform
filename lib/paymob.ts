@@ -164,7 +164,11 @@ export function verifyPaymobHmac(
     .update(concatenation)
     .digest('hex')
 
-  return calculated === receivedHmac
+  // Constant-time comparison to avoid leaking the signature via timing.
+  const a = Buffer.from(calculated)
+  const b = Buffer.from(receivedHmac || '')
+  if (a.length !== b.length) return false
+  return crypto.timingSafeEqual(a, b)
 }
 
 export function isPaymobConfigured(): boolean {

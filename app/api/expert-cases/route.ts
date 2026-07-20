@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { auth } from '@/lib/auth'
+import { getAuthedUser } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { summarizeConversationAr } from '@/lib/ai'
 
@@ -14,11 +14,11 @@ const createSchema = z.object({
 })
 
 export async function GET() {
-  const session = await auth()
-  if (!session?.user?.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const authed = await getAuthedUser()
+  if (!authed) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const cases = await prisma.expertCase.findMany({
-    where: { userId: session.user.id },
+    where: { userId: authed.userId },
     orderBy: { createdAt: 'desc' },
     take: 20,
   })
@@ -27,8 +27,8 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const session = await auth()
-  if (!session?.user?.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const authed = await getAuthedUser()
+  if (!authed) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   try {
     const body = await req.json()
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     // Verify the session belongs to the caller, then check for an existing case.
     if (sessionId) {
       const ownedSession = await prisma.chatSession.findFirst({
-        where: { id: sessionId, userId: session.user.id },
+        where: { id: sessionId, userId: authed.userId },
         select: { id: true },
       })
       if (!ownedSession) {
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
     if (sessionId) {
       const msgs = await prisma.message.findMany({
         where: {
-          session: { id: sessionId, userId: session.user.id },
+          session: { id: sessionId, userId: authed.userId },
           role: { in: ['USER', 'ASSISTANT'] },
         },
         orderBy: { createdAt: 'asc' },
@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
 
     const expertCase = await prisma.expertCase.create({
       data: {
-        userId: session.user.id,
+        userId: authed.userId,
         sessionId: sessionId || null,
         descriptionAr,
         userNote: userNote || null,
@@ -90,7 +90,7 @@ export async function POST(req: NextRequest) {
     // Notify admin (create notification)
     await prisma.notification.create({
       data: {
-        userId: session.user.id,
+        userId: authed.userId,
         type: 'EXPERT_CASE_CREATED',
         titleAr: 'طلب تصعيد لخبير',
         bodyAr: `تم إرسال طلبك لفريق الخبراء. سيتواصل معك أحد المتخصصين قريباً.`,
@@ -99,7 +99,7 @@ export async function POST(req: NextRequest) {
 
     await prisma.auditLog.create({
       data: {
-        userId: session.user.id,
+        userId: authed.userId,
         action: 'EXPERT_CASE_CREATE',
         details: { caseId: expertCase.id, priority },
       },

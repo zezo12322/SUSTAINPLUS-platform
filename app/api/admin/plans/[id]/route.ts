@@ -6,8 +6,9 @@ import { requireAdmin } from '@/lib/admin'
 const updateSchema = z.object({
   nameAr: z.string().min(2).max(100).optional(),
   nameEn: z.string().min(2).max(100).optional(),
-  pricePiasters: z.number().int().optional(),
-  consultationsPerMonth: z.number().int().optional(),
+  // -1 is the PAYG sentinel (billed per use); anything below is invalid.
+  pricePiasters: z.number().int().min(-1).optional(),
+  consultationsPerMonth: z.number().int().min(-1).optional(),
   maxUsers: z.number().int().min(1).optional(),
   featuresAr: z.array(z.string()).optional(),
   featuresEn: z.array(z.string()).optional(),
