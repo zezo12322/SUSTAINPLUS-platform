@@ -72,42 +72,43 @@ export async function POST(req: NextRequest) {
     const sub = userSub?.subscription
     const subActive = !!sub && sub.status === 'ACTIVE' && sub.currentPeriodEnd > new Date()
     const plan = subActive ? sub!.plan : null
-    const isPayg = plan?.slug === 'payg'
-    const limit = plan?.consultationsPerMonth ?? FREE_LIMIT
+    // PAYG plans carry the -1 sentinel; treat any non-positive value as "no
+    // monthly allotment" so the user relies purely on prepaid credits.
+    const monthlyLimit = plan && plan.consultationsPerMonth > 0 ? plan.consultationsPerMonth : (plan ? 0 : FREE_LIMIT)
+
+    // Ensure the month's usage row exists so both counters update atomically.
+    await prisma.usageRecord.upsert({
+      where: { userId_monthYear: { userId, monthYear } },
+      create: { userId, monthYear, consultationsUsed: 0 },
+      update: {},
+    })
 
     // --- Atomically reserve one consultation BEFORE the (slow) AI call. ---
-    // This closes the check-then-increment race (two parallel requests can no
-    // longer both pass a pre-check) and lets us refund cleanly if the AI fails.
-    if (isPayg) {
-      const res = await prisma.usageRecord.updateMany({
-        where: { userId, monthYear, paygCredits: { gt: 0 } },
-        data: { paygCredits: { decrement: 1 } },
-      })
-      if (res.count === 0) {
-        return NextResponse.json(
-          { messageAr: 'رصيدك الحالي صفر. يُرجى شحن رصيد لمتابعة الاستشارات.' },
-          { status: 402 }
-        )
-      }
-      reserved = 'payg'
-    } else {
-      // Ensure the month's usage row exists, then increment only if under the limit.
-      await prisma.usageRecord.upsert({
-        where: { userId_monthYear: { userId, monthYear } },
-        create: { userId, monthYear, consultationsUsed: 0 },
-        update: {},
-      })
-      const res = await prisma.usageRecord.updateMany({
-        where: { userId, monthYear, consultationsUsed: { lt: limit } },
+    // Consumption order: monthly plan quota first, then prepaid PAYG credits.
+    // The conditional updateMany closes the check-then-increment race, and the
+    // credit fallback makes purchased packs spendable on top of ANY plan
+    // (the billing UI advertises packs as "added to your current plan").
+    if (monthlyLimit > 0) {
+      const r = await prisma.usageRecord.updateMany({
+        where: { userId, monthYear, consultationsUsed: { lt: monthlyLimit } },
         data: { consultationsUsed: { increment: 1 } },
       })
-      if (res.count === 0) {
-        return NextResponse.json(
-          { messageAr: 'لقد استنفدت استشاراتك الشهرية. يُرجى ترقية باقتك أو شراء استشارات إضافية.' },
-          { status: 402 }
-        )
-      }
-      reserved = 'monthly'
+      if (r.count > 0) reserved = 'monthly'
+    }
+    if (!reserved) {
+      // Account-level prepaid credits (do not expire monthly).
+      const r = await prisma.user.updateMany({
+        where: { id: userId, paygCredits: { gt: 0 } },
+        data: { paygCredits: { decrement: 1 } },
+      })
+      if (r.count > 0) reserved = 'payg'
+    }
+    if (!reserved) {
+      const messageAr =
+        monthlyLimit > 0
+          ? 'لقد استنفدت استشاراتك الشهرية. يُرجى ترقية باقتك أو شحن رصيد استشارات إضافية.'
+          : 'رصيدك الحالي صفر. يُرجى شحن رصيد لمتابعة الاستشارات.'
+      return NextResponse.json({ messageAr }, { status: 402 })
     }
 
     // Rebuild conversation history from the DB (never trust the client's copy).
@@ -129,13 +130,14 @@ export async function POST(req: NextRequest) {
 
     // Do not charge a consultation for a failed generation — refund the reservation.
     if (aiResult.isFallback) {
-      await prisma.usageRecord.updateMany({
-        where: { userId, monthYear },
-        data:
-          reserved === 'payg'
-            ? { paygCredits: { increment: 1 } }
-            : { consultationsUsed: { decrement: 1 } },
-      })
+      if (reserved === 'payg') {
+        await prisma.user.update({ where: { id: userId }, data: { paygCredits: { increment: 1 } } })
+      } else {
+        await prisma.usageRecord.updateMany({
+          where: { userId, monthYear },
+          data: { consultationsUsed: { decrement: 1 } },
+        })
+      }
       reserved = null // already refunded — prevent the catch handler from double-refunding
     }
 
@@ -199,15 +201,13 @@ export async function POST(req: NextRequest) {
     console.error('Chat message error:', error)
     // A consultation was reserved but the request failed before completing —
     // refund it so the user isn't charged for an error.
-    if (reserved) {
+    if (reserved === 'payg') {
+      await prisma.user
+        .update({ where: { id: userId }, data: { paygCredits: { increment: 1 } } })
+        .catch(() => {})
+    } else if (reserved === 'monthly') {
       await prisma.usageRecord
-        .updateMany({
-          where: { userId, monthYear },
-          data:
-            reserved === 'payg'
-              ? { paygCredits: { increment: 1 } }
-              : { consultationsUsed: { decrement: 1 } },
-        })
+        .updateMany({ where: { userId, monthYear }, data: { consultationsUsed: { decrement: 1 } } })
         .catch(() => {})
     }
     return NextResponse.json(

@@ -5,7 +5,7 @@ vi.mock('@/lib/auth', () => ({ getAuthedUser: vi.fn() }))
 
 vi.mock('@/lib/prisma', () => ({
   prisma: {
-    user: { findUnique: vi.fn() },
+    user: { findUnique: vi.fn(), updateMany: vi.fn(), update: vi.fn() },
     chatSession: { findFirst: vi.fn() },
     message: { findMany: vi.fn() },
     usageRecord: { upsert: vi.fn(), updateMany: vi.fn() },
@@ -62,6 +62,10 @@ function mockPersistTransaction(sessionId = 'session-new') {
 beforeEach(() => {
   vi.clearAllMocks()
   vi.mocked(generateAIResponse).mockResolvedValue(mockAIResult)
+  // Default: no prepaid credits (account-level). Success paths reserve via the
+  // monthly quota (usageRecord.updateMany) and never reach this.
+  vi.mocked(prisma.user.updateMany).mockResolvedValue({ count: 0 } as any)
+  vi.mocked(prisma.user.update).mockResolvedValue({} as any)
 })
 
 describe('POST /api/chat/message', () => {
@@ -88,7 +92,7 @@ describe('POST /api/chat/message', () => {
     vi.mocked(prisma.user.findUnique).mockResolvedValueOnce({ subscription: null } as any)
     vi.mocked(prisma.usageRecord.upsert).mockResolvedValueOnce({} as any)
     // No row satisfied "consultationsUsed < limit" → limit reached.
-    vi.mocked(prisma.usageRecord.updateMany).mockResolvedValueOnce({ count: 0 } as any)
+    vi.mocked(prisma.usageRecord.updateMany).mockResolvedValue({ count: 0 } as any)
 
     const res = await POST(makeRequest({ message: 'سؤال', sessionId: null }))
     expect(res.status).toBe(402)
@@ -100,7 +104,7 @@ describe('POST /api/chat/message', () => {
       subscription: { status: 'ACTIVE', currentPeriodEnd: future, plan: { slug: 'payg', consultationsPerMonth: -1 } },
     } as any)
     // No credit row could be decremented → 0 credits.
-    vi.mocked(prisma.usageRecord.updateMany).mockResolvedValueOnce({ count: 0 } as any)
+    vi.mocked(prisma.usageRecord.updateMany).mockResolvedValue({ count: 0 } as any)
 
     const res = await POST(makeRequest({ message: 'سؤال', sessionId: null }))
     expect(res.status).toBe(402)
@@ -114,10 +118,28 @@ describe('POST /api/chat/message', () => {
     } as any)
     vi.mocked(prisma.usageRecord.upsert).mockResolvedValueOnce({} as any)
     // Expired → treated as free (limit 3); simulate limit reached to prove the fallback path ran.
-    vi.mocked(prisma.usageRecord.updateMany).mockResolvedValueOnce({ count: 0 } as any)
+    vi.mocked(prisma.usageRecord.updateMany).mockResolvedValue({ count: 0 } as any)
 
     const res = await POST(makeRequest({ message: 'سؤال', sessionId: null }))
     expect(res.status).toBe(402)
+  })
+
+  it('spends a prepaid credit when the monthly quota is exhausted (packs work on any plan)', async () => {
+    vi.mocked(getAuthedUser).mockResolvedValueOnce(authedUser)
+    vi.mocked(prisma.user.findUnique).mockResolvedValueOnce({ subscription: null } as any) // free plan
+    vi.mocked(prisma.usageRecord.upsert).mockResolvedValueOnce({} as any)
+    // Monthly quota exhausted (no row satisfied consultationsUsed < limit)...
+    vi.mocked(prisma.usageRecord.updateMany).mockResolvedValue({ count: 0 } as any)
+    // ...but the account has a prepaid credit available.
+    vi.mocked(prisma.user.updateMany).mockResolvedValueOnce({ count: 1 } as any)
+    mockPersistTransaction('session-credit')
+
+    const res = await POST(makeRequest({ message: 'سؤال', sessionId: null }))
+    expect(res.status).toBe(200)
+    const debit = vi
+      .mocked(prisma.user.updateMany)
+      .mock.calls.find((c: any) => c[0]?.data?.paygCredits?.decrement === 1)
+    expect(debit).toBeTruthy()
   })
 
   it('returns 200 with sessionId and content on success', async () => {

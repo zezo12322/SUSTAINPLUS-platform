@@ -46,6 +46,7 @@ export async function GET() {
     used,
     remaining,
     pct,
+    paygCredits: userSub?.paygCredits ?? 0,
     payments: payments.map((p) => ({
       ...p,
       createdAt: p.createdAt.toISOString(),

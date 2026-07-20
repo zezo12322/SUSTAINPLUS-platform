@@ -122,18 +122,15 @@ export async function POST(req: NextRequest) {
         const PACK_COUNTS: Record<string, number> = { pack_1: 1, pack_10: 10, pack_25: 25 }
         const count = PACK_COUNTS[pack] || 1
 
-        const monthYear = new Date().toISOString().slice(0, 7)
-        await tx.usageRecord.upsert({
-          where: { userId_monthYear: { userId: payment.userId, monthYear } },
-          create: { userId: payment.userId, monthYear, paygCredits: count },
-          update: { paygCredits: { increment: count } },
+        // Prepaid credits are account-level and do not expire monthly.
+        await tx.user.update({
+          where: { id: payment.userId },
+          data: { paygCredits: { increment: count } },
         })
       } else if (payment.type === 'PAYG_CONSULTATION') {
-        const monthYear = new Date().toISOString().slice(0, 7)
-        await tx.usageRecord.upsert({
-          where: { userId_monthYear: { userId: payment.userId, monthYear } },
-          create: { userId: payment.userId, monthYear, paygCredits: 1 },
-          update: { paygCredits: { increment: 1 } },
+        await tx.user.update({
+          where: { id: payment.userId },
+          data: { paygCredits: { increment: 1 } },
         })
       }
 

@@ -37,8 +37,11 @@ export default async function ChatSessionPage({ params }: { params: Promise<{ id
 
   const plan = userWithSub?.subscription?.plan
   const used = usage?.consultationsUsed ?? 0
-  const limit = plan?.consultationsPerMonth ?? 3
-  const remaining = Math.max(0, limit - used)
+  const credits = userWithSub?.paygCredits ?? 0
+  // PAYG plans carry the -1 sentinel → no monthly allotment; rely on credits.
+  const limit = plan && plan.consultationsPerMonth > 0 ? plan.consultationsPerMonth : plan ? 0 : 3
+  // Available = remaining monthly quota + prepaid credits (packs stack on any plan).
+  const remaining = Math.max(0, limit - used) + credits
   const canChat = remaining > 0
 
   return (

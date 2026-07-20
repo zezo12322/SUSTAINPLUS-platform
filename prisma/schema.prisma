@@ -110,6 +110,7 @@ model User {
   lockedUntil         DateTime?
   twoFactorEnabled    Boolean        @default(false)
   deviceFingerprint   String?
+  paygCredits         Int            @default(0) // account-level prepaid PAYG credits (do not expire monthly)
   createdAt           DateTime       @default(now())
   updatedAt           DateTime       @updatedAt
 
@@ -171,7 +172,7 @@ model UsageRecord {
   userId             String
   monthYear          String   // "2026-05" format
   consultationsUsed  Int      @default(0)
-  paygCredits        Int      @default(0) // prepaid PAYG consultations remaining
+  paygCredits        Int      @default(0) // DEPRECATED: prepaid credits moved to User.paygCredits (account-level). Kept to avoid a destructive migration; no longer read/written.
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 
