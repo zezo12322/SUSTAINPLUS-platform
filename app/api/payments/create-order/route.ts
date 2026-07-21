@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
         checkoutUrl: null,
         orderId: null,
         paymentId: payment.id,
-        messageAr: 'بوابة الدفع غير مُهيأة بعد. يُرجى إضافة مفاتيح Paymob في ملف البيئة.',
+        messageAr: 'الدفع الإلكتروني غير متاح حالياً. يُرجى التواصل مع فريق الدعم لترقية باقتك أو شحن رصيدك.',
         devMode: true,
       })
     }

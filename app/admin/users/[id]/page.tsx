@@ -5,6 +5,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { AdminUserManager } from './user-manager'
 import { SubscriptionControl } from './subscription-control'
+import { CreditsControl } from './credits-control'
 
 export const metadata: Metadata = { title: 'تفاصيل المستخدم' }
 
@@ -70,6 +71,7 @@ export default async function AdminUserDetailPage({
         <Stat label="آخر دخول" value={user.lastLoginAt ? formatDateAr(user.lastLoginAt) : '—'} />
         <Stat label="تاريخ التسجيل" value={formatDateAr(user.createdAt)} />
         <Stat label="الاستهلاك (آخر شهر)" value={String(user.usageRecords[0]?.consultationsUsed ?? 0)} />
+        <Stat label="رصيد مدفوع" value={String(user.paygCredits)} />
       </div>
 
       {/* Management form (client) */}
@@ -92,6 +94,9 @@ export default async function AdminUserDetailPage({
         plans={plans}
         current={{ planId: user.subscription?.planId ?? null, status: user.subscription?.status ?? null }}
       />
+
+      {/* Manual prepaid-credit top-up */}
+      <CreditsControl userId={user.id} current={user.paygCredits} />
 
       {/* Audit trail */}
       <div className="mt-8">

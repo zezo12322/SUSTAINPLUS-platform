@@ -23,8 +23,8 @@ const plans = [
   {
     ...PLANS.PAYG,
     isFeatured: false,
-    cta: 'اشحن رصيداً',
-    ctaHref: '/register',
+    cta: 'تواصل للاشتراك',
+    ctaHref: '/contact',
     ctaVariant: 'outline' as const,
     priceLabel: '٣٥ ج.م',
     priceSub: 'لكل استشارة',
@@ -32,8 +32,8 @@ const plans = [
   {
     ...PLANS.STANDARD,
     isFeatured: false,
-    cta: 'اشترك الآن',
-    ctaHref: '/register',
+    cta: 'تواصل للاشتراك',
+    ctaHref: '/contact',
     ctaVariant: 'primary' as const,
     priceLabel: '٨٥٠ ج.م',
     priceSub: 'شهرياً',
@@ -41,8 +41,8 @@ const plans = [
   {
     ...PLANS.PREMIUM,
     isFeatured: true,
-    cta: 'اشترك الآن',
-    ctaHref: '/register',
+    cta: 'تواصل للاشتراك',
+    ctaHref: '/contact',
     ctaVariant: 'primary' as const,
     priceLabel: '٢,٢٥٠ ج.م',
     priceSub: 'شهرياً',
@@ -51,7 +51,7 @@ const plans = [
     ...PLANS.BUSINESS,
     isFeatured: false,
     cta: 'تواصل معنا',
-    ctaHref: '/dashboard/expert',
+    ctaHref: '/contact',
     ctaVariant: 'outline' as const,
     priceLabel: 'يبدأ من ٤,٥٠٠ ج.م',
     priceSub: 'شهرياً',
@@ -195,8 +195,8 @@ export default function PricingPage() {
                 a: 'الردود مستندة إلى قاعدة معرفة مراجعة من خبراء ساستين بلس، غير أنها إرشادية. للحالات المعقدة التي تحتاج رأياً رسمياً، نوصي بتصعيد الأمر لأحد خبرائنا.',
               },
               {
-                q: 'ما طرق الدفع المتاحة؟',
-                a: 'نقبل الدفع عبر البطاقات الائتمانية والمحافظ الإلكترونية عبر بوابة Paymob الآمنة.',
+                q: 'كيف أشترك أو أشحن رصيداً؟',
+                a: 'للاشتراك في أي باقة أو شحن رصيد استشارات، تواصل مع فريق الدعم عبر واتساب أو البريد الإلكتروني وسنفعّل باقتك فوراً. الدفع الإلكتروني المباشر عبر البطاقات قيد التفعيل قريباً.',
               },
               {
                 q: 'هل يوجد عرض للمؤسسات؟',

@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 import { PLANS, CONSULTATION_PACKS } from '@/lib/constants'
 
 interface SubscriptionData {
@@ -21,7 +20,10 @@ interface SubscriptionData {
   }>
 }
 
-const PLAN_ORDER = ['free', 'payg', 'standard', 'premium', 'business']
+// Contact channels for manual upgrades / credit top-ups while online payment is
+// being finalised. Online checkout is intentionally disabled for now.
+const SUPPORT_WHATSAPP = 'https://wa.me/201205488444'
+const SUPPORT_EMAIL = 'mailto:info@sustainplus-eg.com'
 
 function formatEGP(piasters: number) {
   return `${(piasters / 100).toLocaleString('ar-EG')} ج.م`
@@ -53,12 +55,32 @@ function TypeLabel({ type }: { type: string }) {
   return <>{map[type] || type}</>
 }
 
+function ContactButtons() {
+  return (
+    <div className="flex flex-wrap gap-2">
+      <a
+        href={SUPPORT_WHATSAPP}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+      >
+        <i className="fa-brands fa-whatsapp" />
+        تواصل عبر واتساب
+      </a>
+      <a
+        href={SUPPORT_EMAIL}
+        className="inline-flex items-center gap-2 border-2 border-primary-600 text-primary-600 hover:bg-primary-50 text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+      >
+        <i className="fa-solid fa-envelope" />
+        راسلنا بالبريد
+      </a>
+    </div>
+  )
+}
+
 export default function BillingPage() {
   const [data, setData] = useState<SubscriptionData | null>(null)
   const [loading, setLoading] = useState(true)
-  const [upgradeLoading, setUpgradeLoading] = useState<string | null>(null)
-  const [packLoading, setPackLoading] = useState<string | null>(null)
-  const [message, setMessage] = useState('')
 
   useEffect(() => {
     fetch('/api/billing')
@@ -66,46 +88,6 @@ export default function BillingPage() {
       .then(setData)
       .finally(() => setLoading(false))
   }, [])
-
-  async function handleUpgrade(planSlug: string) {
-    setUpgradeLoading(planSlug)
-    setMessage('')
-    try {
-      const res = await fetch('/api/payments/create-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'SUBSCRIPTION', planSlug }),
-      })
-      const result = await res.json()
-      if (result.checkoutUrl) {
-        window.location.href = result.checkoutUrl
-      } else {
-        setMessage(result.messageAr || 'حدث خطأ. يُرجى المحاولة لاحقاً.')
-      }
-    } finally {
-      setUpgradeLoading(null)
-    }
-  }
-
-  async function handleBuyPack(packId: string) {
-    setPackLoading(packId)
-    setMessage('')
-    try {
-      const res = await fetch('/api/payments/create-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'CONSULTATION_PACK', packId }),
-      })
-      const result = await res.json()
-      if (result.checkoutUrl) {
-        window.location.href = result.checkoutUrl
-      } else {
-        setMessage(result.messageAr || 'حدث خطأ.')
-      }
-    } finally {
-      setPackLoading(null)
-    }
-  }
 
   if (loading) {
     return (
@@ -122,17 +104,10 @@ export default function BillingPage() {
   }
 
   const currentPlanSlug = data?.plan?.slug || 'free'
-  const currentPlanIdx = PLAN_ORDER.indexOf(currentPlanSlug)
 
   return (
     <div className="p-4 sm:p-6 max-w-5xl mx-auto">
       <h1 className="text-xl font-bold text-gray-900 mb-6">اشتراكي والفواتير</h1>
-
-      {message && (
-        <div className="bg-red-50 border border-red-200 text-red-600 text-sm rounded-xl px-4 py-3 mb-5">
-          {message}
-        </div>
-      )}
 
       {/* Current plan */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-6">
@@ -173,22 +148,33 @@ export default function BillingPage() {
         </div>
       </div>
 
-      {/* Plan upgrade */}
+      {/* Upgrade / top-up via support (online checkout disabled for now) */}
+      <div className="bg-primary-50 border border-primary-100 rounded-2xl p-6 mb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 className="font-bold text-gray-800 mb-1">
+              <i className="fa-solid fa-headset text-primary-600 ml-2" />
+              الترقية وشحن الرصيد
+            </h2>
+            <p className="text-sm text-gray-500">
+              لترقية باقتك أو شحن رصيد استشارات، تواصل مع فريق الدعم وسنفعّلها لك فوراً.
+            </p>
+          </div>
+          <ContactButtons />
+        </div>
+      </div>
+
+      {/* Plans (informational) */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-6">
-        <h2 className="font-bold text-gray-800 mb-5">ترقية الباقة</h2>
+        <h2 className="font-bold text-gray-800 mb-5">الباقات المتاحة</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[PLANS.STANDARD, PLANS.PREMIUM, PLANS.BUSINESS].map((plan) => {
-            const planIdx = PLAN_ORDER.indexOf(plan.slug)
             const isCurrent = plan.slug === currentPlanSlug
-            const isDowngrade = planIdx < currentPlanIdx
-
             return (
               <div
                 key={plan.slug}
                 className={`border-2 rounded-xl p-4 transition-all ${
-                  isCurrent
-                    ? 'border-primary-500 bg-primary-50'
-                    : 'border-gray-100 hover:border-primary-200'
+                  isCurrent ? 'border-primary-500 bg-primary-50' : 'border-gray-100'
                 }`}
               >
                 <p className="font-bold text-gray-800">{plan.nameAr}</p>
@@ -197,62 +183,43 @@ export default function BillingPage() {
                   <span className="text-xs font-normal text-gray-400">/شهر</span>
                 </p>
                 <p className="text-xs text-gray-400 mt-1">{plan.consultationsPerMonth} استشارة/شهر</p>
-                {isCurrent ? (
+                {isCurrent && (
                   <span className="mt-3 inline-block w-full text-center text-xs font-semibold text-primary-600 bg-primary-100 py-1.5 rounded-lg">
                     باقتك الحالية
                   </span>
-                ) : (
-                  <button
-                    onClick={() => handleUpgrade(plan.slug)}
-                    disabled={!!upgradeLoading || isDowngrade}
-                    className="mt-3 w-full text-sm font-semibold bg-primary-600 hover:bg-primary-700 disabled:bg-gray-200 disabled:text-gray-400 text-white py-2 rounded-lg transition-colors"
-                  >
-                    {upgradeLoading === plan.slug ? 'جاري المعالجة...' : isDowngrade ? 'خفض الباقة' : 'ترقية'}
-                  </button>
                 )}
               </div>
             )
           })}
 
           {/* PAYG */}
-          <div className="border-2 border-gray-100 hover:border-gold-300 rounded-xl p-4 transition-all">
+          <div className="border-2 border-gray-100 rounded-xl p-4">
             <p className="font-bold text-gray-800">{PLANS.PAYG.nameAr}</p>
             <p className="mt-1 flex items-baseline gap-1 text-lg font-bold text-gold-600">
               <span>٣٥ ج.م</span>
               <span className="text-xs font-normal text-gray-400">/استشارة</span>
             </p>
-            <p className="text-xs text-gray-400 mt-1">دفع مسبق قبل الاستخدام</p>
-            <Link
-              href="#packs"
-              className="mt-3 inline-block w-full text-center text-sm font-semibold border-2 border-gold-400 text-gold-600 hover:bg-gold-50 py-1.5 rounded-lg transition-colors"
-            >
-              شحن رصيد
-            </Link>
+            <p className="text-xs text-gray-400 mt-1">رصيد مدفوع مسبقاً</p>
           </div>
         </div>
       </div>
 
-      {/* Consultation packs */}
-      <div id="packs" className="bg-white rounded-2xl border border-gray-100 p-6 mb-6">
+      {/* Consultation packs (informational pricing) */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-6 mb-6">
         <h2 className="font-bold text-gray-800 mb-2">استشارات إضافية</h2>
-        <p className="text-sm text-gray-400 mb-5">أضف استشارات لباقتك الحالية في أي وقت.</p>
+        <p className="text-sm text-gray-400 mb-5">
+          أضف استشارات لباقتك الحالية في أي وقت عبر التواصل مع فريق الدعم.
+        </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {CONSULTATION_PACKS.map((pack) => (
-            <div key={pack.id} className="border-2 border-gray-100 hover:border-primary-300 rounded-xl p-5 transition-all">
+            <div key={pack.id} className="border-2 border-gray-100 rounded-xl p-5">
               <p className="text-2xl font-bold text-gray-900">{pack.labelAr}</p>
               <p className="text-xl font-bold text-primary-700 mt-1">
                 {pack.pricePiasters / 100} ج.م
               </p>
-              <p className="text-xs text-gray-400 mb-4">
+              <p className="text-xs text-gray-400">
                 {pack.pricePiasters / 100 / pack.count} ج.م / استشارة
               </p>
-              <button
-                onClick={() => handleBuyPack(pack.id)}
-                disabled={!!packLoading}
-                className="w-full text-sm font-semibold bg-primary-600 hover:bg-primary-700 disabled:bg-gray-200 text-white py-2 rounded-lg transition-colors"
-              >
-                {packLoading === pack.id ? 'جاري...' : 'شراء'}
-              </button>
             </div>
           ))}
         </div>
