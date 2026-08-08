@@ -62,10 +62,12 @@ export function PlatformFooter() {
 
         <div className="border-t border-[#16335C] mt-10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-[#cdd6e3] opacity-60">
           <p>© {new Date().getFullYear()} ساستين بلس. جميع الحقوق محفوظة.</p>
-          <div className="flex gap-4">
-            <Link href="/trust" className="hover:opacity-100">سياسة الخصوصية</Link>
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link href="/privacy-policy" className="hover:opacity-100">سياسة الخصوصية</Link>
             <span>•</span>
-            <Link href="/trust#terms" className="hover:opacity-100">الشروط والأحكام</Link>
+            <Link href="/terms" className="hover:opacity-100">الشروط والأحكام</Link>
+            <span>•</span>
+            <Link href="/refund-policy" className="hover:opacity-100">سياسة الاسترجاع</Link>
           </div>
         </div>
       </div>

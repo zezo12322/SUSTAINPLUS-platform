@@ -31,6 +31,9 @@ export default auth(function middleware(req) {
     nextUrl.pathname.startsWith('/platform') ||
     nextUrl.pathname.startsWith('/pricing') ||
     nextUrl.pathname.startsWith('/trust') ||
+    nextUrl.pathname.startsWith('/privacy-policy') ||
+    nextUrl.pathname.startsWith('/terms') ||
+    nextUrl.pathname.startsWith('/refund-policy') ||
     nextUrl.pathname.startsWith('/_next') ||
     nextUrl.pathname.startsWith('/favicon') ||
     // Payment return pages + Paymob's server-to-server webhook (authenticated by

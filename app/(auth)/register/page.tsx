@@ -198,11 +198,11 @@ export default function RegisterPage() {
           />
           <span className="text-sm text-gray-600">
             أوافق على{' '}
-            <Link href="/trust#terms" className="text-primary-600 hover:underline font-medium">
+            <Link href="/terms" className="text-primary-600 hover:underline font-medium">
               الشروط والأحكام
             </Link>{' '}
             و{' '}
-            <Link href="/trust" className="text-primary-600 hover:underline font-medium">
+            <Link href="/privacy-policy" className="text-primary-600 hover:underline font-medium">
               سياسة الخصوصية
             </Link>
           </span>
