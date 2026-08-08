@@ -84,6 +84,11 @@ export default function TrustPage() {
                 يمكنك طلب حذف حسابك وجميع بياناتك في أي وقت عبر صفحة الإعدادات.
               </li>
             </ul>
+            <p className="mt-4 text-sm">
+              <a href="/privacy-policy" className="text-primary-600 hover:underline font-medium">
+                اقرأ سياسة الخصوصية كاملة ←
+              </a>
+            </p>
           </div>
 
           {/* AI Transparency */}
@@ -191,6 +196,15 @@ export default function TrustPage() {
                 <li>نحتفظ بالحق في تعليق الحسابات التي تنتهك سياسات الاستخدام.</li>
                 <li>أسعار الباقات قابلة للتعديل مع إشعار مسبق لا يقل عن ٣٠ يوماً.</li>
               </ol>
+              <p className="mt-4 text-sm">
+                <a href="/terms" className="text-primary-600 hover:underline font-medium">
+                  اقرأ الشروط والأحكام كاملة ←
+                </a>{' '}
+                ·{' '}
+                <a href="/refund-policy" className="text-primary-600 hover:underline font-medium">
+                  سياسة الاسترجاع والإلغاء ←
+                </a>
+              </p>
             </div>
           </div>
 
