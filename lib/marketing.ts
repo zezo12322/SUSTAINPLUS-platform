@@ -71,6 +71,7 @@ export interface MarketingDict {
     colCompany: string
     services: NavItem[]
     company: NavItem[]
+    legal: NavItem[]
     rights: string
   }
 }
@@ -181,6 +182,11 @@ const en: MarketingDict = {
       { label: 'Insights', href: '/insights' },
       { label: 'Contact', href: '/contact' },
     ],
+    legal: [
+      { label: 'Privacy Policy', href: '/privacy-policy' },
+      { label: 'Terms & Conditions', href: '/terms' },
+      { label: 'Refund Policy', href: '/refund-policy' },
+    ],
     rights: 'All rights reserved.',
   },
 }
@@ -289,6 +295,11 @@ const ar: MarketingDict = {
       { label: 'دراسات الحالة', href: '/ar/case-studies' },
       { label: 'مقالات', href: '/ar/insights' },
       { label: 'تواصل', href: '/ar/contact' },
+    ],
+    legal: [
+      { label: 'سياسة الخصوصية', href: '/privacy-policy' },
+      { label: 'الشروط والأحكام', href: '/terms' },
+      { label: 'سياسة الاسترجاع', href: '/refund-policy' },
     ],
     rights: 'جميع الحقوق محفوظة.',
   },
