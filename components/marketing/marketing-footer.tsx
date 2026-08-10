@@ -80,8 +80,16 @@ export function MarketingFooter({ dict }: { dict: MarketingDict }) {
           </div>
         </div>
 
-        <div className="border-t border-white/10 mt-12 pt-6 text-xs text-[#cdd6e3]/55">
+        <div className="border-t border-white/10 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-[#cdd6e3]/55">
           <p>© 2026 Sustain Plus. {dict.footer.rights}</p>
+          <div className="flex flex-wrap justify-center gap-4">
+            {dict.footer.legal.map((l, i) => (
+              <span key={l.href} className="flex items-center gap-4">
+                {i > 0 && <span>•</span>}
+                <FooterLink href={l.href} label={l.label} />
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </footer>
